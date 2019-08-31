@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BusinessCore.Contracts
+namespace BusinessCore.DataAccess.Contracts
 {
     public interface IDataContextManager
     {

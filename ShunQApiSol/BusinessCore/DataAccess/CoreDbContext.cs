@@ -13,6 +13,7 @@ namespace BusinessCore.DataAccess
         { }
 
         public DbSet<UserMaster> UserMasters { get; set; }
+        public DbSet<LogInSession> LogInSessions { get; set; }
     }
 
 }

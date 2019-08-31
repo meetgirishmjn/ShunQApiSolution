@@ -1,5 +1,5 @@
-﻿using BusinessCore.Contracts;
-using BusinessCore.DataAccess;
+﻿using BusinessCore.DataAccess;
+using BusinessCore.DataAccess.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Text;

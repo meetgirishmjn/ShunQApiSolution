@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BusinessCore.Models
 {
-    public class User
+    public class UserIdentity
     {
         public long Id { get; set; }
         public string Name { get; set; }
@@ -12,7 +12,7 @@ namespace BusinessCore.Models
         public int CompanyId { get; set; }
         public string[] Roles { get; set; }
 
-        public User()
+        public UserIdentity()
         {
             this.Roles = new string[] { };
         }

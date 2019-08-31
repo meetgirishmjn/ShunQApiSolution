@@ -14,6 +14,7 @@ namespace BusinessCore.DataAccess.Models
         public bool IsDeleted { get; set; }
         public int CompanyId { get; set; }
         public DateTime CreatedOn { get; set; }
+        public DateTime? UpdatedOn { get; set; }
         public virtual UserMaster UserMaster { get; set; }
     }
 }

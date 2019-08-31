@@ -5,10 +5,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using BusinessCore.AppHandlers;
 using BusinessCore.AppHandlers.Models;
-using BusinessCore.Contracts;
 using BusinessCore.DataAccess;
 using BusinessCore.Models;
 using BusinessCore.Services;
+using BusinessCore.Services.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -60,7 +60,7 @@ namespace WebApi
                 builder => builder.AllowAnyOrigin().AllowCredentials().AllowAnyMethod().AllowAnyHeader());
             });
 
-            var connection = @"data source=(localdb)\MSSQLLocalDB;Initial Catalog=shunq-db-dev-v1;integrated security=True;MultipleActiveResultSets=False;Connection Timeout=30;";
+            var connection = @"data source=(localdb)\MSSQLLocalDB;Initial Catalog=shunqApi-db;integrated security=True;MultipleActiveResultSets=False;Connection Timeout=30;";
 
             if (HostingEnvironment.IsProduction())
             {
@@ -78,8 +78,8 @@ namespace WebApi
         {
             if (env.IsDevelopment())
             {
-                app.ConfigureGlobaleException();
-                //app.UseDeveloperExceptionPage();
+               app.ConfigureGlobaleException();
+               //app.UseDeveloperExceptionPage();
             }
             else
             {

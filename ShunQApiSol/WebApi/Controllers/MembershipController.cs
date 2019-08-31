@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BusinessCore.Extensions;
 using BusinessCore.Models;
 using BusinessCore.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -27,16 +28,19 @@ namespace WebApi.Controllers
         [AllowAnonymous]
         public ActionResult<LoginSuccessModel> LogIn(LogInModel model)
         {
-            if (string.IsNullOrWhiteSpace(model.AppId))
+            var appId = base.ReadAppId();
+            var deviceId = base.ReadDeviceId();
+
+            if (appId.TrimAll().Length == 0)
                 throw new BusinessException("Invalid App Source.");
 
+            if (deviceId.TrimAll().Length==0)
+                throw new BusinessException("Invalid Device Id.");
             var membership = base.CreateMembershipService();
 
-            //var appObj = membership.ReadOAuthApps().Where(o => o.AppId == credential.AppId).FirstOrDefault();
-            //if (appObj == null)
-            //{
-            //    throw new BusinessException("Invalid App Source.");
-            //}
+            var isValid = membership.ValidateApp(appId);
+            if (!isValid)
+                throw new BusinessException("Invalid App Source (App-Id).");
 
             var result = new LoginSuccessModel();
             var user = membership.GetUser(model.UserName, model.Password);
@@ -47,12 +51,34 @@ namespace WebApi.Controllers
             }
 
             var token = new TokenManager(membership).CreateToken(user.Name, user.Roles);
-
-            membership.CreateSession(model.UserName, token);
+            
+            membership.CreateSession(model.UserName, token, deviceId);
 
             result.UserName = user.Name;
 
             return result;
+        }
+
+        [HttpPost("app/register")]
+        [AllowAnonymous]
+        public ActionResult<UserInfo> RegisterUser(RegisterUserModel model)
+        {
+
+            var appId = base.ReadAppId();
+            var deviceId = base.ReadDeviceId();
+
+            if (appId.TrimAll().Length == 0)
+                throw new BusinessException("Invalid App Source.");
+
+            if (deviceId.TrimAll().Length == 0)
+                throw new BusinessException("Invalid Device Id.");
+
+            var membership = base.CreateMembershipService();
+
+            var user = new UserInfo();
+            user = membership.CreateUser(user, model.Password);
+
+            return user;
         }
         #endregion "Mobile Actions"
     }

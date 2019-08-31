@@ -1,4 +1,4 @@
-﻿using BusinessCore.Contracts;
+﻿using BusinessCore.Services.Contracts;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;

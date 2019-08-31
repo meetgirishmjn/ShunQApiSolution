@@ -53,6 +53,16 @@ namespace BusinessCore.Extensions
             return str.Trim();
         }
 
+        public static string ToAlphaNum(this string str)
+        {
+            if (str == null)
+                return string.Empty;
+
+            str = Regex.Replace(str, "[^a-zA-Z0-9]", "");
+
+            return str.Trim();
+        }
+
         public const string NAME_VALID_PATTERN = @"[a-zA-Z0-9@_. \-]";
         public static bool ValidChars(this string str)
         {
@@ -133,8 +143,8 @@ namespace BusinessCore.Extensions
             var isNumber = true;
             for (var i = 0; i < chars.Length; i++)
             {
-                if (chars[i] == '-' || chars[i] == ' ' || chars[i] == '(' || chars[i] == ')')//valid chars for phone number
-                    continue;
+                //if (chars[i] == '-' || chars[i] == ' ' || chars[i] == '(' || chars[i] == ')')//valid chars for phone number
+                //    continue;
 
                 if (!char.IsDigit(chars[i]))
                 {
