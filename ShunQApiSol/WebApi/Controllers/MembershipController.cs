@@ -67,19 +67,62 @@ namespace WebApi.Controllers
             var appId = base.ReadAppId();
             var deviceId = base.ReadDeviceId();
 
-            if (appId.TrimAll().Length == 0)
-                throw new BusinessException("Invalid App Source.");
+            var membership = base.CreateMembershipService();
+
+            var isValid = membership.ValidateApp(appId);
+            if (!isValid)
+                throw new BusinessException("Invalid App Source (App-Id).");
 
             if (deviceId.TrimAll().Length == 0)
                 throw new BusinessException("Invalid Device Id.");
-
-            var membership = base.CreateMembershipService();
 
             var user = new UserInfo();
             user = membership.CreateUser(user, model.Password);
 
             return user;
         }
+
+        [HttpPost("app/logout")]
+        [AllowAnonymous]
+        public ActionResult LogOut()
+        {
+            return Ok();
+        }
         #endregion "Mobile Actions"
+
+
+        [HttpPost("generate/otp/{userName}")]
+        [AllowAnonymous]
+        public ActionResult CreateOTP(string userName)
+        {
+
+            var appId = base.ReadAppId();
+
+            var membership = base.CreateMembershipService();
+
+            var isValid = membership.ValidateApp(appId);
+            if (!isValid)
+                throw new BusinessException("Invalid App Source (App-Id).");
+
+            return Ok();
+        }
+
+        [HttpPost("change/password")]
+        [AllowAnonymous]
+        public ActionResult ChangePassword(ChangePasswordModel model)
+        {
+
+            var appId = base.ReadAppId();
+
+            var membership = base.CreateMembershipService();
+
+            var isValid = membership.ValidateApp(appId);
+            if (!isValid)
+                throw new BusinessException("Invalid App Source (App-Id).");
+
+            return Ok();
+        }
+
+
     }
 }

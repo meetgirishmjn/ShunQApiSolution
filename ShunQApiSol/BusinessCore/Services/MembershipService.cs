@@ -76,7 +76,7 @@ namespace BusinessCore.Services
             if (modelDb == null)
                 throw new BusinessException("User does not exists.");
 
-            var objDb = new DataAccess.Models.LogInSession();
+            var objDb = new DataAccess.DbModels.LogInSession();
             objDb.Id = Guid.NewGuid();
             objDb.UserMasterId = modelDb.Id;
             objDb.DeviceId = deviceId;
@@ -148,7 +148,7 @@ namespace BusinessCore.Services
 
             var context = ContextManager.GetContext();
 
-            var objDb = new DataAccess.Models.UserMaster();
+            var objDb = new DataAccess.DbModels.UserMaster();
             objDb.Name = model.MobileNumber;
             objDb.FirstName = model.FirstName.ToAlphaNum();
             objDb.LastName = model.LastName.ToAlphaNum();
@@ -246,7 +246,7 @@ namespace BusinessCore.Services
         public bool Test()
         {
             var context = ContextManager.GetContext();
-            // return context.Products.Any();
+            var flag = context.RoleMasters.Any();
             return true;
         }
 

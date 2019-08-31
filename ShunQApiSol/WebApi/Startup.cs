@@ -60,7 +60,7 @@ namespace WebApi
                 builder => builder.AllowAnyOrigin().AllowCredentials().AllowAnyMethod().AllowAnyHeader());
             });
 
-            var connection = @"data source=(localdb)\MSSQLLocalDB;Initial Catalog=shunqApi-db;integrated security=True;MultipleActiveResultSets=False;Connection Timeout=30;";
+            var connection = @"data source=(localdb)\MSSQLLocalDB;Initial Catalog=shunqApi-db;Integrated Security=True;MultipleActiveResultSets=False;Connection Timeout=30;";
 
             if (HostingEnvironment.IsProduction())
             {

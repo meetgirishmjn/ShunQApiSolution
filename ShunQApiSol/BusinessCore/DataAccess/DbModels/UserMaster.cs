@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BusinessCore.DataAccess.Models
+namespace BusinessCore.DataAccess.DbModels
 {
     public class UserMaster
     {
