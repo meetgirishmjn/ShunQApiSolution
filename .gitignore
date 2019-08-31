@@ -3,3 +3,8 @@
 ################################################################################
 
 /ShunQApiSol/.vs/ShunQApiSol/v16/Server/sqlite3
+/ShunQApiSol/.vs/ShunQApiSol/v16
+/ShunQApiSol/BusinessCore/bin
+/ShunQApiSol/BusinessCore/obj
+/ShunQApiSol/WebApi/bin
+/ShunQApiSol/WebApi/obj
