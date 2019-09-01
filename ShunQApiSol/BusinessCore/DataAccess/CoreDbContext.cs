@@ -25,6 +25,8 @@ namespace BusinessCore.DataAccess
         public DbSet<StoreCategory> StoreCategories { get; set; }
         public DbSet<StoreMaster> StoreMasters { get; set; }
         public DbSet<StoreCategoryXref> StoreCategoryXrefs { get; set; }
+        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
+        public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

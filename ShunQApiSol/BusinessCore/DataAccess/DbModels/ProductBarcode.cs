@@ -7,7 +7,7 @@ namespace BusinessCore.DataAccess.DbModels
     public class ProductBarcode
     {
         public int Id { get; set; }
-        public string ProductId { get; set; }
+        public string ProductMasterId { get; set; }
         public string Code { get; set; }
         public bool IsActive { get; set; }
         public int CompanyId { get; set; }

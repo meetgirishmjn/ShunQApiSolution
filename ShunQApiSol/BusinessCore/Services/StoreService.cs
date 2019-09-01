@@ -1,6 +1,9 @@
 ﻿using BusinessCore.DataAccess.Contracts;
+using BusinessCore.Enums;
+using BusinessCore.Extensions;
 using BusinessCore.Models;
 using BusinessCore.Services.Contracts;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +16,37 @@ namespace BusinessCore.Services
         public UserIdentity CurrentUser { get; set; }
         public IDataContextManager ContextManager { get; set; }
 
+        #region "Private Methods"
+        private ShoppingCart toModel(DataAccess.DbModels.ShoppingCart objDb)
+        {
+            if (objDb == null)
+                return null;
+
+            var model = new ShoppingCart
+            {
+                Id = objDb.Id,
+                StoreId = objDb.StoreId,
+                UserId = objDb.UserId,
+                Status=((ShoppingCartStatus) objDb.Status).ToString()
+            };
+            model.Items = objDb.Items.Select(o => new ShoppingCart.Item
+            {
+                ProductId = o.ProductId,
+                Quantity = o.Quantity,
+                SortOrder = o.SortOrder
+            }).ToList();
+
+            return model;
+        }
+
+        private string getProductId(string productBarcode)
+        {
+            var code = productBarcode.TrimAll();
+            var context = ContextManager.GetContext();
+            var productId =context.ProductBarcodes.Where(o => o.Code == code).Select(o=>o.ProductMasterId).FirstOrDefault();
+            return productId;
+        }
+        #endregion "Private Methods"
         public List<ListItem> GetAllStoreCategory()
         {
             return new List<ListItem>
@@ -175,5 +209,106 @@ namespace BusinessCore.Services
 
             return results;
         }
+
+        public ShoppingCart StartShopping(int storeId)
+        {
+            var context = ContextManager.GetContext();
+            var status = (int)ShoppingCartStatus.InProgress;
+
+            var storeExists = context.StoreMasters.Where(o => o.Id == storeId).Any();
+            if (!storeExists)
+                throw new ApplicationException("Invalid Store-Id.");
+
+            var objDb = context.ShoppingCarts.Include(o => o.Items).Where(o => o.UserId == CurrentUser.Id && o.Status == status).FirstOrDefault();
+            if (objDb != null)
+                throw new ApplicationException("Finish Shopping or Clear Current Cart.");
+
+            objDb = new DataAccess.DbModels.ShoppingCart()
+            {
+                Id = Guid.NewGuid().ToString(),
+                CompanyId = CurrentUser.CompanyId,
+                CreatedOn = DateTime.Now,
+                Status = (int)ShoppingCartStatus.InProgress,
+                StoreId = storeId,
+                UserId = CurrentUser.Id
+            };
+            context.ShoppingCarts.Add(objDb);
+            context.SaveChanges();
+
+            return toModel(objDb);
+        }
+
+        public ShoppingCart GetCart(string cartId)
+        {
+            var context = ContextManager.GetContext();
+            var objDb = context.ShoppingCarts.Include(o => o.Items).Where(o => o.Id == cartId).FirstOrDefault();
+            return toModel(objDb);
+        }
+
+        public ShoppingCart GetCart()
+        {
+            var status = (int)ShoppingCartStatus.InProgress;
+            var context = ContextManager.GetContext();
+            var objDb = context.ShoppingCarts.Include(o => o.Items).Where(o => o.UserId == CurrentUser.Id && o.Status==status).FirstOrDefault();
+            return toModel(objDb);
+        }
+
+        public ShoppingCart AddItemToCart(string productbarcode)
+        {
+            var status = (int)ShoppingCartStatus.InProgress;
+            var productId = getProductId(productbarcode);
+            var context = ContextManager.GetContext();
+            var objDb = context.ShoppingCarts.Include(o => o.Items).Where(o => o.UserId == CurrentUser.Id && o.Status == status).FirstOrDefault();
+            if (objDb == null)
+                throw new BusinessException("Shopping-cart does not exist");
+
+            var max = 0;
+            if (objDb.Items.Any())
+                max = objDb.Items.Max(o => o.SortOrder);
+
+            objDb.Items.Add(new DataAccess.DbModels.ShoppingCartItem
+            {
+                Id = Guid.NewGuid().ToString(),
+                ProductId = productId,
+                Quantity = 1,
+                SortOrder = max + 1
+            });
+
+            context.SaveChanges();
+
+            return toModel(objDb);
+        }
+
+        public ShoppingCart RemoveItemFromCart(string productbarcode)
+        {
+            var status = (int)ShoppingCartStatus.InProgress;
+            var productId = getProductId(productbarcode);
+            var context = ContextManager.GetContext();
+            var objDb = context.ShoppingCarts.Include(o => o.Items).Where(o => o.UserId == CurrentUser.Id && o.Status == status).FirstOrDefault();
+            if (objDb == null)
+                throw new BusinessException("Shopping-cart does not exist");
+
+            var itemDb = objDb.Items.Where(o => o.ProductId == productId).OrderByDescending(o => o.SortOrder).FirstOrDefault();
+
+            objDb.Items.Remove(itemDb);
+
+            context.SaveChanges();
+
+            return toModel(objDb);
+        }
+
+        public void DiscardCart()
+        {
+            var status = (int)ShoppingCartStatus.InProgress;
+            var context = ContextManager.GetContext();
+            var objDb = context.ShoppingCarts.Include(o => o.Items).Where(o => o.UserId == CurrentUser.Id && o.Status == status).FirstOrDefault();
+            if (objDb == null)
+                throw new BusinessException("Shopping-cart does not exist");
+
+            objDb.Status = (int)ShoppingCartStatus.Discarded;
+
+            context.SaveChanges();
+        }
+
     }
 }

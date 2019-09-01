@@ -85,6 +85,45 @@ namespace WebApi.Controllers
             return result;
         }
 
+        [HttpPost("startCart/{storeId}")]
+        public ShoppingCart StartCart(int storeId)
+        {
+            var cartService = CreateStoreService();
+            var cart = cartService.StartShopping(storeId);
+            return cart;
+        }
+
+        [HttpGet("getCart")]
+        public ShoppingCart GetCurrentCart()
+        {
+            var cartService = CreateStoreService();
+            var cart = cartService.GetCart();
+            return cart;
+        }
+
+        [HttpPost("cart/add/{barCode}")]
+        public ShoppingCart addToCart(string barCode)
+        {
+            var cartService = CreateStoreService();
+            var cart = cartService.AddItemToCart(barCode);
+            return cart;
+        }
+
+        [HttpPost("cart/remove/{barCode}")]
+        public ShoppingCart RemoveFromCart(string barCode)
+        {
+            var cartService = CreateStoreService();
+            var cart = cartService.RemoveItemFromCart(barCode);
+            return cart;
+        }
+
+        [HttpPost("clearCart")]
+        public void ClearCurrentCart()
+        {
+            var cartService = CreateStoreService();
+            cartService.DiscardCart();
+        }
+
         [HttpGet("Ver")]
         public VersionViewModel Ver()
         {
