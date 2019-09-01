@@ -69,6 +69,7 @@ namespace WebApi
 
             services.AddSingleton(typeof(ILoggerManager), typeof(LoggerManager));
             services.AddTransient(typeof(IMembershipService), typeof(MembershipService));
+            services.AddTransient(typeof(IStoreService), typeof(StoreService));
 
             services.AddDbContext<CoreDbContext>(options => options.UseSqlServer(connection));
         }

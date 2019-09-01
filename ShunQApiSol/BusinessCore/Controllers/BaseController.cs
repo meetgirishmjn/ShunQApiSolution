@@ -35,6 +35,23 @@ namespace WebApi.Controllers
             return service;
         }
 
+        protected IStoreService CreateStoreService()
+        {
+            if (UserId <= 0 && Request.Headers.ContainsKey("user-id"))
+                UserId = long.Parse(Request.Headers["user-id"].ToString());
+
+            var service = (IStoreService)serviceProvider.GetService(typeof(IStoreService));
+            var dtx = (BusinessCore.DataAccess.CoreDbContext)serviceProvider.GetService(typeof(BusinessCore.DataAccess.CoreDbContext));
+            (service as IDataContextable).ContextManager = new BusinessCore.DataAccess.DataContextManager(dtx);
+            (service as IDataContextable).CurrentUser = new BusinessCore.Models.UserIdentity
+            {
+                Id = UserId,
+                Name = UserName,
+                FullName = string.Empty
+            };
+            return service;
+        }
+
         protected string ReadAppId()
         {
             var appId = "";
