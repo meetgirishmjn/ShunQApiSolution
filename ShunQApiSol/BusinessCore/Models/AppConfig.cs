@@ -8,6 +8,5 @@ namespace BusinessCore.Models
     {
         public string CoreApiEndpoint { get; set; }
         public string ImageSrcEndpoint { get; set; }
-        public string WebEndpoint { get; set; }
     }
 }

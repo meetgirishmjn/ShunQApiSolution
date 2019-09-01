@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using WebApi.RequestModels;
 using WebApi.ViewModels;
 using System.Linq;
+using Microsoft.Extensions.Options;
 
 namespace WebApi.Controllers
 {
@@ -13,8 +14,10 @@ namespace WebApi.Controllers
     [ApiController]
     public class MobileAppController : BaseController
     {
-        public MobileAppController(IServiceProvider serviceProvider) : base(serviceProvider)
+        AppConfig AppConfig { get; set; }
+        public MobileAppController(IServiceProvider serviceProvider, IOptions<AppConfig> appConfig) : base(serviceProvider)
         {
+            this.AppConfig = appConfig.Value;
         }
 
         [HttpGet("store/category")]
@@ -64,6 +67,7 @@ namespace WebApi.Controllers
             result.PageCount = stores.Count;
             result.TotalCount = totalCount;
 
+            var imageUrl = this.AppConfig.ImageSrcEndpoint;
             var storeReviews = service.StoreReviews(stores.Select(o => o.Id).ToArray()).ToLookup(o => o.StoreId);
             result.StoreList = stores.Select(o => new StoreListViewModel.StoreListItem
             {
@@ -74,8 +78,8 @@ namespace WebApi.Controllers
                 StoreName = o.Name,
                 HasActiveCart = false,
                 ReviewRating= storeReviews.Contains(o.Id)?storeReviews[o.Id].FirstOrDefault():new StoreReview { StoreId=o.Id},
-                BannerImageUrl=o.BannerImage,
-                ImageUrl=o.Image
+                BannerImageUrl= imageUrl+o.BannerImage,
+                ImageUrl= imageUrl + o.Image
             }).ToList();
 
             return result;
@@ -101,10 +105,7 @@ namespace WebApi.Controllers
                 DbStatus = dbStatus,
                 Status = "ok",
                 Version = "1.0.0",
-                Values = new Dictionary<string, string>()
-                {
-
-                }
+                AppConfig=this.AppConfig
             };
         }
     }
