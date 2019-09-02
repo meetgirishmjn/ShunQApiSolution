@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusinessCore.Migrations
 {
     [DbContext(typeof(CoreDbContext))]
-    [Migration("20190901195152_dbupdate-1")]
-    partial class dbupdate1
+    [Migration("20190902102914_INIT")]
+    partial class INIT
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -132,8 +132,6 @@ namespace BusinessCore.Migrations
                     b.Property<DateTime>("CreatedOn");
 
                     b.Property<bool>("IsActive");
-
-                    b.Property<string>("ProductId");
 
                     b.Property<string>("ProductMasterId");
 
@@ -416,6 +414,29 @@ namespace BusinessCore.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("UserMasters");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 9, 2, 15, 59, 13, 950, DateTimeKind.Local).AddTicks(4641),
+                            Email = "meetgirish.mjn@gmail.com",
+                            EmailVerified = true,
+                            FirstName = "Girish",
+                            FullName = "Girish Mahajan",
+                            Gender = "M",
+                            ImageId = "",
+                            IsActive = true,
+                            IsDeleted = false,
+                            LastName = " Mahajan",
+                            MobileNumber = "8871384762",
+                            MobileVerified = true,
+                            Name = "Admin",
+                            Password = "0E37EZvfM10P1jAH1JRpV+OVlsT39xs451MD2WqKcsU=",
+                            Props = ""
+                        });
                 });
 
             modelBuilder.Entity("BusinessCore.DataAccess.DbModels.UserRole", b =>
@@ -432,17 +453,13 @@ namespace BusinessCore.Migrations
 
                     b.Property<bool>("IsActive");
 
-                    b.Property<long>("RoleId");
-
-                    b.Property<int?>("RoleMasterId");
+                    b.Property<int>("RoleMasterId");
 
                     b.Property<long?>("UpdatedBy");
 
                     b.Property<DateTime?>("UpdatedOn");
 
-                    b.Property<long>("UserId");
-
-                    b.Property<long?>("UserMasterId");
+                    b.Property<long>("UserMasterId");
 
                     b.HasKey("Id");
 
@@ -451,6 +468,20 @@ namespace BusinessCore.Migrations
                     b.HasIndex("UserMasterId");
 
                     b.ToTable("UserRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 9, 2, 15, 59, 13, 952, DateTimeKind.Local).AddTicks(2929),
+                            IsActive = true,
+                            RoleMasterId = 1,
+                            UpdatedBy = 1L,
+                            UpdatedOn = new DateTime(2019, 9, 2, 15, 59, 13, 952, DateTimeKind.Local).AddTicks(1440),
+                            UserMasterId = 1L
+                        });
                 });
 
             modelBuilder.Entity("BusinessCore.DataAccess.DbModels.LogInSession", b =>
@@ -505,12 +536,14 @@ namespace BusinessCore.Migrations
             modelBuilder.Entity("BusinessCore.DataAccess.DbModels.UserRole", b =>
                 {
                     b.HasOne("BusinessCore.DataAccess.DbModels.RoleMaster", "RoleMaster")
-                        .WithMany()
-                        .HasForeignKey("RoleMasterId");
+                        .WithMany("UserRoles")
+                        .HasForeignKey("RoleMasterId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("BusinessCore.DataAccess.DbModels.UserMaster", "UserMaster")
                         .WithMany("UserRoles")
-                        .HasForeignKey("UserMasterId");
+                        .HasForeignKey("UserMasterId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

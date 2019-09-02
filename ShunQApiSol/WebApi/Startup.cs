@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 using BusinessCore.AppHandlers;
 using BusinessCore.AppHandlers.Models;
 using BusinessCore.DataAccess;
-using BusinessCore.Models;
+using BusinessCore;
 using BusinessCore.Services;
 using BusinessCore.Services.Contracts;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -19,6 +20,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace WebApi
 {
@@ -48,6 +50,9 @@ namespace WebApi
             // Add our Config object so it can be injected
             services.Configure<AppConfig>(Configuration.GetSection("AppConfig"));
 
+            services.AddAuthentication("BasicAuthentication")
+                .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
+
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
@@ -68,6 +73,7 @@ namespace WebApi
             }
 
             services.AddSingleton(typeof(ILoggerManager), typeof(LoggerManager));
+            services.AddSingleton(typeof(IAdminService), new AdminService(connection));
             services.AddTransient(typeof(IMembershipService), typeof(MembershipService));
             services.AddTransient(typeof(IStoreService), typeof(StoreService));
 
@@ -75,7 +81,7 @@ namespace WebApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerManager logger)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerManager logger, IOptions<AppConfig> appConfig)
         {
             if (env.IsDevelopment())
             {
@@ -90,6 +96,18 @@ namespace WebApi
                 app.ConfigureGlobaleException();
             }
 
+            if (appConfig.Value.AuthorizationEnabled)
+            {
+                app.UseAuthentication();
+            }
+            else
+            {
+                app.Use(async (context, next) =>
+                {
+                    context.User = new System.Security.Claims.ClaimsPrincipal(new System.Security.Claims.ClaimsIdentity(new System.Security.Claims.Claim[] { }, "test"));
+                    await next.Invoke();
+                });
+            }
             app.UseHttpsRedirection();
 
             app.UseCors("AllowAll");
@@ -104,6 +122,7 @@ namespace WebApi
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "ShunQ API v1");
                 c.RoutePrefix = string.Empty;
             });
+
 
             app.UseMvc();
         }

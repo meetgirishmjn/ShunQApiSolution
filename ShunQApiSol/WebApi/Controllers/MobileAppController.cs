@@ -7,17 +7,18 @@ using WebApi.RequestModels;
 using WebApi.ViewModels;
 using System.Linq;
 using Microsoft.Extensions.Options;
+using BusinessCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApi.Controllers
 {
     [Route("api/v1/mobile")]
     [ApiController]
+    [Authorize]
     public class MobileAppController : BaseController
     {
-        AppConfig AppConfig { get; set; }
-        public MobileAppController(IServiceProvider serviceProvider, IOptions<AppConfig> appConfig) : base(serviceProvider)
+        public MobileAppController(IServiceProvider serviceProvider, IOptions<AppConfig> appConfig) : base(serviceProvider, appConfig)
         {
-            this.AppConfig = appConfig.Value;
         }
 
         [HttpGet("store/category")]
@@ -125,6 +126,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("Ver")]
+        [AllowAnonymous]
         public VersionViewModel Ver()
         {
             var membsership = base.CreateMembershipService();
@@ -143,7 +145,7 @@ namespace WebApi.Controllers
             {
                 DbStatus = dbStatus,
                 Status = "ok",
-                Version = "1.0.0",
+                Version = "1.0.1",
                 AppConfig=this.AppConfig
             };
         }

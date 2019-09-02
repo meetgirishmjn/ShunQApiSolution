@@ -42,6 +42,10 @@ namespace BusinessCore.Services
         {
             var context = ContextManager.GetContext();
             userName = userName.TrimAll();
+
+            if (userName.Length == 0 || string.IsNullOrEmpty(password))
+                return null;
+
             var encryptedPassword = encryptPassword(password);
             var userDb = context.UserMasters.Where(o => !o.IsDeleted && o.Name.ToLower() == userName.ToLower() && o.Password == encryptedPassword)
                 .Select(o => new

@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BusinessCore;
 using BusinessCore.Extensions;
 using BusinessCore.Models;
 using BusinessCore.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using WebApi.RequestModels;
 using WebApi.ViewModels;
 
@@ -14,9 +16,10 @@ namespace WebApi.Controllers
 {
     [Route("api/v1/membership")]
     [ApiController]
+    [Authorize]
     public class MembershipController : BaseController
     {
-        public MembershipController(IServiceProvider serviceProvider) : base(serviceProvider)
+        public MembershipController(IServiceProvider serviceProvider, IOptions<AppConfig> appConfig) : base(serviceProvider, appConfig)
         {
         }
 
@@ -50,11 +53,13 @@ namespace WebApi.Controllers
                 return result;
             }
 
-            var token = new TokenManager(membership).CreateToken(user.Name, user.Roles);
+            result.AuthToken = new TokenManager(membership).CreateToken(user.Name, user.Roles);
             
-            membership.CreateSession(model.UserName, token, deviceId);
+            membership.CreateSession(model.UserName, result.AuthToken, deviceId);
 
+            result.IsValid = true;
             result.UserName = user.Name;
+            result.FullName = user.FullName;
 
             return result;
         }

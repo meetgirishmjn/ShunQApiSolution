@@ -48,6 +48,46 @@ namespace BusinessCore.DataAccess
                Description = string.Empty
            }
        );
+
+            modelBuilder.Entity<UserMaster>()
+      .HasData(
+          new UserMaster
+          {
+              Id = 1,
+              Name = AppConfig.ADMIN_USER_NAME,
+              CompanyId = 1,
+              CreatedBy = 1,
+              CreatedOn = DateTime.Now,
+              Email = "meetgirish.mjn@gmail.com",
+              EmailVerified = true,
+              FirstName = "Girish",
+              FullName = "Girish Mahajan",
+              Gender = "M",
+              ImageId = string.Empty,
+              IsActive = true,
+              IsDeleted = false,
+              LastName = " Mahajan",
+              MobileNumber = "8871384762",
+              MobileVerified = true,
+              Password = "0E37EZvfM10P1jAH1JRpV+OVlsT39xs451MD2WqKcsU=",
+              Props = string.Empty
+          });
+
+            modelBuilder.Entity<UserRole>()
+     .HasData(
+         new UserRole
+         {
+             Id = 1,
+             RoleMasterId= (int)RoleNames.Administrator,
+             UserMasterId=1,
+             CompanyId=1,
+             UpdatedOn=DateTime.Now,
+             UpdatedBy=1,
+             CreatedBy=1,
+             CreatedOn=DateTime.Now,
+             IsActive=true
+         });
+
             base.OnModelCreating(modelBuilder);
         }
     }

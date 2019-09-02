@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BusinessCore.Migrations
 {
-    public partial class Init : Migration
+    public partial class INIT : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -94,6 +94,23 @@ namespace BusinessCore.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ShoppingCarts",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    StoreId = table.Column<int>(nullable: false),
+                    UserId = table.Column<long>(nullable: false),
+                    Status = table.Column<int>(nullable: false),
+                    CompanyId = table.Column<int>(nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    UpdatedOn = table.Column<DateTime>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ShoppingCarts", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "StoreCategories",
                 columns: table => new
                 {
@@ -180,15 +197,14 @@ namespace BusinessCore.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    ProductId = table.Column<string>(nullable: true),
+                    ProductMasterId = table.Column<string>(nullable: true),
                     Code = table.Column<string>(nullable: true),
                     IsActive = table.Column<bool>(nullable: false),
                     CompanyId = table.Column<int>(nullable: false),
                     CreatedOn = table.Column<DateTime>(nullable: false),
                     CreatedBy = table.Column<long>(nullable: false),
                     UpdatedOn = table.Column<DateTime>(nullable: true),
-                    UpdatedBy = table.Column<long>(nullable: true),
-                    ProductMasterId = table.Column<string>(nullable: true)
+                    UpdatedBy = table.Column<long>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -228,6 +244,27 @@ namespace BusinessCore.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ShoppingCartItems",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    ProductId = table.Column<string>(nullable: true),
+                    SortOrder = table.Column<int>(nullable: false),
+                    Quantity = table.Column<int>(nullable: false),
+                    CartId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ShoppingCartItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ShoppingCartItems_ShoppingCarts_CartId",
+                        column: x => x.CartId,
+                        principalTable: "ShoppingCarts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "LogInSessions",
                 columns: table => new
                 {
@@ -258,16 +295,14 @@ namespace BusinessCore.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    UserId = table.Column<long>(nullable: false),
-                    RoleId = table.Column<long>(nullable: false),
+                    UserMasterId = table.Column<long>(nullable: false),
+                    RoleMasterId = table.Column<int>(nullable: false),
                     IsActive = table.Column<bool>(nullable: false),
                     CompanyId = table.Column<int>(nullable: false),
                     CreatedOn = table.Column<DateTime>(nullable: false),
                     CreatedBy = table.Column<long>(nullable: false),
                     UpdatedOn = table.Column<DateTime>(nullable: true),
-                    UpdatedBy = table.Column<long>(nullable: true),
-                    UserMasterId = table.Column<long>(nullable: true),
-                    RoleMasterId = table.Column<int>(nullable: true)
+                    UpdatedBy = table.Column<long>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -277,13 +312,13 @@ namespace BusinessCore.Migrations
                         column: x => x.RoleMasterId,
                         principalTable: "RoleMasters",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_UserRoles_UserMasters_UserMasterId",
                         column: x => x.UserMasterId,
                         principalTable: "UserMasters",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -322,6 +357,16 @@ namespace BusinessCore.Migrations
                 columns: new[] { "Id", "CompanyId", "Description", "Name" },
                 values: new object[] { 5, 1, "", "User" });
 
+            migrationBuilder.InsertData(
+                table: "UserMasters",
+                columns: new[] { "Id", "CompanyId", "CreatedBy", "CreatedOn", "Email", "EmailVerified", "FirstName", "FullName", "Gender", "ImageId", "IsActive", "IsDeleted", "LastName", "MobileNumber", "MobileVerified", "Name", "Password", "Props", "UpdatedBy", "UpdatedOn" },
+                values: new object[] { 1L, 1, 1L, new DateTime(2019, 9, 2, 15, 59, 13, 950, DateTimeKind.Local).AddTicks(4641), "meetgirish.mjn@gmail.com", true, "Girish", "Girish Mahajan", "M", "", true, false, " Mahajan", "8871384762", true, "Admin", "0E37EZvfM10P1jAH1JRpV+OVlsT39xs451MD2WqKcsU=", "", null, null });
+
+            migrationBuilder.InsertData(
+                table: "UserRoles",
+                columns: new[] { "Id", "CompanyId", "CreatedBy", "CreatedOn", "IsActive", "RoleMasterId", "UpdatedBy", "UpdatedOn", "UserMasterId" },
+                values: new object[] { 1, 1, 1L, new DateTime(2019, 9, 2, 15, 59, 13, 952, DateTimeKind.Local).AddTicks(2929), true, 1, 1L, new DateTime(2019, 9, 2, 15, 59, 13, 952, DateTimeKind.Local).AddTicks(1440), 1L });
+
             migrationBuilder.CreateIndex(
                 name: "IX_LogInSessions_UserMasterId",
                 table: "LogInSessions",
@@ -336,6 +381,11 @@ namespace BusinessCore.Migrations
                 name: "IX_ProductCategories_ProductMasterId",
                 table: "ProductCategories",
                 column: "ProductMasterId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ShoppingCartItems_CartId",
+                table: "ShoppingCartItems",
+                column: "CartId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_StoreCategoryXrefs_StoreCategoryId",
@@ -378,6 +428,9 @@ namespace BusinessCore.Migrations
                 name: "ProductCategories");
 
             migrationBuilder.DropTable(
+                name: "ShoppingCartItems");
+
+            migrationBuilder.DropTable(
                 name: "StoreCategoryXrefs");
 
             migrationBuilder.DropTable(
@@ -385,6 +438,9 @@ namespace BusinessCore.Migrations
 
             migrationBuilder.DropTable(
                 name: "ProductMasters");
+
+            migrationBuilder.DropTable(
+                name: "ShoppingCarts");
 
             migrationBuilder.DropTable(
                 name: "StoreCategories");
