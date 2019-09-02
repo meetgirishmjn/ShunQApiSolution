@@ -50,9 +50,12 @@ namespace WebApi.Controllers
             {
 
                 var data = Request.HttpContext.User.Claims.FirstOrDefault(o => o.Type == ClaimTypes.UserData);
-                this.CurrentUser = Newtonsoft.Json.JsonConvert.DeserializeObject<UserInfo>(data.Value);
-                UserId = this.CurrentUser.Id;
-                UserName = this.CurrentUser.Name;
+                if (data?.Value != null)//for allowAnonymouse actions
+                {
+                    this.CurrentUser = Newtonsoft.Json.JsonConvert.DeserializeObject<UserInfo>(data.Value);
+                    UserId = this.CurrentUser.Id;
+                    UserName = this.CurrentUser.Name;
+                }
             }
 
         }

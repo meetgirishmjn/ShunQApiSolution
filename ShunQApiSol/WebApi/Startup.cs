@@ -104,7 +104,7 @@ namespace WebApi
             {
                 app.Use(async (context, next) =>
                 {
-                    context.User = new System.Security.Claims.ClaimsPrincipal(new System.Security.Claims.ClaimsIdentity(new System.Security.Claims.Claim[] { }, "test"));
+                    context.User = new System.Security.Claims.ClaimsPrincipal(new System.Security.Claims.ClaimsIdentity(new System.Security.Claims.Claim[]                   , "test"));
                     await next.Invoke();
                 });
             }
