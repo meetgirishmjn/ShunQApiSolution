@@ -21,6 +21,15 @@ namespace WebApi.Controllers
         {
         }
 
+        ShoppingCart setCartImageUrl(ShoppingCart cart)
+        {
+            if (cart == null || cart.Items == null)
+                return cart;
+
+            var imageUrl = this.AppConfig.ImageSrcEndpoint;
+            cart.Items.ForEach(o => o.ThumbImage = imageUrl + "Product/" + o.ThumbImage);
+            return cart;
+        }
         [HttpGet("store/category")]
         public List<ListItem> GetStoreCategories()
         {
@@ -91,7 +100,7 @@ namespace WebApi.Controllers
         {
             var cartService = CreateStoreService();
             var cart = cartService.StartShopping(storeId);
-            return cart;
+            return setCartImageUrl(cart);
         }
 
         [HttpGet("getCart")]
@@ -99,7 +108,7 @@ namespace WebApi.Controllers
         {
             var cartService = CreateStoreService();
             var cart = cartService.GetCart();
-            return cart;
+            return setCartImageUrl(cart);
         }
 
         [HttpPost("cart/add/{barCode}")]
@@ -107,7 +116,7 @@ namespace WebApi.Controllers
         {
             var cartService = CreateStoreService();
             var cart = cartService.AddItemToCart(barCode);
-            return cart;
+            return setCartImageUrl(cart);
         }
 
         [HttpPost("cart/remove/{barCode}")]
@@ -115,7 +124,7 @@ namespace WebApi.Controllers
         {
             var cartService = CreateStoreService();
             var cart = cartService.RemoveItemFromCart(barCode);
-            return cart;
+            return setCartImageUrl(cart);
         }
 
         [HttpPost("clearCart")]

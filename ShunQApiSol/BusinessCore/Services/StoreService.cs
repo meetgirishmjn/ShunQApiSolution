@@ -27,16 +27,38 @@ namespace BusinessCore.Services
                 Id = objDb.Id,
                 StoreId = objDb.StoreId,
                 UserId = objDb.UserId,
-                Status=((ShoppingCartStatus) objDb.Status).ToString()
+                Status = ((ShoppingCartStatus)objDb.Status).ToString()
             };
             if (objDb.Items != null)
             {
-                model.Items = objDb.Items.Select(o => new ShoppingCart.Item
+                var pids = objDb.Items.Select(o => o.ProductId).ToArray();
+                var context = ContextManager.GetContext();
+                var products = context.ProductMasters.Where(o => pids.Contains(o.Id)).ToLookup(o => o.Id);
+                var prices = getProductPrices(pids);
+                foreach (var dbItem in objDb.Items)
                 {
-                    ProductId = o.ProductId,
-                    Quantity = o.Quantity,
-                    SortOrder = o.SortOrder
-                }).ToList();
+                    var p = products.Contains(dbItem.ProductId) ? products[dbItem.ProductId].FirstOrDefault() : null;
+                    var price = prices.FirstOrDefault(o => o.ProductId == dbItem.ProductId);
+
+                    var item = new ShoppingCart.Item
+                    {
+                        ProductId = dbItem.ProductId,
+                        Quantity = dbItem.Quantity,
+                        SortOrder = dbItem.SortOrder,
+                        ProductName = p?.Name,
+                        Description = p?.Description,
+                        ShortName = p?.ShortName,
+                        ThumbImage = p?.ThumbImage,
+                    };
+                    if (price != null)
+                    {
+                        item.MRP = price.MRP;
+                        item.Price = price.Price;
+                        item.Discount = price.Discount;
+                        item.DiscountText = price.DiscountText;
+                    }
+                    model.Items.Add(item);
+                }
             }
 
             return model;
@@ -55,8 +77,31 @@ namespace BusinessCore.Services
             var productId = rand.Next(1, ids.Length);
             //temp
 
-            return productId+"";
+            return productId + "";
         }
+
+        private DataAccess.DbModels.PriceMaster getProductPrice(string productId)
+        {
+            var paisa = rand.Next(1, 20) * 5;
+            var mrp = rand.Next(10, 1000);
+            var price = rand.Next(10, mrp);
+
+            return new DataAccess.DbModels.PriceMaster
+            {
+                ProductId = productId,
+                MRP = float.Parse(mrp + "." + paisa),
+                Price = float.Parse(price + "." + paisa),
+                Discount = mrp - price,
+                DiscountText = "10% Discount",
+            };
+        }
+        private List<DataAccess.DbModels.PriceMaster> getProductPrices(string[] productIds)
+        {
+            var list = new List<DataAccess.DbModels.PriceMaster>();
+            productIds.ToList().ForEach(o => list.Add(getProductPrice(o)));
+            return list;
+        }
+
         #endregion "Private Methods"
         public List<ListItem> GetAllStoreCategory()
         {
@@ -193,7 +238,7 @@ namespace BusinessCore.Services
 
         public IQueryable<Store> ReadStores(int categoryId)
         {
-           return this.ReadStores();
+            return this.ReadStores();
         }
 
         public StoreReview StoreReview(int storeId)
@@ -203,7 +248,7 @@ namespace BusinessCore.Services
             var part2 = rand.Next(1, 10);
             return new StoreReview
             {
-                StoreId=storeId,
+                StoreId = storeId,
                 Value = float.Parse(part1 + "." + part2),
                 VoteCount = rand.Next(1, 1000)
             };
@@ -213,7 +258,7 @@ namespace BusinessCore.Services
         {
             var results = new List<StoreReview>();
 
-            foreach(var id in storeIds)
+            foreach (var id in storeIds)
             {
                 results.Add(StoreReview(id));
             }
@@ -260,7 +305,7 @@ namespace BusinessCore.Services
         {
             var status = (int)ShoppingCartStatus.InProgress;
             var context = ContextManager.GetContext();
-            var objDb = context.ShoppingCarts.Include(o => o.Items).Where(o => o.UserId == CurrentUser.Id && o.Status==status).FirstOrDefault();
+            var objDb = context.ShoppingCarts.Include(o => o.Items).Where(o => o.UserId == CurrentUser.Id && o.Status == status).FirstOrDefault();
             return toModel(objDb);
         }
 
@@ -299,10 +344,13 @@ namespace BusinessCore.Services
             if (objDb == null)
                 throw new BusinessException("Shopping-cart does not exist");
 
+            if (objDb.Items == null || objDb.Items.Count==0)
+                throw new BusinessException("Shopping-cart is empty");
+
             //var itemDb = objDb.Items.Where(o => o.ProductId == productId).OrderByDescending(o => o.SortOrder).FirstOrDefault();
-           
+
             //temp
-            var index = rand.Next(1, objDb.Items.Count);
+            var index = rand.Next(0, objDb.Items.Count);
             var itemDb = objDb.Items.ToList()[index];
             //temp
 

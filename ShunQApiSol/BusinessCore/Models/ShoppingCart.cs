@@ -22,6 +22,14 @@ namespace BusinessCore.Models
         public class Item
         {
             public string ProductId { get; set; }
+            public string ProductName { get; set; }
+            public string ShortName { get; set; }
+            public string Description { get; set; }
+            public string ThumbImage { get; set; }
+            public float MRP { get; set; }
+            public float Discount { get; set; }
+            public string DiscountText { get; set; }
+            public float Price { get; set; }
             public int SortOrder { get; set; }
             public int Quantity { get; set; }
         }
