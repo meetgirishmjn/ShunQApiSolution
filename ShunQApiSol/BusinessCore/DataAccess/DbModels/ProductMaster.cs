@@ -21,7 +21,6 @@ namespace BusinessCore.DataAccess.DbModels
         public long CreatedBy { get; set; }
         public DateTime? UpdatedOn { get; set; }
         public long? UpdatedBy { get; set; }
-        public ICollection<ProductCategory> Categories { get; set; }
         public ICollection<ProductBarcode> BarCodes { get; set; }
     }
 }

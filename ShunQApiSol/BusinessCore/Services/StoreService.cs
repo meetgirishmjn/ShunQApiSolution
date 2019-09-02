@@ -29,22 +29,33 @@ namespace BusinessCore.Services
                 UserId = objDb.UserId,
                 Status=((ShoppingCartStatus) objDb.Status).ToString()
             };
-            model.Items = objDb.Items.Select(o => new ShoppingCart.Item
+            if (objDb.Items != null)
             {
-                ProductId = o.ProductId,
-                Quantity = o.Quantity,
-                SortOrder = o.SortOrder
-            }).ToList();
+                model.Items = objDb.Items.Select(o => new ShoppingCart.Item
+                {
+                    ProductId = o.ProductId,
+                    Quantity = o.Quantity,
+                    SortOrder = o.SortOrder
+                }).ToList();
+            }
 
             return model;
         }
+
+        private static readonly Random rand = new Random();
 
         private string getProductId(string productBarcode)
         {
             var code = productBarcode.TrimAll();
             var context = ContextManager.GetContext();
-            var productId =context.ProductBarcodes.Where(o => o.Code == code).Select(o=>o.ProductMasterId).FirstOrDefault();
-            return productId;
+            //  var productId =context.ProductBarcodes.Where(o => o.Code == code).Select(o=>o.ProductMasterId).FirstOrDefault();
+
+            //temp
+            var ids = context.ProductMasters.Select(o => o.Id).ToArray();
+            var productId = rand.Next(1, ids.Length);
+            //temp
+
+            return productId+"";
         }
         #endregion "Private Methods"
         public List<ListItem> GetAllStoreCategory()
@@ -215,7 +226,7 @@ namespace BusinessCore.Services
             var context = ContextManager.GetContext();
             var status = (int)ShoppingCartStatus.InProgress;
 
-            var storeExists = context.StoreMasters.Where(o => o.Id == storeId).Any();
+            var storeExists = ReadStores().Where(o => o.Id == storeId).Any();
             if (!storeExists)
                 throw new ApplicationException("Invalid Store-Id.");
 
@@ -288,7 +299,12 @@ namespace BusinessCore.Services
             if (objDb == null)
                 throw new BusinessException("Shopping-cart does not exist");
 
-            var itemDb = objDb.Items.Where(o => o.ProductId == productId).OrderByDescending(o => o.SortOrder).FirstOrDefault();
+            //var itemDb = objDb.Items.Where(o => o.ProductId == productId).OrderByDescending(o => o.SortOrder).FirstOrDefault();
+           
+            //temp
+            var index = rand.Next(1, objDb.Items.Count);
+            var itemDb = objDb.Items.ToList()[index];
+            //temp
 
             objDb.Items.Remove(itemDb);
 

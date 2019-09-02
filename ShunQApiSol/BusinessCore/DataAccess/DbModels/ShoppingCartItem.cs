@@ -11,6 +11,6 @@ namespace BusinessCore.DataAccess.DbModels
         public int SortOrder { get; set; }
         public int Quantity { get; set; }
 
-        public ShoppingCart Cart { get; set; }
+        public ShoppingCart ShoppingCart { get; set; }
     }
 }
