@@ -13,6 +13,7 @@ namespace WebApi.RequestModels
         public string Latitude { get; set; }
         public string Longitude { get; set; }
         public string SortBy { get; set; }
+        public string SortDir { get; set; }
 
         public StoreFilter FilterBy { get; set; }
 

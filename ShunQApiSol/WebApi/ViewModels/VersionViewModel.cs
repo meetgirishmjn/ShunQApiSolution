@@ -9,6 +9,7 @@ namespace WebApi.ViewModels
     public class VersionViewModel
     {
         public string Version { get; set; }
+        public string VersionDesc { get; set; }
         public string Status { get; set; }
         public string DbStatus { get; set; }
         public AppConfig AppConfig { get; set; }

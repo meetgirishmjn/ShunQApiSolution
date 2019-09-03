@@ -11,6 +11,8 @@ namespace BusinessCore.Services.Contracts
         List<ListItem> GetAllStoreCategory();
         IQueryable<Store> ReadStores();
         IQueryable<Store> ReadStores(ReadStoreOption options);
+        Store GetStore(int id);
+        Store GetStore(string qrCode);
         IQueryable<Store> ReadStores(int categoryId);
         StoreReview StoreReview(int storeId);
         List<StoreReview> StoreReviews(int[] storeIds);

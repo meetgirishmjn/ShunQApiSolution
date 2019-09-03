@@ -102,6 +102,54 @@ namespace WebApi.Controllers
             return result;
         }
 
+        [HttpGet("store/{code}")]
+        public StoreInfoViewModel GetStoreByCode(string code)
+        {
+            if (string.IsNullOrEmpty(code))
+                throw new BusinessException("Invalid code");
+
+            var storeId = 0;
+            int.TryParse(code, out storeId);
+
+            var service = CreateStoreService();
+            Store store = null;
+            if (storeId > 0)
+                store = service.GetStore(storeId);
+            else
+                store = service.GetStore(storeId);
+
+            if (store==null)
+                throw new BusinessException("Store not found for "+code);
+
+            var imageUrl = this.AppConfig.ImageSrcEndpoint;
+            var storeReview = service.StoreReview(store.Id);
+
+            var result = new StoreInfoViewModel()
+            {
+                StoreId = store.Id,
+                StoreCode = store.Code,
+                ShortName = store.ShortName,
+                Description = store.Description,
+                StoreName = store.Name,
+                HasActiveCart = false,
+                ReviewRating = storeReview!=null ? storeReview : new StoreReview { StoreId = store.Id },
+                BannerImageUrl = imageUrl + store.BannerImage,
+                ImageUrl = imageUrl + store.Image
+            };
+
+            return result;
+        }
+
+        [HttpGet("store/search/sort-options")]
+        public List<ListItem> GetStoreSortList()
+        {
+            return new List<ListItem>
+            {
+                 new ListItem{Id=1,Name="Category"},
+                 new ListItem{Id=2,Name="Distance"},
+                 new ListItem{Id=3,Name="Rating"}
+            };
+        }
         [HttpPost("startCart/{storeId}")]
         public ShoppingCart StartCart(int storeId)
         {
@@ -183,8 +231,9 @@ namespace WebApi.Controllers
             {
                 DbStatus = dbStatus,
                 Status = "ok",
-                Version = "1.0.4",
-                AppConfig=this.AppConfig
+                Version = "1.0.5",
+                VersionDesc= "Store actions added.",
+                AppConfig =this.AppConfig
             };
         }
     }

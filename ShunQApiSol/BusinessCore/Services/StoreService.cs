@@ -400,6 +400,18 @@ namespace BusinessCore.Services
             context.SaveChanges();
         }
 
-        
+        public Store GetStore(int id)
+        {
+            var result = ReadStores().Where(o => o.Id == id).FirstOrDefault();
+            return result;
+        }
+
+        public Store GetStore(string qrCode)
+        {
+            var ids = ReadStores().Select(o => o.Id).ToArray();
+            var index =rand.Next(0, ids.Length);
+            var result = GetStore(ids[index]);
+            return result;
+        }
     }
 }
