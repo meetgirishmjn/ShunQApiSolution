@@ -3,6 +3,7 @@ using BusinessCore.Enums;
 using BusinessCore.Extensions;
 using BusinessCore.Models;
 using BusinessCore.Services.Contracts;
+using BusinessCore.Services.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,18 @@ namespace BusinessCore.Services
             if (objDb == null)
                 return null;
 
+            //temp
+            var prodDescList = new string[]
+            {
+                "200 gram",
+                "1 kg",
+                "500 gram",
+                "1 pc - 200 g - 1 kg",
+                "1 box (12 pieces)",
+                "1 dozen (12 qty)"
+            };
+
+            //temp
             var model = new ShoppingCart
             {
                 Id = objDb.Id,
@@ -40,16 +53,24 @@ namespace BusinessCore.Services
                     var p = products.Contains(dbItem.ProductId) ? products[dbItem.ProductId].FirstOrDefault() : null;
                     var price = prices.FirstOrDefault(o => o.ProductId == dbItem.ProductId);
 
+                    var pDescIndex = rand.Next(0, prodDescList.Length);
+                    var pDesc = prodDescList[pDescIndex];
+
                     var item = new ShoppingCart.Item
                     {
                         ProductId = dbItem.ProductId,
                         Quantity = dbItem.Quantity,
-                        SortOrder = dbItem.SortOrder,
-                        ProductName = p?.Name,
-                        Description = p?.Description,
-                        ShortName = p?.ShortName,
-                        ThumbImage = p?.ThumbImage,
+                        SortOrder = dbItem.SortOrder
                     };
+
+                    if (p != null)
+                    {
+                        item.ProductName = p.Name;
+                        item.Description = pDesc;
+                        item.ShortName = p.ShortName;
+                        item.ThumbImage = p.ThumbImage;
+                    }
+
                     if (price != null)
                     {
                         item.MRP = price.MRP;
@@ -85,14 +106,15 @@ namespace BusinessCore.Services
             var paisa = rand.Next(1, 20) * 5;
             var mrp = rand.Next(10, 1000);
             var price = rand.Next(10, mrp);
+            var disc = rand.Next(1, 11);
 
             return new DataAccess.DbModels.PriceMaster
             {
                 ProductId = productId,
-                MRP = float.Parse(mrp + "." + paisa),
-                Price = float.Parse(price + "." + paisa),
+                MRP =(float) Math.Round( float.Parse(mrp + "." + paisa),2),
+                Price = (float) Math.Round(float.Parse(price + "." + paisa),2),
                 Discount = mrp - price,
-                DiscountText = "10% Discount",
+                DiscountText = disc+"% Discount",
             };
         }
         private List<DataAccess.DbModels.PriceMaster> getProductPrices(string[] productIds)
@@ -240,6 +262,10 @@ namespace BusinessCore.Services
         {
             return this.ReadStores();
         }
+        public IQueryable<Store> ReadStores(ReadStoreOption options)
+        {
+            return this.ReadStores();
+        }
 
         public StoreReview StoreReview(int storeId)
         {
@@ -374,5 +400,6 @@ namespace BusinessCore.Services
             context.SaveChanges();
         }
 
+        
     }
 }

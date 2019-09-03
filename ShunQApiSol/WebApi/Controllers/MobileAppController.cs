@@ -9,6 +9,7 @@ using System.Linq;
 using Microsoft.Extensions.Options;
 using BusinessCore;
 using Microsoft.AspNetCore.Authorization;
+using BusinessCore.Services.Models;
 
 namespace WebApi.Controllers
 {
@@ -54,7 +55,13 @@ namespace WebApi.Controllers
             }
             var service = CreateStoreService();
 
-            var query = categoryId > 0 ? service.ReadStores(categoryId) : service.ReadStores();
+            var options = new ReadStoreOption
+            {
+                CategoryId = categoryId,
+                Latitude = model.Latitude,
+                Longitude = model.Longitude
+            };
+            var query = service.ReadStores(options);
 
             var searchKey = model.SearchKey.TrimAll().ToLower();
 
@@ -134,6 +141,28 @@ namespace WebApi.Controllers
             cartService.DiscardCart();
         }
 
+
+        [HttpGet("views/home")]
+        public HomeViewModel GetHomeViewModel()
+        {
+            var viewModel = new HomeViewModel();
+
+            var cartService = CreateStoreService();
+            viewModel.BannerUrls = new string[]
+            {
+                "https://image.shutterstock.com/image-vector/special-offer-grocery-store-advertisement-600w-1123205801.jpg",
+                "https://image.shutterstock.com/z/stock-vector-special-offer-summer-sale-advertising-banner-label-with-icecream-design-element-and-typography-1469678345.jpg",
+                "https://image.shutterstock.com/z/stock-vector-autumn-sale-retail-website-backdrop-banner-advertising-with-texture-of-coloured-leaves-on-backdrop-1481406671.jpg",
+                "https://image.shutterstock.com/z/stock-vector-advertising-banner-with-fresh-vegetables-healthy-food-illustration-outlined-hand-drawn-graphic-1037031532.jpg"
+            };
+            var cart = cartService.GetCart();
+            viewModel.Cart = setCartImageUrl(cart);
+            viewModel.User = CurrentUser;
+            viewModel.HasActiveCart = cart != null;
+            return viewModel;
+        }
+
+
         [HttpGet("Ver")]
         [AllowAnonymous]
         public VersionViewModel Ver()
@@ -154,7 +183,7 @@ namespace WebApi.Controllers
             {
                 DbStatus = dbStatus,
                 Status = "ok",
-                Version = "1.0.2",
+                Version = "1.0.4",
                 AppConfig=this.AppConfig
             };
         }

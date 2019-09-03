@@ -96,6 +96,15 @@ namespace WebApi.Controllers
         #endregion "Mobile Actions"
 
 
+        [HttpGet("user-info")]
+        public UserInfo GetCurrentUser()
+        {
+            if (UserId <= 0 || CurrentUser == null)
+                throw new BusinessException("User info not available.");
+
+            return CurrentUser;
+        }
+
         [HttpPost("generate/otp/{userName}")]
         [AllowAnonymous]
         public ActionResult CreateOTP(string userName)
