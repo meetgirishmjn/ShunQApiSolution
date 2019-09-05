@@ -198,10 +198,10 @@ namespace WebApi.Controllers
             var cartService = CreateStoreService();
             viewModel.BannerUrls = new string[]
             {
-                "https://image.shutterstock.com/image-vector/special-offer-grocery-store-advertisement-600w-1123205801.jpg",
-                "https://image.shutterstock.com/z/stock-vector-special-offer-summer-sale-advertising-banner-label-with-icecream-design-element-and-typography-1469678345.jpg",
-                "https://image.shutterstock.com/z/stock-vector-autumn-sale-retail-website-backdrop-banner-advertising-with-texture-of-coloured-leaves-on-backdrop-1481406671.jpg",
-                "https://image.shutterstock.com/z/stock-vector-advertising-banner-with-fresh-vegetables-healthy-food-illustration-outlined-hand-drawn-graphic-1037031532.jpg"
+                "https://cdn0storage0shunq0dev.blob.core.windows.net/images/Promos/Promo1.png",
+                "https://cdn0storage0shunq0dev.blob.core.windows.net/images/Promos/Promo2.jpg",
+                "https://cdn0storage0shunq0dev.blob.core.windows.net/images/Promos/Promo3.jpg",
+                "https://cdn0storage0shunq0dev.blob.core.windows.net/images/Promos/Promo4.jpg"
             };
             var cart = cartService.GetCart();
             viewModel.Cart = setCartImageUrl(cart);
@@ -231,8 +231,8 @@ namespace WebApi.Controllers
             {
                 DbStatus = dbStatus,
                 Status = "ok",
-                Version = "1.0.5",
-                VersionDesc= "Store actions added.",
+                Version = "1.0.6",
+                VersionDesc= "Promo images added.",
                 AppConfig =this.AppConfig
             };
         }
