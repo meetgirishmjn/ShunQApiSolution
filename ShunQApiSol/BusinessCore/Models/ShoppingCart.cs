@@ -11,6 +11,7 @@ namespace BusinessCore.Models
         public int StoreId { get; set; }
         public long UserId { get; set; }
         public string Status { get; set; }
+        public int ItemCount { get { return Items.Count; } }
 
         public List<Item> Items { get; set; }
 

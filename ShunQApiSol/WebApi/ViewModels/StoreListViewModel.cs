@@ -13,7 +13,8 @@ namespace WebApi.ViewModels
         public int PageCount { get; set; }
         public int TotalCount { get; set; }
         public List<StoreListItem> StoreList { get; set; }
-
+        public bool HasActiveCart { get; set; }
+        public int? ActiveStoreId { get; set; }
         public StoreListViewModel()
         {
             this.StoreList = new List<StoreListItem>();

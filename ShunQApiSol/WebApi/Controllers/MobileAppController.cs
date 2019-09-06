@@ -54,6 +54,7 @@ namespace WebApi.Controllers
                 categoryId = model.FilterBy.CategoryId.HasValue ? model.FilterBy.CategoryId.Value : 0;
             }
             var service = CreateStoreService();
+            var cart = service.GetCart();
 
             var options = new ReadStoreOption
             {
@@ -84,6 +85,13 @@ namespace WebApi.Controllers
             result.PageCount = stores.Count;
             result.TotalCount = totalCount;
 
+
+            if (cart != null)
+            {
+                result.HasActiveCart = true;
+                result.ActiveStoreId = cart.StoreId;
+            }
+
             var imageUrl = this.AppConfig.ImageSrcEndpoint;
             var storeReviews = service.StoreReviews(stores.Select(o => o.Id).ToArray()).ToLookup(o => o.StoreId);
             result.StoreList = stores.Select(o => new StoreListViewModel.StoreListItem
@@ -93,10 +101,10 @@ namespace WebApi.Controllers
                 ShortName = o.ShortName,
                 Description = o.Description,
                 StoreName = o.Name,
-                HasActiveCart = false,
-                ReviewRating= storeReviews.Contains(o.Id)?storeReviews[o.Id].FirstOrDefault():new StoreReview { StoreId=o.Id},
-                BannerImageUrl= imageUrl+o.BannerImage,
-                ImageUrl= imageUrl + o.Image
+                HasActiveCart = o.Id == result.ActiveStoreId,
+                ReviewRating = storeReviews.Contains(o.Id) ? storeReviews[o.Id].FirstOrDefault() : new StoreReview { StoreId = o.Id },
+                BannerImageUrl = imageUrl + o.BannerImage,
+                ImageUrl = imageUrl + o.Image
             }).ToList();
 
             return result;
@@ -194,15 +202,46 @@ namespace WebApi.Controllers
         public HomeViewModel GetHomeViewModel()
         {
             var viewModel = new HomeViewModel();
-
+            const string URL = "https://cdn0storage0shunq0dev.blob.core.windows.net/images/Promos/";
             var cartService = CreateStoreService();
             viewModel.BannerUrls = new string[]
             {
-                "https://cdn0storage0shunq0dev.blob.core.windows.net/images/Promos/Promo1.png",
-                "https://cdn0storage0shunq0dev.blob.core.windows.net/images/Promos/Promo2.jpg",
-                "https://cdn0storage0shunq0dev.blob.core.windows.net/images/Promos/Promo3.jpg",
-                "https://cdn0storage0shunq0dev.blob.core.windows.net/images/Promos/Promo4.jpg"
+                URL+"Promo1.png",
+                URL+"Promo2.jpg",
+                URL+ "Promo3.jpg",
+                URL+"Promo4.jpg"
             };
+            viewModel.TileSections = new HomeViewModel.TileSection[]
+            {
+                new HomeViewModel.TileSection
+                {
+                    Title="Store By Category",
+                    Tiles = new HomeViewModel.Tile[]
+                  {
+                      new HomeViewModel.Tile
+                      {
+                          Title="",
+                          ImageUrl = URL+"Cat1.jpg",
+                      },
+                        new HomeViewModel.Tile
+                      {
+                          Title="",
+                          ImageUrl = URL+"Cat2.jpg",
+                      },
+                          new HomeViewModel.Tile
+                      {
+                          Title="",
+                          ImageUrl = URL+"Cat3.jpg",
+                      },
+                            new HomeViewModel.Tile
+                      {
+                          Title="",
+                          ImageUrl = URL+"Cat4.jpg",
+                      }
+                  }
+                }
+            };
+
             var cart = cartService.GetCart();
             viewModel.Cart = setCartImageUrl(cart);
             viewModel.User = CurrentUser;
@@ -231,8 +270,8 @@ namespace WebApi.Controllers
             {
                 DbStatus = dbStatus,
                 Status = "ok",
-                Version = "1.0.6",
-                VersionDesc= "Promo images added.",
+                Version = "1.0.7",
+                VersionDesc= "Shop By cat added.",
                 AppConfig =this.AppConfig
             };
         }
