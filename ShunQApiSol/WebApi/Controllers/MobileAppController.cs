@@ -148,6 +148,16 @@ namespace WebApi.Controllers
             return result;
         }
 
+        [HttpPost("store/startShopping/{code}")]
+        public StoreInfoViewModel StartShopping(string code)
+        {
+            var storeVm = GetStoreByCode(code);
+            var service = CreateStoreService();
+            service.StartShopping(storeVm.StoreId);
+            return storeVm;
+        }
+
+
         [HttpGet("store/search/sort-options")]
         public List<ListItem> GetStoreSortList()
         {
@@ -158,6 +168,8 @@ namespace WebApi.Controllers
                  new ListItem{Id=3,Name="Rating"}
             };
         }
+
+        
         [HttpPost("startCart/{storeId}")]
         public ShoppingCart StartCart(int storeId)
         {
@@ -270,8 +282,8 @@ namespace WebApi.Controllers
             {
                 DbStatus = dbStatus,
                 Status = "ok",
-                Version = "1.0.8",
-                VersionDesc= "",
+                Version = "1.0.9",
+                VersionDesc= "store/startShopping/{code}",
                 AppConfig =this.AppConfig
             };
         }
