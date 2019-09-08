@@ -34,18 +34,36 @@ namespace BusinessCore.Services
                 "1 dozen (12 qty)"
             };
 
+            var context = ContextManager.GetContext();
+            var storeInfo = context.StoreMasters.Where(o => o.Id == objDb.StoreId).Select(o =>
+
+                new
+                {
+                    storeId = o.Id,
+                    storeName = o.Name,
+                    storeImage = o.Image
+                }
+            ).SingleOrDefault();
+
             //temp
             var model = new ShoppingCart
             {
                 Id = objDb.Id,
                 StoreId = objDb.StoreId,
+                
                 UserId = objDb.UserId,
                 Status = ((ShoppingCartStatus)objDb.Status).ToString()
             };
+            if (storeInfo != null)
+            {
+                model.StoreName = storeInfo.storeName;
+                model.StoreImage = storeInfo.storeImage;
+            }
+
             if (objDb.Items != null)
             {
                 var pids = objDb.Items.Select(o => o.ProductId).ToArray();
-                var context = ContextManager.GetContext();
+              
                 var products = context.ProductMasters.Where(o => pids.Contains(o.Id)).ToLookup(o => o.Id);
                 var prices = getProductPrices(pids);
                 foreach (var dbItem in objDb.Items)
@@ -299,11 +317,11 @@ namespace BusinessCore.Services
 
             var storeExists = ReadStores().Where(o => o.Id == storeId).Any();
             if (!storeExists)
-                throw new ApplicationException("Invalid Store-Id.");
+                throw new BusinessException("Invalid Store-Id.");
 
             var objDb = context.ShoppingCarts.Include(o => o.Items).Where(o => o.UserId == CurrentUser.Id && o.Status == status).FirstOrDefault();
             if (objDb != null)
-                throw new ApplicationException("Finish Shopping or Clear Current Cart.");
+                throw new BusinessException("Finish Shopping or Clear Current Cart.");
 
             objDb = new DataAccess.DbModels.ShoppingCart()
             {

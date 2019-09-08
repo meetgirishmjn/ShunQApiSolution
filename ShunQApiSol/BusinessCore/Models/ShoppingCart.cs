@@ -9,6 +9,10 @@ namespace BusinessCore.Models
         public string Id { get; set; }
 
         public int StoreId { get; set; }
+        public string StoreName { get; set; }
+        public string StoreImage { get; set; }
+
+
         public long UserId { get; set; }
         public string Status { get; set; }
         public int ItemCount { get { return Items.Count; } }

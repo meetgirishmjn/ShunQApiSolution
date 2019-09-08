@@ -28,6 +28,7 @@ namespace WebApi.Controllers
                 return cart;
 
             var imageUrl = this.AppConfig.ImageSrcEndpoint;
+            cart.StoreImage = imageUrl + cart.StoreImage;
             cart.Items.ForEach(o => o.ThumbImage = imageUrl + "Product/" + o.ThumbImage);
             return cart;
         }
@@ -132,6 +133,12 @@ namespace WebApi.Controllers
             var imageUrl = this.AppConfig.ImageSrcEndpoint;
             var storeReview = service.StoreReview(store.Id);
 
+            var hasActiveCart = false;
+            var cart = service.GetCart();
+
+            if (cart != null && cart.StoreId == store.Id)
+                hasActiveCart = true;
+
             var result = new StoreInfoViewModel()
             {
                 StoreId = store.Id,
@@ -139,7 +146,7 @@ namespace WebApi.Controllers
                 ShortName = store.ShortName,
                 Description = store.Description,
                 StoreName = store.Name,
-                HasActiveCart = false,
+                HasActiveCart = hasActiveCart,
                 ReviewRating = storeReview!=null ? storeReview : new StoreReview { StoreId = store.Id },
                 BannerImageUrl = imageUrl + store.BannerImage,
                 ImageUrl = imageUrl + store.Image
@@ -154,6 +161,7 @@ namespace WebApi.Controllers
             var storeVm = GetStoreByCode(code);
             var service = CreateStoreService();
             service.StartShopping(storeVm.StoreId);
+            storeVm.HasActiveCart = true;
             return storeVm;
         }
 
@@ -282,8 +290,8 @@ namespace WebApi.Controllers
             {
                 DbStatus = dbStatus,
                 Status = "ok",
-                Version = "1.0.9",
-                VersionDesc= "store/startShopping/{code}",
+                Version = "1.0.10",
+                VersionDesc= "store name and image",
                 AppConfig =this.AppConfig
             };
         }
