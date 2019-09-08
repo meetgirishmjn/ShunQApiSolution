@@ -15,11 +15,6 @@ namespace WebApi.RequestModels
         public string SortBy { get; set; }
         public string SortDir { get; set; }
 
-        public StoreFilter FilterBy { get; set; }
-
-        public class StoreFilter
-        {
-            public int? CategoryId { get; set; }
-        }
+        public int[] FilterByCategoryIds { get; set; }
     }
 }

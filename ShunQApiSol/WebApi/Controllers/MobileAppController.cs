@@ -49,10 +49,10 @@ namespace WebApi.Controllers
             model.PageIndex  = model.PageIndex <= 0 ? 1 : model.PageIndex;
             model.PageSize  = model.PageSize <= 0 ? 1 : model.PageSize;
 
-            if (model.FilterBy != null)
-            {
-                categoryId = model.FilterBy.CategoryId.HasValue ? model.FilterBy.CategoryId.Value : 0;
-            }
+            //if (model.FilterBy != null)
+            //{
+            //    categoryId = model.FilterBy.CategoryId.HasValue ? model.FilterBy.CategoryId.Value : 0;
+            //}
             var service = CreateStoreService();
             var cart = service.GetCart();
 
@@ -121,10 +121,10 @@ namespace WebApi.Controllers
 
             var service = CreateStoreService();
             Store store = null;
-            if (storeId > 0)
-                store = service.GetStore(storeId);
-            else
-                store = service.GetStore(storeId);
+          //  if (storeId > 0)
+          //      store = service.GetStore(storeId);
+          //  else
+                store = service.GetStore(code);
 
             if (store==null)
                 throw new BusinessException("Store not found for "+code);
@@ -270,8 +270,8 @@ namespace WebApi.Controllers
             {
                 DbStatus = dbStatus,
                 Status = "ok",
-                Version = "1.0.7",
-                VersionDesc= "Shop By cat added.",
+                Version = "1.0.8",
+                VersionDesc= "",
                 AppConfig =this.AppConfig
             };
         }
