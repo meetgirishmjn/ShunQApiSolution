@@ -81,7 +81,13 @@ namespace WebApi.Controllers
             if (deviceId.TrimAll().Length == 0)
                 throw new BusinessException("Invalid Device Id.");
 
-            var user = new UserInfo();
+            var user = new UserInfo
+            {
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                MobileNumber = model.MobileNumber,
+                Email = model.Email,
+            };
             user = membership.CreateUser(user, model.Password);
 
             return user;
