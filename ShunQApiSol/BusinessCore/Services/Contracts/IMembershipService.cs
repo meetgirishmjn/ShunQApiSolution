@@ -17,5 +17,6 @@ namespace BusinessCore.Services.Contracts
         void DeleteSession(string token);
         void CreateSession(string userName, string token,string deviceId);
         bool Test();
+        void EndSession(string token);
     }
 }

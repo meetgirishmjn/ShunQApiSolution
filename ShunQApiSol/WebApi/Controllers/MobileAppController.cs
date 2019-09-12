@@ -290,8 +290,8 @@ namespace WebApi.Controllers
             {
                 DbStatus = dbStatus,
                 Status = "ok",
-                Version = "1.0.11",
-                VersionDesc= "",
+                Version = "1.0.12",
+                VersionDesc= "fixed storeImage & name issue",
                 AppConfig =this.AppConfig
             };
         }

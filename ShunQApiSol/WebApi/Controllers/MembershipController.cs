@@ -97,6 +97,8 @@ namespace WebApi.Controllers
         [AllowAnonymous]
         public ActionResult LogOut()
         {
+            var membership = base.CreateMembershipService();
+            membership.EndSession(ReadAuthToken());
             return Ok();
         }
         #endregion "Mobile Actions"

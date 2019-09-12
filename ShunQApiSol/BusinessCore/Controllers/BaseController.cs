@@ -108,5 +108,14 @@ namespace WebApi.Controllers
 
             return deviceId;
         }
+
+        protected string ReadAuthToken()
+        {
+            var token = "";
+            if (Request.Headers.ContainsKey("Authorization"))
+                token = Request.Headers["Authorization"].ToString();
+
+            return token;
+        }
     }
 }

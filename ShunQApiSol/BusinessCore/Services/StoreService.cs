@@ -35,7 +35,7 @@ namespace BusinessCore.Services
             };
 
             var context = ContextManager.GetContext();
-            var storeInfo = context.StoreMasters.Where(o => o.Id == objDb.StoreId).Select(o =>
+            var storeInfo = ReadStores().Where(o => o.Id == objDb.StoreId).Select(o =>
 
                 new
                 {
