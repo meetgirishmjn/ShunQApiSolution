@@ -840,7 +840,7 @@ var themeCore = function () {
 
     window.materialadmin.AppVendor = new AppVendor;
   }(this.materialadmin, jQuery));
-}
+};
 
 themeCore();
 

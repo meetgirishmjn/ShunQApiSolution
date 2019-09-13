@@ -6,7 +6,7 @@
         <li class="header-nav-brand">
           <div class="brand-holder">
             <a routerLink="/dashboard">
-              <span class="text-lg text-bold text-primary">TEST#MATE</span>
+              <span class="text-lg text-bold text-primary">Shun#Q</span>
             </a>
           </div>
         </li>
@@ -53,9 +53,9 @@
       <ul class="header-nav header-nav-profile">
         <li class="dropdown">
           <a href="javascript:void(0);" class="dropdown-toggle ink-reaction" data-toggle="dropdown" aria-expanded="false">
-            <img alt="{{fullName}}" [src]="imageUrl">
+            <img *ngIf="user" alt="{{user?.fullName}}" [src]="user?.imageUrl">
             <span class="profile-info">
-              {{user?.name}}
+              {{user?.fullName}}
               <small>{{user?.roles[0]}}</small>
             </span>
           </a>
@@ -70,13 +70,14 @@
           </ul><!--end .dropdown-menu -->
         </li><!--end .dropdown -->
       </ul><!--end .header-nav-profile -->
-      <ul class="header-nav header-nav-toggle">
+      <!--<ul class="header-nav header-nav-toggle">
         <li>
           <a class="btn btn-icon-toggle btn-default" href="javascript:void(0)" data-toggle="offcanvas" data-backdrop="false">
             <i class="fa fa-ellipsis-v"></i>
           </a>
         </li>
-      </ul><!--end .header-nav-toggle -->
+      </ul>-->
+    <!--end .header-nav-toggle -->
     </div>
   </div>
 </header>
@@ -93,7 +94,7 @@
       </div>
       <div class="expanded">
         <a routerLink="/dashboard">
-          <span class="text-lg text-bold text-primary ">CHECK-MATE</span>
+          <span class="text-lg text-bold text-primary "></span>
         </a>
       </div>
     </div>
@@ -111,21 +112,37 @@
             <span class="title">Dashboard</span>
           </a>
         </li>
-        <li routerLinkActive="active">
-          <a routerLink="/testmate/launch/main" routerLinkActive="active">
-            <div class="gui-icon"><i class="md md-settings-input-hdmi"></i></div>
-            <span class="title">Test Mate</span>
+        <li class="gui-folder">
+          <a>
+            <div class="gui-icon"><i class="fa fa-puzzle-piece fa-fw"></i></div>
+            <span class="title">Stores</span>
           </a>
+          <!--start submenu -->
+          <ul>
+            <li routerLinkActive="active"><a routerLink="store/search" routerLinkActive="active" href="javascript:void(0);"><span class="title">Search</span></a></li>
+            <li><a href="javascript:void(0);"><span class="title">Dashboard</span></a></li>
+          </ul>
+        </li>
+        <li class="gui-folder">
+          <a>
+            <div class="gui-icon"><i class="fa fa-puzzle-piece fa-fw"></i></div>
+            <span class="title">Stores2</span>
+          </a>
+          <!--start submenu -->
+          <ul>
+            <li routerLinkActive="active"><a routerLink="store/search2" routerLinkActive="active" href="javascript:void(0);"><span class="title">Search</span></a></li>
+            <li><a href="javascript:void(0);"><span class="title">Dashboard</span></a></li>
+          </ul>
         </li>
       </ul><!--end .main-menu -->
-      <!-- END MAIN MENU -->
+          <!-- END MAIN MENU -->
 
-      <div class="menubar-foot-panel">
-        <small class="no-linebreak hidden-folded">
-          <span class="opacity-75">Copyright &copy; 2018</span> <strong>LogicGain Solutions</strong>
-        </small>
-      </div>
-    </div><!--end .menubar-scroll-panel-->
+          <div class="menubar-foot-panel">
+            <small class="no-linebreak hidden-folded">
+              <span class="opacity-75">Copyright &copy; 2019</span> <strong>&nbsp;LogicGain Solutions</strong>
+            </small>
+          </div>
+</div><!--end .menubar-scroll-panel-->
   </div><!--end #menubar-->
   <!-- END MENUBAR -->
 

@@ -5,10 +5,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LayoutComponent } from './_Layouts/DefaultLayout/layout.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { StoreSearchComponent } from './components/stores/storeSearch.component';
 
 @NgModule({
   declarations: [
-    AppComponent,LayoutComponent,DashboardComponent
+    AppComponent,LayoutComponent,DashboardComponent,StoreSearchComponent  
   ],
   imports: [
     BrowserModule,

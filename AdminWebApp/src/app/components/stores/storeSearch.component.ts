@@ -1,19 +1,18 @@
 import { Component, OnInit } from '@angular/core';
+import { AppContext } from '../../services/AppContext';
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  templateUrl: './storeSearch.component.html',
+  styleUrls: ['./storeSearch.component.css']
 })
-export class DashboardComponent implements OnInit {
+export class StoreSearchComponent implements OnInit {
 
   isLoadingItems = false;
   hasLoadError = false;
 
-  constructor() { }
+  constructor(app:AppContext) { }
 
   ngOnInit() {
-    
   }
 
   ngAfterViewInit() {
