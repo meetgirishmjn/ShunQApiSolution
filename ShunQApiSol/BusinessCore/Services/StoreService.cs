@@ -143,31 +143,36 @@ namespace BusinessCore.Services
         }
 
         #endregion "Private Methods"
-        public List<ListItem> GetAllStoreCategory()
+        public List<StoreCategoryItem> GetAllStoreCategory()
         {
-            return new List<ListItem>
+            return new List<StoreCategoryItem>
             {
-                new ListItem
+                new StoreCategoryItem
                 {
                     Id=1001,
-                    Name="Departmental Stores"
+                    Name="Departmental Stores",
+                    StoreCount=12
                 },
-                 new ListItem
+                 new StoreCategoryItem
                 {
                     Id=1002,
-                    Name="Grocery"
-                }, new ListItem
+                    Name="Grocery",
+                     StoreCount=16
+                }, new StoreCategoryItem
                 {
                     Id=1003,
-                    Name="Kid Care/Toys"
-                }, new ListItem
+                    Name="Kid Care/Toys",
+                     StoreCount=5
+                }, new StoreCategoryItem
                 {
                     Id=1004,
-                    Name="Stationery"
-                }, new ListItem
+                    Name="Stationery",
+                     StoreCount=1
+                }, new StoreCategoryItem
                 {
                     Id=1005,
-                    Name="Electronics"
+                    Name="Electronics",
+                    StoreCount=9
                 }
             };
         }

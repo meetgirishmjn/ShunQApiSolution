@@ -33,7 +33,7 @@ namespace WebApi.Controllers
             return cart;
         }
         [HttpGet("store/category")]
-        public List<ListItem> GetStoreCategories()
+        public List<StoreCategoryItem> GetStoreCategories()
         {
             var service = CreateStoreService();
             var results = service.GetAllStoreCategory();

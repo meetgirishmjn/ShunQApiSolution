@@ -8,7 +8,7 @@ namespace BusinessCore.Services.Contracts
 {
    public interface IStoreService
     {
-        List<ListItem> GetAllStoreCategory();
+        List<StoreCategoryItem> GetAllStoreCategory();
         IQueryable<Store> ReadStores();
         IQueryable<Store> ReadStores(ReadStoreOption options);
         Store GetStore(int id);
