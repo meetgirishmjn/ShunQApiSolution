@@ -11,6 +11,7 @@ namespace BusinessCore.Models
         public int StoreId { get; set; }
         public string StoreName { get; set; }
         public string StoreImage { get; set; }
+        public string StoreBannerImage { get; set; }
 
 
         public long UserId { get; set; }

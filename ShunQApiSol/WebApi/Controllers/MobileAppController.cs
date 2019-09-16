@@ -29,6 +29,7 @@ namespace WebApi.Controllers
 
             var imageUrl = this.AppConfig.ImageSrcEndpoint;
             cart.StoreImage = imageUrl + cart.StoreImage;
+            cart.StoreBannerImage = imageUrl + cart.StoreBannerImage;
             cart.Items.ForEach(o => o.ThumbImage = imageUrl + "Product/" + o.ThumbImage);
             return cart;
         }
@@ -291,7 +292,7 @@ namespace WebApi.Controllers
                 DbStatus = dbStatus,
                 Status = "ok",
                 Version = "1.0.12",
-                VersionDesc= "fixed storeImage & name issue",
+                VersionDesc= "StoreBannerImage",
                 AppConfig =this.AppConfig
             };
         }

@@ -41,7 +41,8 @@ namespace BusinessCore.Services
                 {
                     storeId = o.Id,
                     storeName = o.Name,
-                    storeImage = o.Image
+                    storeImage = o.Image,
+                    StoreBannerImage = o.BannerImage
                 }
             ).SingleOrDefault();
 
@@ -58,6 +59,7 @@ namespace BusinessCore.Services
             {
                 model.StoreName = storeInfo.storeName;
                 model.StoreImage = storeInfo.storeImage;
+                model.StoreBannerImage = storeInfo.StoreBannerImage;
             }
 
             if (objDb.Items != null)
