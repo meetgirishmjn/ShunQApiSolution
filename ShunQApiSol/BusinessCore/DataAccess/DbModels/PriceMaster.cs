@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace BusinessCore.DataAccess.DbModels
 {
     public class PriceMaster
     {
-        public int Id { get; set; }
+        [Key]
+        public string Id { get; set; }
+
+        [Required]
         public string ProductId { get; set; }
         public float MRP { get; set; }
         public float Discount { get; set; }

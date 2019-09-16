@@ -32,6 +32,7 @@ namespace BusinessCore.DataAccess
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<PriceMaster>().HasIndex(o => o.ProductId);
 
             modelBuilder.Entity<RoleMaster>()
        .HasData(
@@ -71,7 +72,7 @@ namespace BusinessCore.DataAccess
               LastName = " Mahajan",
               MobileNumber = "8871384762",
               MobileVerified = true,
-              Password = "0E37EZvfM10P1jAH1JRpV+OVlsT39xs451MD2WqKcsU=",
+              Password = "0E37EZvfM10P1jAH1JRpV+OVlsT39xs451MD2WqKcsU=",//admin@grsmjn
               Props = string.Empty
           });
 
@@ -138,6 +139,33 @@ namespace BusinessCore.DataAccess
             modelBuilder.Entity<ProductMaster>().HasData(productList);
             modelBuilder.Entity<ProductCategoryXref>().HasData(productCategoryXrefs);
             #endregion "ProductMaster"
+
+            #region "PriceMaster"
+            var rand = new Random();
+            var priceList = new List<PriceMaster>();
+            productList.ForEach(o =>
+            {
+                var paisa = rand.Next(1, 20) * 5;
+                var mrp = rand.Next(10, 1000);
+                var price = rand.Next(10, mrp);
+                var disc = rand.Next(1, 11);
+
+                priceList.Add(new PriceMaster
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    ProductId=o.Id,
+                    MRP = (float)Math.Round(float.Parse(mrp + "." + paisa), 2),
+                    Price = (float)Math.Round(float.Parse(price + "." + paisa), 2),
+                    Discount = (float)Math.Round(float.Parse((mrp - price).ToString()), 2),
+                    DiscountText = disc + "% Discount",
+                    CompanyId = 1,
+                    CreatedOn = DateTime.Now,
+                    CreatedBy = 1,
+                    IsActive = true
+                });
+            });
+            modelBuilder.Entity<PriceMaster>().HasData(priceList);
+            #endregion "PriceMaster"
 
             base.OnModelCreating(modelBuilder);
         }

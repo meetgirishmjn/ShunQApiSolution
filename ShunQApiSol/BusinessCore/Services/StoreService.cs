@@ -123,25 +123,21 @@ namespace BusinessCore.Services
 
         private DataAccess.DbModels.PriceMaster getProductPrice(string productId)
         {
-            var paisa = rand.Next(1, 20) * 5;
-            var mrp = rand.Next(10, 1000);
-            var price = rand.Next(10, mrp);
-            var disc = rand.Next(1, 11);
-
-            return new DataAccess.DbModels.PriceMaster
-            {
-                ProductId = productId,
-                MRP =(float) Math.Round( float.Parse(mrp + "." + paisa),2),
-                Price = (float) Math.Round(float.Parse(price + "." + paisa),2),
-                Discount = mrp - price,
-                DiscountText = disc+"% Discount",
-            };
+            var results = getProductPrices(new string[] { productId });
+            if (results.Any())
+                return results[0];
+            else
+                return null;
         }
         private List<DataAccess.DbModels.PriceMaster> getProductPrices(string[] productIds)
         {
             var list = new List<DataAccess.DbModels.PriceMaster>();
-            productIds.ToList().ForEach(o => list.Add(getProductPrice(o)));
-            return list;
+            if (!productIds.Any())
+                return list;
+
+            var context = ContextManager.GetContext();
+            var priceDbs = context.PriceMasters.Where(o => o.IsActive && productIds.Contains(o.ProductId)).ToList();
+            return priceDbs;
         }
 
         #endregion "Private Methods"
