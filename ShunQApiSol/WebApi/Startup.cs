@@ -35,6 +35,7 @@ namespace WebApi
             Configuration = new ConfigurationBuilder()
             .SetBasePath(env.ContentRootPath)
             .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+            .AddEnvironmentVariables()
             .Build();
 
             HostingEnvironment = env;
@@ -83,6 +84,8 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerManager logger, IOptions<AppConfig> appConfig)
         {
+            appConfig.Value.Environment = env.EnvironmentName;
+
             if (env.IsDevelopment())
             {
                app.ConfigureGlobaleException();
