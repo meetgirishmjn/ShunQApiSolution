@@ -58,7 +58,7 @@ namespace WebApi.Controllers
             var service = CreateStoreService();
             var cart = service.GetCart();
 
-            var options = new ReadStoreOption
+            var options = new StoreReadOption
             {
                 CategoryId = categoryId,
                 Latitude = model.Latitude,

@@ -75,6 +75,32 @@ namespace WebApi.Controllers
             return service;
         }
 
+        protected IEmailGateway CreateEmailService()
+        {
+            return CreateService<IEmailGateway>();
+        }
+
+        protected T CreateService<T>()
+        {
+            var type = typeof(T);
+
+            var service = (T)serviceProvider.GetService(type);
+            var dtx = (BusinessCore.DataAccess.CoreDbContext)serviceProvider.GetService(typeof(BusinessCore.DataAccess.CoreDbContext));
+
+            if (type.IsAssignableFrom(typeof(IDataContextable)))
+            {
+                (service as IDataContextable).ContextManager = new BusinessCore.DataAccess.DataContextManager(dtx);
+                (service as IDataContextable).CurrentUser = new BusinessCore.Models.UserIdentity
+                {
+                    Id = UserId,
+                    Name = UserName,
+                    FullName = string.Empty
+                };
+            }
+
+            return service;
+        }
+
         protected IStoreService CreateStoreService()
         {
             ensureUserAuth();

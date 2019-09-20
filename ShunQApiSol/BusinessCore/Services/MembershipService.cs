@@ -7,6 +7,7 @@ using BusinessCore.Extensions;
 using Microsoft.EntityFrameworkCore;
 using BusinessCore.Services.Contracts;
 using BusinessCore.DataAccess.Contracts;
+using BusinessCore.Enums;
 
 namespace BusinessCore.Services
 {
@@ -312,19 +313,20 @@ namespace BusinessCore.Services
             return isUpdated;
         }
 
-        public bool ChangePassword(long userId,string password)
+        public bool ChangePassword(string userName,string newPassword)
         {
-            var valResults = validatePassword(password);
+            var emailOrMobile = userName.TrimAll().ToUpper();
+            var valResults = validatePassword(newPassword);
             if (valResults.Any())
                 throw new BusinessException(valResults[0].Message);
 
             var context = ContextManager.GetContext();
 
-            var objDb = context.UserMasters.Where(o => o.Id == userId).FirstOrDefault();
+            var objDb = context.UserMasters.Where(o => o.Email == emailOrMobile || o.MobileNumber== emailOrMobile).FirstOrDefault();
             if (objDb == null)
-                throw new BusinessException("User not found by id:" + userId);
+                throw new BusinessException("User not found by id:" + userName);
 
-            objDb.Password = encryptPassword(password);
+            objDb.Password = encryptPassword(newPassword);
             objDb.UpdatedOn = DateTime.Now;
             objDb.UpdatedBy = 1;
             context.SaveChanges();
@@ -332,7 +334,130 @@ namespace BusinessCore.Services
             return true;
         }
 
-      
+        public bool ChangePassword(string userName, string newPassword, int otp)
+        {
+            if (!VerifyOTP(userName, otp, "CHANGE_PASSWORD"))
+                throw new BusinessException("Invalid OTP Code:" + otp);
+
+            return ChangePassword(userName, newPassword);
+        }
+
+        public UserInfo GetUserByEmailOrMobile(string emailOrMobile)
+        {
+            if (emailOrMobile==null)
+                return null;
+
+            if (emailOrMobile.IsMobileNumber())
+                return GetUserByMobile(emailOrMobile);
+            else
+                return GetUserByEmail(emailOrMobile);
+        }
+
+        public UserInfo CreateOtp(string emailOrMobile,int otpNumber,string optType)
+        {
+            var user = GetUserByEmailOrMobile(emailOrMobile);
+            if(user==null)
+             throw new BusinessException("Invalid User-Name: " + emailOrMobile);
+
+            var context = ContextManager.GetContext();
+            var objDb = new DataAccess.DbModels.OTPCode()
+            {
+                Id = Guid.NewGuid().ToString(),
+                UserMasterId = user.Id,
+                OTP = otpNumber.ToString(),
+                OTPType = optType.ToUpper(),
+                CompanyId = user.CompanyId,
+                CreatedOn = DateTime.Now,
+                ExpireOn = DateTime.Now.AddMinutes(10),
+            };
+       
+            context.OTPCodes.Add(objDb);
+            context.SaveChanges();
+
+            return user;
+        }
+
+        public bool VerifyOTP(string emailOrMobile, int otpNumber, string optType)
+        {
+            emailOrMobile = emailOrMobile.TrimAll().ToUpper();
+            var context = ContextManager.GetContext();
+            var flag = context.OTPCodes.Where(o => o.OTP == otpNumber.ToString() && (o.UserMaster.Email== emailOrMobile || o.UserMaster.MobileNumber==emailOrMobile) && o.OTPType == optType.ToUpper() && o.ExpireOn > DateTime.Now).Any();
+            return flag;
+        }
+
+        public UserInfo GetUserByEmail(string email)
+        {
+              email = email.ToUpper().TrimAll();
+            if (email.Length == 0)
+                return null;
+
+            var context = ContextManager.GetContext();
+
+            var model = (from o in context.UserMasters
+                         where o.Email.ToUpper() == email && !o.IsDeleted
+                         && o.IsActive
+                         select new UserInfo
+                         {
+                             Id = o.Id,
+                             Name = o.Name,
+                             FirstName = o.FirstName,
+                             LastName = o.LastName,
+                             FullName = o.FullName,
+                             MobileNumber = o.MobileNumber,
+                             Email = o.Email,
+                             Gender = o.Gender,
+                             ImageId = o.ImageId,
+                             CompanyId = o.CompanyId,
+                             EmailVerified = o.EmailVerified,
+                             MobileVerified = o.MobileVerified,
+                             IsActive = o.IsActive,
+                             CreatedOn = o.CreatedOn,
+                             CreatedBy = o.CreatedBy,
+                             UpdatedBy = o.UpdatedBy,
+                             UpdatedOn = o.UpdatedOn,
+                             Roles = o.UserRoles.Select(r => r.RoleMaster.Name).ToArray()
+                         }).FirstOrDefault();
+
+            return model;
+        }
+
+        public UserInfo GetUserByMobile(string mobileNumber)
+        {
+            mobileNumber= mobileNumber.TrimAll();
+            if (!mobileNumber.IsMobileNumber())
+                return null;
+
+            var context = ContextManager.GetContext();
+
+            var model = (from o in context.UserMasters
+                         where o.MobileNumber == mobileNumber && !o.IsDeleted
+                         && o.IsActive
+                         select new UserInfo
+                         {
+                             Id = o.Id,
+                             Name = o.Name,
+                             FirstName = o.FirstName,
+                             LastName = o.LastName,
+                             FullName = o.FullName,
+                             MobileNumber = o.MobileNumber,
+                             Email = o.Email,
+                             Gender = o.Gender,
+                             ImageId = o.ImageId,
+                             CompanyId = o.CompanyId,
+                             EmailVerified = o.EmailVerified,
+                             MobileVerified = o.MobileVerified,
+                             IsActive = o.IsActive,
+                             CreatedOn = o.CreatedOn,
+                             CreatedBy = o.CreatedBy,
+                             UpdatedBy = o.UpdatedBy,
+                             UpdatedOn = o.UpdatedOn,
+                             Roles = o.UserRoles.Select(r => r.RoleMaster.Name).ToArray()
+                         }).FirstOrDefault();
+
+            return model;
+        }
+
+
         public bool Test()
         {
             var context = ContextManager.GetContext();
@@ -363,5 +488,52 @@ namespace BusinessCore.Services
             }
         }
 
+        static readonly string[] VALID_OAUTH_PROVIDERS = new string[] { "FACEBOOK","GMAIL" };
+        public UserOAuthInfo CreateOrGet(UserOAuthInfo model)
+        {
+            var providerName = model.OAuthProvider.TrimAll().ToUpper();
+            if (VALID_OAUTH_PROVIDERS.Contains(providerName))
+                throw new BusinessException("Invalid OAuth Provider " + model.OAuthProvider + ". Must be one of these: " + string.Join(",", VALID_OAUTH_PROVIDERS));
+
+            if(!model.Id.TrimAll().Any())
+                throw new BusinessException("Id can not be empty");
+
+            if (!model.Email.TrimAll().Any())
+                throw new BusinessException("Email can not be empty");
+
+
+            var providerPre = providerName == "FACEBOOK" ? "FB" : "GM";
+
+            var context = ContextManager.GetContext();
+
+            var uniqueId = providerPre + "@" + model.Id;
+
+            var modelDb = (from o in context.UserMasterOAuths
+                           where o.Id == uniqueId 
+                           select o).SingleOrDefault();
+            if (modelDb == null)
+            {
+                modelDb = new DataAccess.DbModels.UserMasterOAuth()
+                {
+                    Id = uniqueId,
+                    Name = model.Id,
+                    Email = model.Email,
+                    EmailVerified = true,
+                    MobileNumber = model.MobileNumber,
+                    MobileVerified = model.MobileNumber.IsMobileNumber(),
+                    CompanyId = CurrentUser.CompanyId,
+                    CreatedBy = CurrentUser.Id,
+                    CreatedOn = DateTime.Now,
+                    FullName = model.FullName,
+                    Gender = string.Empty,
+                    ImageId = string.Empty,
+                };
+
+                context.UserMasterOAuths.Add(modelDb);
+                context.SaveChanges();
+            }
+            model.Roles = new string[] { RoleNames.User.ToString() };
+            return model;
+        }
     }
 }

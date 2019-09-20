@@ -26,7 +26,6 @@ namespace WebApi.Controllers
 
         #region "Mobile Actions"
 
-        // GET api/values
         [HttpPost("app/login")]
         [AllowAnonymous]
         public ActionResult<LoginSuccessModel> LogIn(LogInModel model)
@@ -59,6 +58,39 @@ namespace WebApi.Controllers
 
             result.IsValid = true;
             result.UserName = user.Name;
+            result.FullName = user.FullName;
+
+            return result;
+        }
+
+        [HttpPost("app/oauth/login")]
+        [AllowAnonymous]
+        public ActionResult<LoginSuccessModel> LoginFromOauth(LoginOauthModel model)
+        {
+            var appId = base.ReadAppId();
+            var deviceId = base.ReadDeviceId();
+
+            if (appId.TrimAll().Length == 0)
+                throw new BusinessException("Invalid App Source.");
+
+            if (deviceId.TrimAll().Length == 0)
+                throw new BusinessException("Invalid Device Id.");
+            var membership = base.CreateMembershipService();
+
+            var isValid = membership.ValidateApp(appId);
+            if (!isValid)
+                throw new BusinessException("Invalid App Source (App-Id).");
+
+            var result = new LoginSuccessModel();
+            var user = new UserOAuthInfo();
+            user = membership.CreateOrGet(user);
+
+            result.AuthToken = new TokenManager(membership).CreateToken(user.Id, user.Roles);
+
+            membership.CreateSession(user.Email, result.AuthToken, deviceId);
+
+            result.IsValid = true;
+            result.UserName = user.Email;
             result.FullName = user.FullName;
 
             return result;
@@ -113,7 +145,8 @@ namespace WebApi.Controllers
             return CurrentUser;
         }
 
-        [HttpPost("generate/otp/{userName}")]
+        static Random rand = new Random();
+        [HttpPost("password/otp/{userName}")]
         [AllowAnonymous]
         public ActionResult CreateOTP(string userName)
         {
@@ -126,6 +159,14 @@ namespace WebApi.Controllers
             if (!isValid)
                 throw new BusinessException("Invalid App Source (App-Id).");
 
+            var otp = rand.Next(10001, 99999);
+
+            var user = membership.CreateOtp(userName, otp, "CHANGE_PASSWORD");
+            if (user == null)
+                throw new BusinessException("Invalid User-Name: " + userName);
+
+            CreateEmailService().SendMail(user.Email, "ShunQ-App OTP for your password recovery", "Dear " + user.FullName + ", The One Time Passcode (OT) for your password recorvery is <br/>" + otp + "</br>");
+
             return Ok();
         }
 
@@ -133,7 +174,6 @@ namespace WebApi.Controllers
         [AllowAnonymous]
         public ActionResult ChangePassword(ChangePasswordModel model)
         {
-
             var appId = base.ReadAppId();
 
             var membership = base.CreateMembershipService();
@@ -141,6 +181,10 @@ namespace WebApi.Controllers
             var isValid = membership.ValidateApp(appId);
             if (!isValid)
                 throw new BusinessException("Invalid App Source (App-Id).");
+
+            var flag=membership.ChangePassword(model.UserName, model.Password, model.OTP);
+            if(!flag)
+                throw new BusinessException("Failed to change Password.");
 
             return Ok();
         }

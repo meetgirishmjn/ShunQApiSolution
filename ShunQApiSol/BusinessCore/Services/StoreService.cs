@@ -283,7 +283,7 @@ namespace BusinessCore.Services
         {
             return this.ReadStores();
         }
-        public IQueryable<Store> ReadStores(ReadStoreOption options)
+        public IQueryable<Store> ReadStores(StoreReadOption options)
         {
             return this.ReadStores();
         }

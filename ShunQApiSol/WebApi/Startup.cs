@@ -77,6 +77,8 @@ namespace WebApi
             services.AddSingleton(typeof(IAdminService), new AdminService(connection));
             services.AddTransient(typeof(IMembershipService), typeof(MembershipService));
             services.AddTransient(typeof(IStoreService), typeof(StoreService));
+            services.AddTransient(typeof(IEmailGateway), typeof(GmailGateway));
+            services.AddTransient(typeof(ISmsGateway), typeof(SmsGateway));
 
             services.AddDbContext<CoreDbContext>(options => options.UseSqlServer(connection));
         }

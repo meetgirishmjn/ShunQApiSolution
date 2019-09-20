@@ -29,6 +29,8 @@ namespace BusinessCore.DataAccess
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
         public DbSet<ProductCategoryXref> ProductCategoryXrefs { get; set; }
+        public DbSet<UserMasterOAuth> UserMasterOAuths { get; set; }
+        public DbSet<OTPCode> OTPCodes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -72,7 +74,7 @@ namespace BusinessCore.DataAccess
               LastName = " Mahajan",
               MobileNumber = "8871384762",
               MobileVerified = true,
-              Password = "0E37EZvfM10P1jAH1JRpV+OVlsT39xs451MD2WqKcsU=",//admin@grsmjn
+              Password = "0E37EZvfM10P1jAH1JRpV+OVlsT39xs451MD2WqKcsU=",//admin@mjngrs
               Props = string.Empty
           });
 

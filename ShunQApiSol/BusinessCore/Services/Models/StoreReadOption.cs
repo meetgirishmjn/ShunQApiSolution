@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BusinessCore.Services.Models
 {
-   public class ReadStoreOption
+   public class StoreReadOption
     {
         public string Latitude { get; set; }
         public string Longitude { get; set; }

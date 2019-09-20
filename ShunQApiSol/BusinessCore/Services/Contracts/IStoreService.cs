@@ -10,7 +10,7 @@ namespace BusinessCore.Services.Contracts
     {
         List<StoreCategoryItem> GetAllStoreCategory();
         IQueryable<Store> ReadStores();
-        IQueryable<Store> ReadStores(ReadStoreOption options);
+        IQueryable<Store> ReadStores(StoreReadOption options);
         Store GetStore(int id);
         Store GetStore(string qrCode);
         IQueryable<Store> ReadStores(int categoryId);
