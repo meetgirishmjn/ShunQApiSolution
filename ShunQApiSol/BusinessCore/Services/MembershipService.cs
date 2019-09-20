@@ -495,7 +495,7 @@ namespace BusinessCore.Services
         {
             var providerName = model.OAuthProvider.TrimAll().ToUpper();
             model.Email = model.Email.TrimAll().ToUpper();
-            model.Email = model.MobileNumber.TrimAll();
+            model.MobileNumber = model.MobileNumber.TrimAll();
 
             if (!VALID_OAUTH_PROVIDERS.Contains(providerName))
                 throw new BusinessException("Invalid OAuth Provider " + model.OAuthProvider + ". Must be one of these: " + string.Join(",", VALID_OAUTH_PROVIDERS));
