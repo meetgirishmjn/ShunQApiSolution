@@ -292,7 +292,7 @@ namespace WebApi.Controllers
                 DbStatus = dbStatus,
                 Status = "ok",
                 Version = "1.0.12",
-                VersionDesc= "StoreBannerImage",
+                VersionDesc= "Verify Otp 1111",
                 AppConfig =this.AppConfig
             };
         }
