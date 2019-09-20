@@ -82,7 +82,14 @@ namespace WebApi.Controllers
                 throw new BusinessException("Invalid App Source (App-Id).");
 
             var result = new LoginSuccessModel();
-            var user = new UserOAuthInfo();
+            var user = new UserOAuthInfo()
+            {
+                OAuthProvider = model.ProviderName,
+                Id = model.ProfileId,
+                FullName = model.FullName,
+                Email = model.Email,
+                MobileNumber = model.Mobile,
+            };
             user = membership.CreateOrGet(user);
 
             result.AuthToken = new TokenManager(membership).CreateToken(user.Id, user.Roles);

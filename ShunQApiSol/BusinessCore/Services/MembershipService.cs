@@ -494,15 +494,20 @@ namespace BusinessCore.Services
         public UserOAuthInfo CreateOrGet(UserOAuthInfo model)
         {
             var providerName = model.OAuthProvider.TrimAll().ToUpper();
-            if (VALID_OAUTH_PROVIDERS.Contains(providerName))
+            model.Email = model.Email.TrimAll().ToUpper();
+            model.Email = model.MobileNumber.TrimAll();
+
+            if (!VALID_OAUTH_PROVIDERS.Contains(providerName))
                 throw new BusinessException("Invalid OAuth Provider " + model.OAuthProvider + ". Must be one of these: " + string.Join(",", VALID_OAUTH_PROVIDERS));
 
-            if(!model.Id.TrimAll().Any())
+            if(model.Id.Length==0)
                 throw new BusinessException("Id can not be empty");
 
-            if (!model.Email.TrimAll().Any())
+            if (model.Email.Length==0)
                 throw new BusinessException("Email can not be empty");
 
+            if (!model.Email.IsEmail())
+                throw new BusinessException("Email is not valid Mail-Address");
 
             var providerPre = providerName == "FACEBOOK" ? "FB" : "GM";
 
@@ -532,6 +537,33 @@ namespace BusinessCore.Services
                 };
 
                 context.UserMasterOAuths.Add(modelDb);
+
+                if (context.UserMasters.Where(o => o.Email.ToUpper() == model.Email).Any())
+                    throw new BusinessException("User is already registerd with Email: " + model.Email);
+
+                if (model.MobileNumber.IsMobileNumber())
+                {
+                    if (context.UserMasters.Where(o => o.MobileNumber.ToUpper() == model.MobileNumber).Any())
+                        throw new BusinessException("User is already registerd with Mobile-Number: " + model.MobileNumber);
+                }
+
+                var objDb = new DataAccess.DbModels.UserMaster();
+                objDb.Name = model.Email;
+                objDb.FirstName = model.FullName.ToAlphaNum();
+                objDb.LastName = string.Empty;
+                objDb.FullName = model.FullName.ToAlphaNum();
+                objDb.Email = model.Email;
+                objDb.MobileNumber = model.MobileNumber.IsMobileNumber() ? model.MobileNumber : "0000000000";
+                objDb.IsActive = true;
+                objDb.Password = encryptPassword("Default@123");
+                objDb.CreatedOn = DateTime.Now;
+                objDb.CreatedBy = 1;
+                objDb.IsDeleted = false;
+                objDb.UserType = "OAUTH";
+                objDb.Gender = objDb.ImageId = string.Empty;
+
+                context.UserMasters.Add(objDb);
+
                 context.SaveChanges();
             }
             model.Roles = new string[] { RoleNames.User.ToString() };

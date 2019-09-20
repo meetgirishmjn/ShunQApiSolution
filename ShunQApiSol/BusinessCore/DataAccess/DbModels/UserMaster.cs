@@ -28,6 +28,8 @@ namespace BusinessCore.DataAccess.DbModels
         public DateTime? UpdatedOn { get; set; }
         public long? UpdatedBy { get; set; }
 
+        public string UserType { get; set; }
+
         public ICollection<UserRole> UserRoles { get; set; }
     }
 }

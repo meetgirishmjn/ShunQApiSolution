@@ -22,7 +22,7 @@ namespace WebApi.RequestModels
     {
         public string ProviderName { get; set; }
         public string ProfileId { get; set; }
-        public string UserId { get; set; }
+        //public string UserId { get; set; }
         public string Email { get; set; }
         public string Mobile { get; set; }
         public string FullName { get; set; }
