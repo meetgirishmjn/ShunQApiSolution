@@ -107,6 +107,11 @@ namespace BusinessCore.Services
 
         public bool ValidateUser(string userName, string password)
         {
+            if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(password))
+                return false;
+
+            userName = userName.Trim();
+
             var context = ContextManager.GetContext();
 
                 var userDb = context.UserMasters.Where(o => !o.IsDeleted && o.Name == userName)
@@ -240,11 +245,11 @@ namespace BusinessCore.Services
             var context = ContextManager.GetContext();
 
             var objDb = new DataAccess.DbModels.UserMaster();
-            objDb.Name = model.MobileNumber;
+            objDb.Name = model.Email.ToUpper();
             objDb.FirstName = model.FirstName.ToAlphaNum();
             objDb.LastName = model.LastName.ToAlphaNum();
             objDb.FullName = objDb.FirstName + " " + objDb.LastName;
-            objDb.Email = model.Email;
+            objDb.Email = model.Email.ToUpper();
             objDb.MobileNumber = model.MobileNumber;
             objDb.IsActive = true;
             objDb.Password = encryptPassword(password);
@@ -256,7 +261,7 @@ namespace BusinessCore.Services
 
             context.SaveChanges();
             model.Id = objDb.Id;
-
+            model.FullName = objDb.FullName;
             return model;
         }
 

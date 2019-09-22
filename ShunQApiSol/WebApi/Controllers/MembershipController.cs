@@ -105,8 +105,10 @@ namespace WebApi.Controllers
 
         [HttpPost("app/register")]
         [AllowAnonymous]
-        public ActionResult<UserInfo> RegisterUser(RegisterUserModel model)
+        public ActionResult<RegisterUserViewModel> RegisterUser(RegisterUserModel model)
         {
+
+            var viewModel = new RegisterUserViewModel();
 
             var appId = base.ReadAppId();
             var deviceId = base.ReadDeviceId();
@@ -127,9 +129,20 @@ namespace WebApi.Controllers
                 MobileNumber = model.MobileNumber,
                 Email = model.Email,
             };
-            user = membership.CreateUser(user, model.Password);
 
-            return user;
+           user = membership.CreateUser(user, model.Password);
+
+            viewModel.FullName = user.FullName;
+            viewModel.Email = user.Email;
+            viewModel.Mobile = user.MobileNumber;
+
+            viewModel.AuthToken = new TokenManager(membership).CreateToken(user.Email, user.Roles);
+
+            membership.CreateSession(user.Email, viewModel.AuthToken, deviceId);
+
+            viewModel.Message = "Registration complete.";
+
+            return viewModel;
         }
 
         [HttpPost("app/logout")]
