@@ -270,6 +270,51 @@ namespace WebApi.Controllers
             return viewModel;
         }
 
+        [HttpGet("views/checkout")]
+        public CheckoutViewModel GetCheckoutViewModel(CheckoutViewRequest model)
+        {
+            var viewModel = new CheckoutViewModel();
+
+            var cartService = CreateStoreService();
+            var cart = cartService.GetCart();
+            if (cart == null)
+                throw new BusinessException("Cart does not exists.");
+            if (cart.ItemCount == 0)
+                throw new BusinessException("Cart is empty.");
+
+            setCartImageUrl(cart);
+
+            viewModel.IsCartValid = true;
+            viewModel.ValidationCaption = "Cart verify successfully";
+            viewModel.ValidationTitle = "Total " + cart.Items.Count + " Items verified.";
+
+            var lineItemGroups=cart.Items.GroupBy(o => o.ProductId);
+            foreach (var grp in lineItemGroups)
+            {
+                var items = grp.ToList();
+                viewModel.LineItems.Add(new CheckoutViewModel.LineItem
+                {
+                    Id = grp.Key,
+                    ImageUrl = items[0].ThumbImage,
+                    Amount = items.Sum(o => o.Price),
+                    Quantity = items.Count,
+                    Title = items[0].ProductName,
+                    SubTitle = items[0].DiscountText,
+                    MRP = items[0].MRP,
+                    HasDiscount = items[0].Discount > 0
+                });
+            }
+
+            viewModel.TotalLineItem = lineItemGroups.Count();
+            viewModel.TotalItem = cart.Items.Count;
+            viewModel.TotalAmount = cart.Items.Sum(o => o.MRP);
+            viewModel.TotalDiscount = cart.Items.Sum(o => o.Discount);
+            viewModel.OrderTotal = cart.Items.Sum(o => o.Price);
+            
+            return viewModel;
+        }
+
+
         [HttpGet("views/searchStores")]
         public SearchStoresViewModel GetSearchStoresViewModel(StoreListModel model)
         {
