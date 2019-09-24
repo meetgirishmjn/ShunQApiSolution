@@ -31,6 +31,7 @@ namespace WebApi.ViewModels
             public string BannerImageUrl { get; set; }
             public StoreReview ReviewRating { get; set; }
             public bool HasActiveCart { get; set; }
+            public Address Address { get; set; }
         }
     }
 }

@@ -84,9 +84,8 @@ namespace WebApi.Controllers
 
             result.PageSize = model.PageSize;
             result.PageIndex = model.PageIndex;
-            result.PageCount = stores.Count;
+            result.PageCount = (int)Math.Ceiling((double)totalCount / model.PageSize);
             result.TotalCount = totalCount;
-
 
             if (cart != null)
             {
@@ -106,7 +105,8 @@ namespace WebApi.Controllers
                 HasActiveCart = o.Id == result.ActiveStoreId,
                 ReviewRating = storeReviews.Contains(o.Id) ? storeReviews[o.Id].FirstOrDefault() : new StoreReview { StoreId = o.Id },
                 BannerImageUrl = imageUrl + o.BannerImage,
-                ImageUrl = imageUrl + o.Image
+                ImageUrl = imageUrl + o.Image,
+                Address = o.Address
             }).ToList();
 
             return result;
