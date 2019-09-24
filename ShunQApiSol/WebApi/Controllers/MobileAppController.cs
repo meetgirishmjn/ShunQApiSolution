@@ -270,6 +270,17 @@ namespace WebApi.Controllers
             return viewModel;
         }
 
+        [HttpGet("views/searchStores")]
+        public SearchStoresViewModel GetSearchStoresViewModel(StoreListModel model)
+        {
+            var viewModel = new SearchStoresViewModel();
+
+            viewModel.SorOptions = GetStoreSortList();
+            viewModel.StoreCategories = GetStoreCategories();
+            viewModel.StoreList = SearchStores(model);
+
+            return viewModel;
+        }
 
         [HttpGet("Ver")]
         [AllowAnonymous]
