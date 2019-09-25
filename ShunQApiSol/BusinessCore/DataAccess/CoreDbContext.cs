@@ -31,10 +31,13 @@ namespace BusinessCore.DataAccess
         public DbSet<ProductCategoryXref> ProductCategoryXrefs { get; set; }
         public DbSet<UserMasterOAuth> UserMasterOAuths { get; set; }
         public DbSet<OTPCode> OTPCodes { get; set; }
+        public DbSet<CartVoucher> CartVouchers { get; set; }
+        public DbSet<DiscountVoucherMaster> DiscountVoucherMasters { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<PriceMaster>().HasIndex(o => o.ProductId);
+           // modelBuilder.Entity<AddressMaster>().HasMany(o => o.Stores).WithOne(o=>o.Address).IsRequired(); 
 
             modelBuilder.Entity<RoleMaster>()
        .HasData(
@@ -92,6 +95,182 @@ namespace BusinessCore.DataAccess
              CreatedOn=DateTime.Now,
              IsActive=true
          });
+
+            #region "StoreData"
+            var addressData = new List<AddressMaster>();
+            addressData.Add(new AddressMaster { Id = 1001, AddressLine = "No 12, Evergreen Layout, Byrathi, Near to RK Gowtham College", Locality = "Evergreen Layout", City = "Bangalore", Zip = "560077", Latitude = "13.0581", Longitude = "77.6501" });
+            addressData.Add(new AddressMaster { Id = 1002, AddressLine = "agadur Main Road, Whitefield, Near Bashveshwara Temple", Locality = "Whitefield", City = "Bangalore", Zip = "560066", Latitude = "12.969769", Longitude = "77.755636" });
+            addressData.Add(new AddressMaster { Id = 1003, AddressLine = "No 26, &26/2, Sarjapura Main Road, Attibele, Near Lakshmi Convention Hall ", Locality = "Sarjapura Main Road", City = "Bangalore", Zip = "562107", Latitude = "12.786873", Longitude = "77.773229" });
+            addressData.Add(new AddressMaster { Id = 1004, AddressLine = "No.21, Flat No.112, Konappana Agrahara, Begur, Electronic City", Locality = "Electronic City", City = "Bangalore", Zip = "560100", Latitude = "12.844235", Longitude = "77.674169" });
+            addressData.Add(new AddressMaster { Id = 1005, AddressLine = "Salapuria Gateway , 45, A Block, J.P. Nagar, 2Nd Stage, Ward No - 57, 9Th Block, Near Ragiguddu, Kottapalya, Jayanagar", Locality = "Jayanagar", City = "Bangalore", Zip = "560041", Latitude = "12.917188", Longitude = "77.592353" });
+            addressData.Add(new AddressMaster { Id = 1006, AddressLine = "Mango Garden Layout, Bikasipura, JP Nagar", Locality = "JP Nagar", City = "Bangalore", Zip = "560078", Latitude = "12.893121", Longitude = "77.565897" });
+            addressData.Add(new AddressMaster { Id = 1007, AddressLine = "No 1381/100/93, Neeladri Nagar, Phase 1, Electronic City", Locality = "Electronic City", City = "Bangalore", Zip = "560100", Latitude = "12.841791", Longitude = "77.646292" });
+            addressData.Add(new AddressMaster { Id = 1008, AddressLine = "30/1, Main Rd, Koramangala 7Th Block, Koramangala, Chikku Lakshmaiah Layout, Adugodi", Locality = "Adugodi", City = "Bangalore", Zip = "560029", Latitude = "12.936745", Longitude = "77.610425" });
+           
+            modelBuilder.Entity<AddressMaster>().HasData(addressData);
+
+            modelBuilder.Entity<StoreCategory>().HasData(new List<StoreCategory>()
+            {
+                new  StoreCategory{Id=1001,Name="Departmental Stores",Description=string.Empty,CompanyId=1,CreatedBy=1,CreatedOn=DateTime.Now},
+                new  StoreCategory{Id=1002,Name="Grocery",Description=string.Empty,CompanyId=1,CreatedBy=1,CreatedOn=DateTime.Now,},
+                new  StoreCategory{Id=1003,Name="Kid Care/Toys",Description=string.Empty,CompanyId=1,CreatedBy=1,CreatedOn=DateTime.Now,},
+                new  StoreCategory{Id=1004,Name="Stationery",Description=string.Empty,CompanyId=1,CreatedBy=1,CreatedOn=DateTime.Now,},
+                new  StoreCategory{Id=1005,Name="Electronics",Description=string.Empty,CompanyId=1,CreatedBy=1,CreatedOn=DateTime.Now,}
+            });
+
+            var storeData = new List<StoreMaster>()
+            {
+                new StoreMaster
+                {
+                    Id = 1001,
+                    Code = "STR-1",
+                    Name = "AB Supermarket",
+                    ShortName = "AB Supermarket",
+                    Description = "A top company in the category Supermarkets, also known for Mineral Water Dealers, Spice Retailers, Raisin Retailers",
+                    Image = "STR-1-Thumb.jpg",
+                    BannerImage = "STR-1-Banner.jpg",
+                    IsActive = true,
+                    CompanyId=1,
+                    CreatedOn=DateTime.Now,
+                    CreatedBy=1
+                },
+                new StoreMaster
+                {
+                    Id = 1002,
+                    Code = "STR-2",
+                    Name = "Imperio Market",
+                    ShortName = "Imperio Market",
+                    Description = "This neighborhood grocery store is committed to delight customers and gauge their success through efficient service and a smile. The friendly store staff are always close at hand to assist you. They have almost all products that you may require on a daily basis. With exclusive offers and best prices, they ensure the customers more than one reason to come back for more. The heart of their core value lies in the commitment toward providing quality service.",
+                    Image = "STR-2-Thumb.jpg",
+                    BannerImage = "STR-2-Banner.jpg",
+                    IsActive = true,
+                    CompanyId=1,
+                    CreatedOn=DateTime.Now,
+                    CreatedBy=1
+                },
+                new StoreMaster
+                {
+                    Id = 1003,
+                    Code = "STR-3",
+                    Name = "The Big Market",
+                    ShortName = "The Big Market",
+                    Description = "This neighborhood grocery store is committed to delight customers and gauge their success through efficient service and a smile. The friendly store staff are always close at hand to assist you. They have almost all products that you may require on a daily basis. With exclusive offers and best prices, they ensure the customers more than one reason to come back for more. The heart of their core value lies in the commitment toward providing quality service.",
+                    Image = "STR-3-Thumb.jpg",
+                    BannerImage = "STR-3-Banner.jpg",
+                    IsActive = true,
+                    CompanyId=1,
+                    CreatedOn=DateTime.Now,
+                    CreatedBy=1
+                },
+                new StoreMaster
+                {
+                    Id = 1004,
+                    Code = "STR-4",
+                    Name = "D Mart",
+                    ShortName = "D Mart",
+                    Description = "DMart is a one stop supermarket chain that aims to offer customers a wide range of basic home and personal products under one roof. Each DMart store stocks home utility products - including food, toiletries, beauty products, garments, kitchenware, bed and bath linen, home appliances and more available at competitive prices that their customers appreciate.",
+                    Image = "STR-4-Thumb.jpg",
+                    BannerImage = "STR-4-Banner.jpg",
+                    IsActive = true,
+                    CompanyId=1,
+                    CreatedOn=DateTime.Now,
+                    CreatedBy=1
+                },
+                new StoreMaster
+                {
+                    Id = 1005,
+                    Code = "STR-5",
+                    Name = "Big Bazaar",
+                    ShortName = "Big Bazaar",
+                    Description = "One of the most popular supermarket chains of India, they offer an urban shopping environment for all kinds of home and personal care needs. Their stores are a place where one can find groceries, fresh fruits and veggies, confectioneries, personal care items, fashionable clothing for men, women, and kids, and so much more! They are a brand that the consumers trust for their dedication towards quality and providing a seamless shopping experience.",
+                    Image = "STR-5-Thumb.jpg",
+                    BannerImage = "STR-5-Banner.jpg",
+                    IsActive = true,
+                    CompanyId=1,
+                    CreatedOn=DateTime.Now,
+                    CreatedBy=1
+                },
+                new StoreMaster
+                {
+                    Id = 1006,
+                    Code = "STR-6",
+                    Name = "Metro Cash And Carry",
+                    ShortName = "Metro Cash And Carry",
+                    Description = "This local grocery store is always looking to deliver a unique shopping experience by putting you first. They understand the value of your time and will get you what you are looking for. They have almost all products that you may require on a daily basis. They make products available at low prices resulting in more savings. When it comes to customer value, they have progressed in leaps & bounds.",
+                    Image = "STR-6-Thumb.jpg",
+                    BannerImage = "STR-6-Banner.jpg",
+                    IsActive = true,
+                    CompanyId=1,
+                    CreatedOn=DateTime.Now,
+                    CreatedBy=1
+                },
+                new StoreMaster
+                {
+                    Id = 1007,
+                    Code = "STR-7",
+                    Name = "Village Hyper Market",
+                    ShortName = "Village Hyper Market",
+                    Description = "A unique shopping experience by putting you first. The friendly store staff are always close at hand to assist you. They have almost all products that you may require on a daily basis. They make products available at low prices resultingin more savings. The heart of their core values lies in the commitment towards providing quality service.",
+                    Image = "STR-7-Thumb.jpg",
+                    BannerImage = "STR-7-Banner.jpg",
+                    IsActive = true,
+                    CompanyId=1,
+                    CreatedOn=DateTime.Now,
+                    CreatedBy=1
+                },
+                new StoreMaster
+                {
+                    Id = 1008,
+                    Code = "STR-8",
+                    Name = "Star Bazaar",
+                    ShortName = "Star Bazaar",
+                    Description = "We understand the value of your time and will get you what you are looking for. They have almost all products that you may require on a daily basis. With exclusive offers and best prices, they ensure the customers more than one reason to come back for more. The heart of their core value lies in the commitment toward providing quality service.",
+                    Image = "STR-8-Thumb.jpg",
+                    BannerImage = "STR-8-Banner.jpg",
+                    IsActive = true,
+                    CompanyId=1,
+                    CreatedOn=DateTime.Now,
+                    CreatedBy=1
+                }
+        };
+
+            for (var a = 0; a < storeData.Count; a++)
+            {
+                storeData[a].AddressId = addressData[a].Id;
+            }
+            modelBuilder.Entity<StoreMaster>().HasData(storeData);
+
+            modelBuilder.Entity<StoreCategoryXref>().HasData(new List<StoreCategoryXref>()
+            {
+                new StoreCategoryXref{Id=1001,StoreCategoryId=1001,StoreMasterId=1001 },
+                new StoreCategoryXref{Id=1002,StoreCategoryId=1001,StoreMasterId=1002 },
+                new StoreCategoryXref{Id=1003,StoreCategoryId=1001,StoreMasterId=1003 },
+
+                new StoreCategoryXref{Id=1004,StoreCategoryId=1002,StoreMasterId=1001 },
+                new StoreCategoryXref{Id=1005,StoreCategoryId=1002,StoreMasterId=1005 },
+                new StoreCategoryXref{Id=1006,StoreCategoryId=1002,StoreMasterId=1007 },
+
+                new StoreCategoryXref{Id=1007,StoreCategoryId=1003,StoreMasterId=1001 },
+                new StoreCategoryXref{Id=1008,StoreCategoryId=1003,StoreMasterId=1002 },
+                new StoreCategoryXref{Id=1009,StoreCategoryId=1003,StoreMasterId=1003 },
+                new StoreCategoryXref{Id=1010,StoreCategoryId=1003,StoreMasterId=1004 },
+                new StoreCategoryXref{Id=1011,StoreCategoryId=1003,StoreMasterId=1005 },
+                new StoreCategoryXref{Id=1012,StoreCategoryId=1003,StoreMasterId=1006 },
+
+                new StoreCategoryXref{Id=1013,StoreCategoryId=1004,StoreMasterId=1006 },
+                new StoreCategoryXref{Id=1014,StoreCategoryId=1004,StoreMasterId=1007 },
+                new StoreCategoryXref{Id=1015,StoreCategoryId=1004,StoreMasterId=1008},
+                                                                  
+                new StoreCategoryXref{Id=1016,StoreCategoryId=1005,StoreMasterId=1001 },
+                new StoreCategoryXref{Id=1017,StoreCategoryId=1005,StoreMasterId=1002 },
+                new StoreCategoryXref{Id=1018,StoreCategoryId=1005,StoreMasterId=1003 },
+                new StoreCategoryXref{Id=1019,StoreCategoryId=1005,StoreMasterId=1004 },
+                new StoreCategoryXref{Id=1020,StoreCategoryId=1005,StoreMasterId=1005 },
+                new StoreCategoryXref{Id=1021,StoreCategoryId=1005,StoreMasterId=1006 },
+                new StoreCategoryXref{Id=1022,StoreCategoryId=1005,StoreMasterId=1007 },
+                new StoreCategoryXref{Id=1023,StoreCategoryId=1005,StoreMasterId=1008 }
+            });
+            #endregion
 
             #region "ProductCategory"
             var kProducts = Newtonsoft.Json.JsonConvert.DeserializeObject<List<kProduct>>(ProductJson);
@@ -168,6 +347,13 @@ namespace BusinessCore.DataAccess
             });
             modelBuilder.Entity<PriceMaster>().HasData(priceList);
             #endregion "PriceMaster"
+
+            var vouchers = new List<DiscountVoucherMaster>() {
+                new DiscountVoucherMaster { Id = Guid.NewGuid().ToString(), Code = "BBVISA200", Title = "Rs.200 off", Description = "Visa Card Offer (New Users) - Extra Rs 200 OFF on Rs 800" },
+                new DiscountVoucherMaster { Id = Guid.NewGuid().ToString(), Code = "DIP20", Title = " Flat 20% Off", Description = "Festival fever – On Order Of Rs.800 & Above" },
+                new DiscountVoucherMaster { Id = Guid.NewGuid().ToString(), Code = "ICICIGTSEP", Title = "10% off", Description = "ICICI Tuesday Offer - Flat 10% OFF on Order of Rs 1500" },
+            };
+            modelBuilder.Entity<DiscountVoucherMaster>().HasData(vouchers);
 
             base.OnModelCreating(modelBuilder);
         }

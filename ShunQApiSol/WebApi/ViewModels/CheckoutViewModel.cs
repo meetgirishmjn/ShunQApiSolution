@@ -11,26 +11,29 @@ namespace WebApi.ViewModels
         public string ValidationCaption { get; set; }
         public string ValidationTitle { get; set; }
         public List<string> ValidationMessages { get; set; }
-        public List<OfferCode> OfferCodes { get; set; }
+        public List<VoucherItem> AppliedVouchers { get; set; }
+        public string VoucherErrorMessage { get; set; }
         public List<LineItem> LineItems { get; set; }
         public int TotalLineItem { get; set; }
         public int TotalItem { get; set; }
         public float TotalAmount { get; set; }
         public float TotalDiscount { get; set; }
+        public float TotalVoucherDiscount { get; set; }
         public float OrderTotal { get; set; }
 
         public CheckoutViewModel()
         {
             this.LineItems = new List<LineItem>();
-            this.OfferCodes = new List<OfferCode>();
+            this.AppliedVouchers = new List<VoucherItem>();
             this.ValidationMessages = new List<string>();
         }
 
-        public class OfferCode
+        public class VoucherItem
         {
             public string Code { get; set; }
-            public bool Status { get; set; }
-            public string StatusMessage { get; set; }
+            public string CodeDescription { get; set; }
+            public float Amount { get; set; }
+            public string Status { get; set; }
         }
 
         public class LineItem
@@ -41,8 +44,8 @@ namespace WebApi.ViewModels
             public string SubTitle { get; set; }
             public int Quantity { get; set; }
             public float Amount { get; set; }
-            public float MRP { get; internal set; }
-            public bool HasDiscount { get; internal set; }
+            public float MRP { get; set; }
+            public bool HasDiscount { get; set; }
         }
     }
 

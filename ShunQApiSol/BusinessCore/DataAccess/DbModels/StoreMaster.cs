@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace BusinessCore.DataAccess.DbModels
@@ -19,6 +20,9 @@ namespace BusinessCore.DataAccess.DbModels
         public long CreatedBy { get; set; }
         public DateTime? UpdatedOn { get; set; }
         public long? UpdatedBy { get; set; }
+        public int AddressId { get; set; }
+
+        [ForeignKey("AddressId")]
         public AddressMaster Address { get; set; }
 
     }

@@ -21,6 +21,8 @@ namespace BusinessCore.Services.Contracts
         ShoppingCart GetCart();
         ShoppingCart AddItemToCart(string productbarcode);
         ShoppingCart RemoveItemFromCart(string productbarcode);
+        ShoppingCart AddVoucherToCart(string voucherCode);
+        ShoppingCart RemoveVoucherToCart(string voucherCode);
         void DiscardCart();
     }
 }

@@ -9,6 +9,10 @@ namespace BusinessCore.Models
         public bool IsValid { get; set; } = false;
         public string Message { get; set; }
 
+        public ValidationResult()
+        {
+
+        }
         public ValidationResult(string message)
         {
             this.IsValid = false;

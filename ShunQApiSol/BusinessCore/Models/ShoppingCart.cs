@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace BusinessCore.Models
 {
@@ -18,28 +18,44 @@ namespace BusinessCore.Models
         public string Status { get; set; }
         public int ItemCount { get { return Items.Count; } }
 
-        public List<Item> Items { get; set; }
+        public List<CartItemVM> Items { get; set; }
 
+        public List<CartVoucherItem> Vouchers { get; set; }
+
+        public int LineItemCount { get { return Items.GroupBy(o => o.ProductId).Count(); } }
+        public float TotalAmount { get; set; }
+        public float TotalItemDiscount { get; set; }
+        public float TotalVoucherDiscount { get; set; }
+        public float NetAmount { get; set; }
+        public float AmountBeforeVoucherDiscount { get; set; }
         public ShoppingCart()
         {
-            this.Items = new List<Item>();
-        }
-
-        public class Item
-        {
-            public string ProductId { get; set; }
-            public string ProductName { get; set; }
-            public string ShortName { get; set; }
-            public string Description { get; set; }
-            public string ThumbImage { get; set; }
-            public float MRP { get; set; }
-            public float Discount { get; set; }
-            public string DiscountText { get; set; }
-            public float Price { get; set; }
-            public int SortOrder { get; set; }
-            public int Quantity { get; set; }
+            this.Items = new List<CartItemVM>();
+            this.Vouchers = new List<CartVoucherItem>();
         }
     }
+    public class CartItemVM
+    {
+        public string ProductId { get; set; }
+        public string ProductName { get; set; }
+        public string ShortName { get; set; }
+        public string Description { get; set; }
+        public string ThumbImage { get; set; }
+        public float MRP { get; set; }
+        public float Discount { get; set; }
+        public string DiscountText { get; set; }
+        public float Price { get; set; }
+        public int SortOrder { get; set; }
+        public int Quantity { get; set; }
+    }
 
-   
+    public class CartVoucherItem
+    {
+        public string VoucherId { get; set; }
+        public string VoucherCode { get; set; }
+        public string Description { get; set; }
+        public float Amount { get; set; }
+    }
+
+
 }
