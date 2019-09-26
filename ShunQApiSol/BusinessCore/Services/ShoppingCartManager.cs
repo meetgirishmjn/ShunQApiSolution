@@ -252,15 +252,15 @@ namespace BusinessCore.Services
             return GetCart();
         }
 
-        public ShoppingCart RemoveVoucher(string voucherId)
+        public ShoppingCart RemoveVoucher(string voucherCode)
         {
+            voucherCode = voucherCode.TrimAll().ToUpper();
             var status = (int)ShoppingCartStatus.InProgress;
             var context = ContextManager.GetContext();
-            var objDb = context.ShoppingCarts.Include(o => o.Vouchers).Where(o => o.UserId == userId && o.Status == status).FirstOrDefault();
-            if (objDb == null)
-                throw new BusinessException("Shopping-cart does not exist");
 
-            var vouchDb = objDb.Vouchers.Where(o => o.ShoppingCart.UserId == userId && o.ShoppingCart.Status == status && o.VoucherId == voucherId);
+            var voucherId = context.DiscountVoucherMasters.Where(o => o.Code == voucherCode).Select(o=>o.Id).FirstOrDefault();
+
+            var vouchDb = context.CartVouchers.Where(o => o.ShoppingCart.UserId == userId && o.ShoppingCart.Status == status && o.VoucherId == voucherId);
             if (vouchDb != null)
             {
                 context.CartVouchers.RemoveRange(vouchDb);
