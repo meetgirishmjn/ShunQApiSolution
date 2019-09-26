@@ -270,12 +270,12 @@ namespace WebApi.Controllers
             return viewModel;
         }
 
-        private CheckoutViewModel getCheckoutViewModel(ShoppingCart cart)
+        private CheckoutViewModel getCheckoutViewModel(ShoppingCart cart=null)
         {
             var viewModel = new CheckoutViewModel();
 
             var cartService = CreateStoreService();
-              cart = cart ?? cartService.GetCart();
+            cart = cart ?? cartService.GetCart();
             if (cart == null)
                 throw new BusinessException("Cart does not exists.");
             if (cart.ItemCount == 0)
@@ -304,55 +304,32 @@ namespace WebApi.Controllers
                 });
             }
 
-            viewModel.TotalLineItem = lineItemGroups.Count();
-            viewModel.TotalItem = cart.Items.Count;
-            viewModel.TotalAmount = cart.Items.Sum(o => o.MRP);
-            viewModel.TotalDiscount = cart.Items.Sum(o => o.Discount);
-            viewModel.OrderTotal = cart.Items.Sum(o => o.Price);
+            cart.Vouchers.ForEach(o =>
+            {
+                viewModel.AppliedVouchers.Add(new CheckoutViewModel.VoucherItem
+                {
+                    Amount = o.Amount,
+                    Code = o.VoucherCode,
+                    CodeDescription = o.Description,
+                });
+            });
+
+            viewModel.TotalLineItem = cart.LineItemCount;
+            viewModel.TotalItem = cart.ItemCount;
+            viewModel.TotalAmount = cart.TotalAmount;
+            viewModel.TotalDiscount = cart.TotalItemDiscount;
+            viewModel.TotalVoucherDiscount = cart.TotalVoucherDiscount;
+            viewModel.OrderTotal = cart.NetAmount;
+            viewModel.AmountBeforeVoucherDiscount = cart.AmountBeforeVoucherDiscount;
 
             return viewModel;
         }
+
         [HttpGet("views/checkout")]
         public CheckoutViewModel GetCheckoutViewModel()
         {
-            var viewModel = new CheckoutViewModel();
+            var viewModel = getCheckoutViewModel();
 
-            var cartService = CreateStoreService();
-            var cart = cartService.GetCart();
-            if (cart == null)
-                throw new BusinessException("Cart does not exists.");
-            if (cart.ItemCount == 0)
-                throw new BusinessException("Cart is empty.");
-
-            setCartImageUrl(cart);
-
-            viewModel.IsCartValid = true;
-            viewModel.ValidationCaption = "Cart verify successfully";
-            viewModel.ValidationTitle = "Total " + cart.Items.Count + " Items verified.";
-
-            var lineItemGroups=cart.Items.GroupBy(o => o.ProductId);
-            foreach (var grp in lineItemGroups)
-            {
-                var items = grp.ToList();
-                viewModel.LineItems.Add(new CheckoutViewModel.LineItem
-                {
-                    Id = grp.Key,
-                    ImageUrl = items[0].ThumbImage,
-                    Amount = items.Sum(o => o.Price),
-                    Quantity = items.Count,
-                    Title = items[0].ProductName,
-                    SubTitle = items[0].DiscountText,
-                    MRP = items[0].MRP,
-                    HasDiscount = items[0].Discount > 0
-                });
-            }
-
-            viewModel.TotalLineItem = lineItemGroups.Count();
-            viewModel.TotalItem = cart.Items.Count;
-            viewModel.TotalAmount = cart.Items.Sum(o => o.MRP);
-            viewModel.TotalDiscount = cart.Items.Sum(o => o.Discount);
-            viewModel.OrderTotal = cart.Items.Sum(o => o.Price);
-            
             return viewModel;
         }
 

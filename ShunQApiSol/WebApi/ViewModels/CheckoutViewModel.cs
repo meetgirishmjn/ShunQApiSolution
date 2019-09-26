@@ -20,6 +20,7 @@ namespace WebApi.ViewModels
         public float TotalDiscount { get; set; }
         public float TotalVoucherDiscount { get; set; }
         public float OrderTotal { get; set; }
+        public float AmountBeforeVoucherDiscount { get; set; }
 
         public CheckoutViewModel()
         {
