@@ -1,4 +1,5 @@
-﻿using BusinessCore.AppHandlers.Models;
+﻿using BusinessCore.AppHandlers.Contracts;
+using BusinessCore.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -36,6 +37,20 @@ namespace BusinessCore.AppHandlers
         {
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+
+            if (exception is BusinessException)
+            {
+
+            }
+            else
+            {
+                //critical error
+                var msg = exception.Message;
+                if (exception.InnerException != null)
+                    msg += Environment.NewLine + " InnerException:" + exception.InnerException.Message;
+                msg += Environment.NewLine + " StackTrace:" + exception.StackTrace;
+                _logger.LogError("\"logType\":\"Exception\",\"Data\":" + msg);
+            }
 
             return context.Response.WriteAsync(new 
             {

@@ -258,14 +258,9 @@ namespace BusinessCore.Services
             var status = (int)ShoppingCartStatus.InProgress;
             var context = ContextManager.GetContext();
 
-            var voucherId = context.DiscountVoucherMasters.Where(o => o.Code == voucherCode).Select(o=>o.Id).FirstOrDefault();
-
-            var vouchDb = context.CartVouchers.Where(o => o.ShoppingCart.UserId == userId && o.ShoppingCart.Status == status && o.VoucherId == voucherId);
-            if (vouchDb != null)
-            {
-                context.CartVouchers.RemoveRange(vouchDb);
-                context.SaveChanges();
-            }
+            var vouchDbs = context.CartVouchers.Where(o => o.ShoppingCart.UserId == userId && o.ShoppingCart.Status == status && o.VoucherMaster.Code == voucherCode);
+            context.CartVouchers.RemoveRange(vouchDbs);
+            context.SaveChanges();
 
             return GetCart();
         }

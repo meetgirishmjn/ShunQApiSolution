@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using BusinessCore.AppHandlers;
-using BusinessCore.AppHandlers.Models;
 using BusinessCore.DataAccess;
 using BusinessCore;
 using BusinessCore.Services;
@@ -21,6 +20,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using BusinessCore.AppHandlers.Contracts;
 
 namespace WebApi
 {
@@ -44,6 +44,8 @@ namespace WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var isProduction = HostingEnvironment.IsProduction();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             //inject IOptions<T>
@@ -51,6 +53,7 @@ namespace WebApi
             // Add our Config object so it can be injected
             services.Configure<AppConfig>(Configuration.GetSection("AppConfig"));
 
+            var appConfig = Configuration.GetSection("AppConfig").Get<AppConfig>();
             services.AddAuthentication("BasicAuthentication")
                 .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
 
@@ -68,12 +71,20 @@ namespace WebApi
 
             var connection = @"data source=(localdb)\MSSQLLocalDB;Initial Catalog=shunqApi-db;Integrated Security=True;MultipleActiveResultSets=False;Connection Timeout=30;";
 
-            if (HostingEnvironment.IsProduction())
+            if (isProduction)
             {
                 connection = @"Server=tcp:shunq-dbserver-dev-v1.database.windows.net,1433;Initial Catalog=shunqApi-db;Persist Security Info=False;User ID=grsadmin;Password=EJBdBpiHJia8FErpu*)OCnTr;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
             }
 
-            services.AddSingleton(typeof(ILoggerManager), typeof(LoggerManager));
+            if (isProduction)
+            {
+                var logger = new AzureLogService(appConfig.LogStorageAccount);
+                logger.EnsureTableExists();
+                services.AddSingleton(typeof(ILoggerManager), logger);
+            }
+            else
+                services.AddSingleton(typeof(ILoggerManager), new MyLocalLogService(AppContext.BaseDirectory+"shunq-logs.txt"));
+
             services.AddSingleton(typeof(IAdminService), new AdminService(connection));
             services.AddTransient(typeof(IMembershipService), typeof(MembershipService));
             services.AddTransient(typeof(IStoreService), typeof(StoreService));
@@ -100,6 +111,9 @@ namespace WebApi
 
                 app.ConfigureGlobaleException();
             }
+
+            //Add  log middleware to the pipeline
+            app.UseMiddleware<RequestLogMiddleware>(appConfig.Value.RequestLogLevel);
 
             if (appConfig.Value.AuthorizationEnabled)
             {

@@ -10,7 +10,7 @@ using System;
 using System.Linq;
 using System.Security.Claims;
 
-namespace WebApi.Controllers
+namespace BusinessCore.AppHandlers
 {
     [ApiController]
     public class BaseController : ControllerBase

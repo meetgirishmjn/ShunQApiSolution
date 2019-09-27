@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using BusinessCore.AppHandlers.Contracts;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
 using System;
 using System.Collections.Generic;
@@ -12,18 +13,24 @@ namespace BusinessCore.AppHandlers
     {
         private readonly RequestDelegate _next;
         private readonly string LoggingLevel;
+        private readonly ILoggerManager logger;
 
-        public RequestLogMiddleware(RequestDelegate next,string loggingLevel)
+        public RequestLogMiddleware(RequestDelegate next, ILoggerManager logger, string loggingLevel)
         {
+            this.logger = logger;
             this.LoggingLevel = loggingLevel;
             _next = next;
         }
 
         public async Task Invoke(HttpContext context)
         {
-            //First, get the incoming request
-            var request = await FormatRequest(context.Request);
-
+            if (this.LoggingLevel == "Request")
+            {
+                //First, get the incoming request
+                var request = await FormatRequest(context.Request);
+                logger.LogInfo("{\"logType\":\"Request\", \"data\":" + request);
+            }
+            
             //remove this line if reponse is logged
             await _next(context);
 
@@ -53,7 +60,7 @@ namespace BusinessCore.AppHandlers
 
         private async Task<string> FormatRequest(HttpRequest request)
         {
-            var body = request.Body;
+            // var body = request.Body;
 
             var sbHeader = new StringBuilder();
             foreach (var head in request.Headers)
@@ -74,7 +81,9 @@ namespace BusinessCore.AppHandlers
             var bodyAsText = Encoding.UTF8.GetString(buffer);
 
             //..and finally, assign the read body back to the request body, which is allowed because of EnableRewind()
-            request.Body = body;
+            //request.Body = body;
+            request.Body.Seek(0, SeekOrigin.Begin);
+            buffer = null;
 
             return $"{request.Scheme} {request.Host}{request.Path} Header:{sbHeader.ToString()} QueryString:{request.QueryString} Body:{bodyAsText}";
         }

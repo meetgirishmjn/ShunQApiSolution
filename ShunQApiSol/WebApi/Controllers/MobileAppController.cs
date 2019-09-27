@@ -10,6 +10,7 @@ using Microsoft.Extensions.Options;
 using BusinessCore;
 using Microsoft.AspNetCore.Authorization;
 using BusinessCore.Services.Models;
+using BusinessCore.AppHandlers;
 
 namespace WebApi.Controllers
 {
@@ -284,7 +285,7 @@ namespace WebApi.Controllers
             setCartImageUrl(cart);
 
             viewModel.IsCartValid = true;
-            viewModel.ValidationCaption = "Cart verify successfully";
+            viewModel.ValidationCaption = "Cart Validation";
             viewModel.ValidationTitle = "Total " + cart.Items.Count + " Items verified.";
 
             var lineItemGroups = cart.Items.GroupBy(o => o.ProductId);

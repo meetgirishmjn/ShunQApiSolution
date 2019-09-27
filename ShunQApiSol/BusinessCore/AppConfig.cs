@@ -11,5 +11,10 @@ namespace BusinessCore
         public string CoreApiEndpoint { get; set; }
         public string ImageSrcEndpoint { get; set; }
         public bool AuthorizationEnabled { get; set; } = true;
+        public bool LoggingEnabled { get; set; }
+        public string LogStorageAccount { get; set; }
+        public string RequestLogLevel { get; set; }
     }
 }
+        
+
