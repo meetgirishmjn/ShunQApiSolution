@@ -274,6 +274,8 @@ namespace WebApi.Controllers
         private CheckoutViewModel getCheckoutViewModel(ShoppingCart cart=null)
         {
             var viewModel = new CheckoutViewModel();
+            
+            viewModel.Currency = CurrencyRef.India;
 
             var cartService = CreateStoreService();
             cart = cart ?? cartService.GetCart();
@@ -285,8 +287,8 @@ namespace WebApi.Controllers
             setCartImageUrl(cart);
 
             viewModel.IsCartValid = true;
-            viewModel.ValidationCaption = "Cart Validation";
-            viewModel.ValidationTitle = "Total " + cart.Items.Count + " Items verified.";
+            viewModel.ValidationCaption = "Total " + cart.Items.Count + " Items verified.";
+            viewModel.ValidationTitle = "Cart Validation";
 
             var lineItemGroups = cart.Items.GroupBy(o => o.ProductId);
             foreach (var grp in lineItemGroups)
@@ -379,9 +381,21 @@ namespace WebApi.Controllers
                 dbStatus = ex.Message + ex.InnerException?.Message;
             }
 
+            var cacheStatus = "";
+            try
+            {
+                Cache.Test();
+                cacheStatus = "ok";
+            }
+            catch (Exception ex)
+            {
+                cacheStatus = ex.Message + ex.InnerException?.Message;
+            }
+
             return new VersionViewModel
             {
                 DbStatus = dbStatus,
+                CacheStatus= cacheStatus,
                 Status = "ok",
                 Version = "1.0.12",
                 VersionDesc= "Verify Otp 1111",

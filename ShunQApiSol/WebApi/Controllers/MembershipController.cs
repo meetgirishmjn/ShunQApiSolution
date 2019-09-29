@@ -160,6 +160,8 @@ namespace WebApi.Controllers
         [HttpGet("user-info")]
         public UserInfo GetCurrentUser()
         {
+            base.EnsureUserAuth();
+
             if (UserId <= 0 || CurrentUser == null)
                 throw new BusinessException("User info not available.");
 

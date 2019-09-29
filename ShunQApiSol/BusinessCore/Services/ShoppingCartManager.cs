@@ -148,7 +148,7 @@ namespace BusinessCore.Services
                 }
 
                 Cart.AmountBeforeVoucherDiscount = Cart.Items.Sum(o => o.Price);
-                foreach (var vouchDb in context.CartVouchers)
+                foreach (var vouchDb in context.CartVouchers.Include(o=>o.VoucherMaster).Where(o=>o.ShoppingCart.Id==objDb.Id))
                 {
                     var vItem = new CartVoucherItem
                     {

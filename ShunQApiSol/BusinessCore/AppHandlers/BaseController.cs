@@ -1,6 +1,7 @@
 ﻿using BusinessCore;
 using BusinessCore.DataAccess.Contracts;
 using BusinessCore.Enums;
+using BusinessCore.Infrastructure.Caching;
 using BusinessCore.Models;
 using BusinessCore.Services;
 using BusinessCore.Services.Contracts;
@@ -30,7 +31,7 @@ namespace BusinessCore.AppHandlers
             this.AppConfig = appConfig.Value;
         }
 
-        private void ensureUserAuth()
+        protected void EnsureUserAuth()
         {
             if (UserId > 0)
                 return;
@@ -62,17 +63,7 @@ namespace BusinessCore.AppHandlers
 
         protected IMembershipService CreateMembershipService()
         {
-            ensureUserAuth();
-            var service = (IMembershipService)serviceProvider.GetService(typeof(IMembershipService));
-            var dtx = (BusinessCore.DataAccess.CoreDbContext)serviceProvider.GetService(typeof(BusinessCore.DataAccess.CoreDbContext));
-            (service as IDataContextable).ContextManager = new BusinessCore.DataAccess.DataContextManager(dtx);
-            (service as IDataContextable).CurrentUser = new BusinessCore.Models.UserIdentity
-            {
-                Id = UserId,
-                Name = UserName,
-                FullName = string.Empty
-            };
-            return service;
+            return CreateService<IMembershipService>();
         }
 
         protected IEmailGateway CreateEmailService()
@@ -82,13 +73,15 @@ namespace BusinessCore.AppHandlers
 
         protected T CreateService<T>()
         {
+            EnsureUserAuth();
             var type = typeof(T);
 
             var service = (T)serviceProvider.GetService(type);
-            var dtx = (BusinessCore.DataAccess.CoreDbContext)serviceProvider.GetService(typeof(BusinessCore.DataAccess.CoreDbContext));
 
-            if (type.IsAssignableFrom(typeof(IDataContextable)))
+            if (service is IDataContextable)
             {
+                var dtx = (BusinessCore.DataAccess.CoreDbContext)serviceProvider.GetService(typeof(BusinessCore.DataAccess.CoreDbContext));
+
                 (service as IDataContextable).ContextManager = new BusinessCore.DataAccess.DataContextManager(dtx);
                 (service as IDataContextable).CurrentUser = new BusinessCore.Models.UserIdentity
                 {
@@ -103,20 +96,16 @@ namespace BusinessCore.AppHandlers
 
         protected IStoreService CreateStoreService()
         {
-            ensureUserAuth();
-
-            var service = (IStoreService)serviceProvider.GetService(typeof(IStoreService));
-            var dtx = (BusinessCore.DataAccess.CoreDbContext)serviceProvider.GetService(typeof(BusinessCore.DataAccess.CoreDbContext));
-            (service as IDataContextable).ContextManager = new BusinessCore.DataAccess.DataContextManager(dtx);
-            (service as IDataContextable).CurrentUser = new BusinessCore.Models.UserIdentity
-            {
-                Id = UserId,
-                Name = UserName,
-                FullName = string.Empty
-            };
-            return service;
+            return CreateService<IStoreService>();
         }
 
+        private ICacheManager _cache;
+        protected ICacheManager Cache { get { return _cache != null ? _cache : CreateCacheService(); } }
+        protected ICacheManager CreateCacheService()
+        {
+            _cache = CreateService<ICacheManager>();
+            return _cache;
+        }
         protected string ReadAppId()
         {
             var appId = "";

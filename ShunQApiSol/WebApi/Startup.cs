@@ -21,6 +21,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using BusinessCore.AppHandlers.Contracts;
+using BusinessCore.Infrastructure.Caching;
 
 namespace WebApi
 {
@@ -45,7 +46,7 @@ namespace WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             var isProduction = HostingEnvironment.IsProduction();
-
+           
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             //inject IOptions<T>
@@ -85,6 +86,7 @@ namespace WebApi
             else
                 services.AddSingleton(typeof(ILoggerManager), new MyLocalLogService(AppContext.BaseDirectory+"shunq-logs.txt"));
 
+            services.AddSingleton(typeof(ICacheManager), new RedisCacheClient(appConfig.RedisConnectionString,appConfig.CachingEnabled));
             services.AddSingleton(typeof(IAdminService), new AdminService(connection));
             services.AddTransient(typeof(IMembershipService), typeof(MembershipService));
             services.AddTransient(typeof(IStoreService), typeof(StoreService));
@@ -123,7 +125,7 @@ namespace WebApi
             {
                 app.Use(async (context, next) =>
                 {
-                    context.User = new System.Security.Claims.ClaimsPrincipal(new System.Security.Claims.ClaimsIdentity(new System.Security.Claims.Claim[] { }, "test"));
+                    context.User = new System.Security.Claims.ClaimsPrincipal(new System.Security.Claims.ClaimsIdentity(Array.Empty<System.Security.Claims.Claim>(), "test"));
                     await next.Invoke();
                 });
             }

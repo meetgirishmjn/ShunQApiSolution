@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BusinessCore.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,7 +22,7 @@ namespace WebApi.ViewModels
         public float TotalVoucherDiscount { get; set; }
         public float OrderTotal { get; set; }
         public float AmountBeforeVoucherDiscount { get; set; }
-
+        public CurrencyRef Currency { get; set; }
         public CheckoutViewModel()
         {
             this.LineItems = new List<LineItem>();

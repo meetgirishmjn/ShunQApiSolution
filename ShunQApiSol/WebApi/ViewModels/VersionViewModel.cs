@@ -12,6 +12,7 @@ namespace WebApi.ViewModels
         public string VersionDesc { get; set; }
         public string Status { get; set; }
         public string DbStatus { get; set; }
+        public string CacheStatus { get; set; }
         public AppConfig AppConfig { get; set; }
         //public Dictionary<string,string> Values { get; set; }
     }

@@ -12,8 +12,11 @@ namespace BusinessCore
         public string ImageSrcEndpoint { get; set; }
         public bool AuthorizationEnabled { get; set; } = true;
         public bool LoggingEnabled { get; set; }
+        public bool CachingEnabled { get; set; }
+        public string RedisConnectionString { get; set; }
         public string LogStorageAccount { get; set; }
         public string RequestLogLevel { get; set; }
+        
     }
 }
         

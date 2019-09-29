@@ -13,7 +13,7 @@ namespace BusinessCore.Models
         public string StoreImage { get; set; }
         public string StoreBannerImage { get; set; }
 
-
+        public CurrencyRef Currency { get; set; }
         public long UserId { get; set; }
         public string Status { get; set; }
         public int ItemCount { get { return Items.Count; } }
@@ -30,6 +30,7 @@ namespace BusinessCore.Models
         public float AmountBeforeVoucherDiscount { get; set; }
         public ShoppingCart()
         {
+            Currency = CurrencyRef.India;
             this.Items = new List<CartItemVM>();
             this.Vouchers = new List<CartVoucherItem>();
         }
