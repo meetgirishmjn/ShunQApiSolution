@@ -399,7 +399,13 @@ namespace WebApi.Controllers
                 Status = "ok",
                 Version = "1.0.12",
                 VersionDesc= "Verify Otp 1111",
-                AppConfig =this.AppConfig
+                AppConfig =this.AppConfig,
+                OS=new
+                {
+                    OSArchitecture = System.Runtime.InteropServices.RuntimeInformation.OSArchitecture.ToString(),
+                    System.Runtime.InteropServices.RuntimeInformation.OSDescription,
+                    System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription,
+                }
             };
         }
     }
