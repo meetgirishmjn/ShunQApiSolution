@@ -24,6 +24,6 @@ stages:
       displayName: Build an image
       inputs:
         command: build
-        dockerfile: 'ShunQApiSol/WebApi/Dockerfile'
+        dockerfile: 'ShunQApiSol/Dockerfile'
         tags: |
           $(tag)
