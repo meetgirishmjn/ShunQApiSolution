@@ -7,8 +7,10 @@ FROM mcr.microsoft.com/dotnet/core/sdk:2.2-stretch AS build
 WORKDIR /src
 COPY ["./WebApi/WebApi.csproj", "./WebApi/"]
 COPY ["./BusinessCore/BusinessCore.csproj", "./BusinessCore/"]
+RUN dotnet restore "BusinessCore/BusinessCore.csproj"
 RUN dotnet restore "WebApi/WebApi.csproj"
-COPY . .
+COPY ["./BusinessCore/", "BusinessCore/"]
+COPY ["./WebApi/", "WebApi/"]
 WORKDIR "/src/WebApi"
 RUN dotnet build "WebApi.csproj" -c Release -o /app/build
 
