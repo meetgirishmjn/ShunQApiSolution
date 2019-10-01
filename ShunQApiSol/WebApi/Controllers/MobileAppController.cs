@@ -397,8 +397,8 @@ namespace WebApi.Controllers
                 DbStatus = dbStatus,
                 CacheStatus= cacheStatus,
                 Status = "ok",
-                Version = "1.0.12",
-                VersionDesc= "Verify Otp 1111",
+                Version = "1.0.1",
+                VersionDesc= "Docker",
                 AppConfig =this.AppConfig,
                 OS=new
                 {
