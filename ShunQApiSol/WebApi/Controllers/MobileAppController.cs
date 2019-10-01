@@ -353,7 +353,7 @@ namespace WebApi.Controllers
             return getCheckoutViewModel(cart);
         }
 
-        [HttpGet("views/searchStores")]
+        [HttpPost("views/searchStores")]
         public SearchStoresViewModel GetSearchStoresViewModel(StoreListModel model)
         {
             var viewModel = new SearchStoresViewModel();
