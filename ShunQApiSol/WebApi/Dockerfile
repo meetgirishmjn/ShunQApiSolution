@@ -5,8 +5,8 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:2.2-stretch AS build
 WORKDIR /src
-COPY ["WebApi/WebApi.csproj", "WebApi/"]
-COPY ["BusinessCore/BusinessCore.csproj", "BusinessCore/"]
+COPY ["./WebApi/WebApi.csproj", "./WebApi/"]
+COPY ["./BusinessCore/BusinessCore.csproj", "./BusinessCore/"]
 RUN dotnet restore "WebApi/WebApi.csproj"
 COPY . .
 WORKDIR "/src/WebApi"
