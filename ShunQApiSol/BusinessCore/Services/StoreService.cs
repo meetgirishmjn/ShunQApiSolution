@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BusinessCore.Services
 {
@@ -196,6 +197,94 @@ namespace BusinessCore.Services
             var index =rand.Next(0, ids.Length);
             var result = GetStore(ids[index]);
             return result;
+        }
+
+        private bool validateCartDeviceEventArg(CartDeviceEventArg arg)
+        {
+
+            arg.AppId = arg.AppId.TrimAll();
+            arg.DeviceId = arg.DeviceId.TrimAll();
+            arg.CartId = arg.CartId.TrimAll();
+            arg.ProductId = arg.ProductId.TrimAll();
+
+            if (arg.AppId.Length == 0)
+                throw new BusinessException("App-Id is required.");
+
+            if (arg.AppId != "App453Avr")
+                throw new BusinessException("Invalid AppId: " + arg.AppId);
+
+            if (arg.DeviceId.Length == 0)
+                throw new BusinessException("Device-Id is required.");
+
+            if (arg.CartId.Length == 0)
+                throw new BusinessException("Cart-Id is required.");
+
+            if (arg.ProductId.Length == 0)
+                throw new BusinessException("Product-Id is required.");
+
+
+            return true;
+
+        }
+
+        public async Task<CartDeviceEventArg> CartDeviceProductAddedAsync(CartDeviceEventArg arg)
+        {
+            var context = ContextManager.GetContext();
+            validateCartDeviceEventArg(arg);
+
+            var id = Guid.NewGuid().ToString();
+            var objDb = new DataAccess.DbModels.CartDeviceLog
+            {
+                Id = id,
+                AppId = arg.AppId,
+                DeviceId = arg.DeviceId,
+                CartId = arg.CartId,
+                CartWeight = arg.CartWeight,
+                ProductId = arg.ProductId,
+                LogType = "ADD",
+                CreatedOn = DateTime.Now,
+                Data = arg.Data
+            };
+
+            context.CartDeviceLogs.Add(objDb);
+
+            await context.SaveChangesAsync();
+
+            arg.Id = objDb.Id;
+            arg.LogType = objDb.LogType;
+            arg.CreatedOn = objDb.CreatedOn;
+
+            return arg;
+        }
+
+        public async Task<CartDeviceEventArg> CartDeviceProductRemovedAsync(CartDeviceEventArg arg)
+        {
+            var context = ContextManager.GetContext();
+            validateCartDeviceEventArg(arg);
+
+            var id = Guid.NewGuid().ToString();
+            var objDb = new DataAccess.DbModels.CartDeviceLog
+            {
+                Id = id,
+                AppId = arg.AppId,
+                DeviceId = arg.DeviceId,
+                CartId = arg.CartId,
+                CartWeight = arg.CartWeight,
+                ProductId = arg.ProductId,
+                LogType = "REMOVE",
+                CreatedOn = DateTime.Now,
+                Data = arg.Data
+            };
+
+            context.CartDeviceLogs.Add(objDb);
+
+            await context.SaveChangesAsync();
+
+            arg.Id = objDb.Id;
+            arg.LogType = objDb.LogType;
+            arg.CreatedOn = objDb.CreatedOn;
+
+            return arg;
         }
     }
 }

@@ -33,6 +33,7 @@ namespace BusinessCore.DataAccess
         public DbSet<OTPCode> OTPCodes { get; set; }
         public DbSet<CartVoucher> CartVouchers { get; set; }
         public DbSet<DiscountVoucherMaster> DiscountVoucherMasters { get; set; }
+        public DbSet<CartDeviceLog> CartDeviceLogs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

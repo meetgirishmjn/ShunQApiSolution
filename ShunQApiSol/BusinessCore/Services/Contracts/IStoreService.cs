@@ -3,6 +3,7 @@ using BusinessCore.Services.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace BusinessCore.Services.Contracts
 {
@@ -24,5 +25,7 @@ namespace BusinessCore.Services.Contracts
         ShoppingCart AddVoucherToCart(string voucherCode);
         ShoppingCart RemoveVoucherToCart(string voucherCode);
         void DiscardCart();
+        Task<CartDeviceEventArg> CartDeviceProductAddedAsync(CartDeviceEventArg arg);
+        Task<CartDeviceEventArg> CartDeviceProductRemovedAsync(CartDeviceEventArg arg);
     }
 }

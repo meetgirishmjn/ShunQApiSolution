@@ -28,6 +28,8 @@ Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "AdminWebApp", "..\AdminWebA
 		SlnRelativePath = "..\AdminWebApp\"
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelementryApi", "TelementryApi\TelementryApi.csproj", "{775DC254-7E69-40C9-9798-2117BCF9E5E1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +48,10 @@ Global
 		{85A9B39A-DE44-4D90-8C83-1BB681F8B560}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{85A9B39A-DE44-4D90-8C83-1BB681F8B560}.Release|Any CPU.ActiveCfg = Debug|Any CPU
 		{85A9B39A-DE44-4D90-8C83-1BB681F8B560}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{775DC254-7E69-40C9-9798-2117BCF9E5E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{775DC254-7E69-40C9-9798-2117BCF9E5E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{775DC254-7E69-40C9-9798-2117BCF9E5E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{775DC254-7E69-40C9-9798-2117BCF9E5E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
