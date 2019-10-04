@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 using BusinessCore;
 using BusinessCore.AppHandlers;
 using BusinessCore.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using TelementryApi.RequestModels;
+using TelementryApi.ResponseModels;
 
 namespace TelementryApi.Controllers
 {
@@ -59,6 +61,50 @@ namespace TelementryApi.Controllers
             await service.CartDeviceProductRemovedAsync(arg);
 
             return Ok("Event logged successfully. Event-Id: " + arg.Id);
+        }
+
+        [HttpGet("Ver")]
+        [AllowAnonymous]
+        public VersionViewModel Ver()
+        {
+            var service = base.CreateStoreService();
+
+            var dbStatus = "ok";
+            try
+            {
+               var flag = service.ReadStores().Any();
+            }
+            catch (Exception ex)
+            {
+                dbStatus = ex.Message + ex.InnerException?.Message;
+            }
+
+            var cacheStatus = "";
+            try
+            {
+                Cache.Test();
+                cacheStatus = "ok";
+            }
+            catch (Exception ex)
+            {
+                cacheStatus = ex.Message + ex.InnerException?.Message;
+            }
+
+            return new VersionViewModel
+            {
+                DbStatus = dbStatus,
+                CacheStatus = cacheStatus,
+                Status = "ok",
+                Version = "1.0.0",
+                VersionDesc = "tele init",
+                AppConfig = this.AppConfig,
+                OS = new
+                {
+                    OSArchitecture = System.Runtime.InteropServices.RuntimeInformation.OSArchitecture.ToString(),
+                    System.Runtime.InteropServices.RuntimeInformation.OSDescription,
+                    System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription,
+                }
+            };
         }
     }
 }
