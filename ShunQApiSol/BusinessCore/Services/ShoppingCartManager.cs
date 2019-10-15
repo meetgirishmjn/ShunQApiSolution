@@ -49,10 +49,30 @@ namespace BusinessCore.Services
         #endregion "temp"
 
 
-        public ShoppingCart CreateCart(int storeId)
+        public ShoppingCart CreateCart(string cartDeviceId)
         {
+
             var context = ContextManager.GetContext();
             var status = (int)ShoppingCartStatus.InProgress;
+
+            //temp
+            if (cartDeviceId == "temp")
+                cartDeviceId = context.CartDeviceMasters.Where(o => o.IsActive).Select(o => o.CartDeviceId).FirstOrDefault();
+            //--
+
+            cartDeviceId = cartDeviceId.TrimAll();
+            if(cartDeviceId.Length==0)
+                throw new BusinessException("Invalid cart-device-id.");
+
+            //take first cart
+            var cartDeviceDb = context.CartDeviceMasters.Where(o => o.CartDeviceId== cartDeviceId).FirstOrDefault();
+            if(cartDeviceDb==null)
+                throw new BusinessException("Cart device not found for: "+ cartDeviceId);
+
+            if(!cartDeviceDb.IsActive)
+                throw new BusinessException("Cart not active. " + cartDeviceDb.StatusRemark);
+
+            var storeId = cartDeviceDb.StoreMasterId;
 
             var storeDb = context.StoreMasters.Where(o => o.IsActive && o.Id == storeId).FirstOrDefault();
             if (storeDb==null)
@@ -65,6 +85,7 @@ namespace BusinessCore.Services
             objDb = new DataAccess.DbModels.ShoppingCart()
             {
                 Id = Guid.NewGuid().ToString(),
+                CartDeviceId= cartDeviceDb.CartDeviceId,
                 CreatedOn = DateTime.Now,
                 Status = (int)ShoppingCartStatus.InProgress,
                 StoreId = storeId,
@@ -77,6 +98,8 @@ namespace BusinessCore.Services
             {
                 Id = objDb.Id,
                 StoreId = storeDb.Id,
+                StoreCode=storeDb.Code,
+                CartDeviceId= cartDeviceDb.CartDeviceId,
                 StoreName = storeDb.Name,
                 StoreImage = storeDb.Image,
                 StoreBannerImage = storeDb.BannerImage,
@@ -278,6 +301,62 @@ namespace BusinessCore.Services
             context.SaveChanges();
         }
 
+        public CartValidationResult ValidateCart(string cartId)
+        {
+            var result = new CartValidationResult();
+
+            var context = ContextManager.GetContext();
+
+            var cartDb = context.ShoppingCarts.Include(o => o.Items).Where(o => o.Id== cartId).Select(o=>new
+            {
+               cartId = o.Id,
+               items =o.Items.ToArray(),
+               o.StoreId
+            }).FirstOrDefault();
+
+            if (cartDb == null || cartDb.items.Length == 0)
+                return new CartValidationResult { Messages = new List<string> { "Cart does not exist or Cart is empty" } };
+
+            var pids = cartDb.items.Select(o => o.ProductId).ToArray();
+            var productLookup = context.PriceMasters.Where(o => pids.Contains(o.ProductId)).AsNoTracking()
+                .Select(o=>new
+                {
+                    o.ProductId,
+                    o.Weight,
+                    o.WeightUnit
+                }).ToLookup(o=>o.ProductId);
+
+            var cartLogs = context.CartDeviceLogs.Where(o => o.ShoppingCartId == cartId).OrderBy(o=>o.CreatedOn).AsNoTracking().ToList();
+            var addLogs = cartLogs.FindAll(o => o.LogType == "ADD");
+            var removeLogs = cartLogs.FindAll(o => o.LogType == "REMOVE");
+            var cartLogSummary = new CartLogSummary
+            {
+                AddedItemCount = addLogs.Count,
+                RemovedItemCount = removeLogs.Count,
+                NetItemCount = addLogs.Count - removeLogs.Count,
+                WeightUnit = "gm"
+            };
+
+            if(cartLogs.Any())
+            {
+                cartLogSummary.CartWeight = cartLogs.Last().CartWeight;
+            }
+            var totalCartItemWeight = 0F;
+            foreach(var itemDb in cartDb.items)
+            {
+                totalCartItemWeight += productLookup[itemDb.ProductId].FirstOrDefault().Weight;
+            }
+
+            if (cartDb.items.Length != cartLogSummary.NetItemCount)
+                result.Messages.Add($"MisMatchedItemCount: {cartDb.items.Length} Item(s) added in App and {cartLogSummary.NetItemCount} Item(s) found in cart.");
+
+            if (totalCartItemWeight != cartLogSummary.CartWeight)
+                result.Messages.Add($"MisMatchedItemWeight: Item(s) weight in App: {totalCartItemWeight} {cartLogSummary.WeightUnit} and Item(s) found in cart:{cartLogSummary.CartWeight} {cartLogSummary.WeightUnit}");
+
+            result.CartSummary = cartLogSummary;
+
+            return result;
+        }
 
     }
 

@@ -16,6 +16,13 @@ namespace BusinessCore.DataAccess.DbModels
         public float Discount { get; set; }
         public string DiscountText { get; set; }
         public float Price { get; set; }
+        
+        public float Weight { get; set; }
+        /// <summary>
+        ///mg, gm, kg
+        /// </summary>
+        public string WeightUnit { get; set; }
+
         public bool IsActive { get; set; }
         public int CompanyId { get; set; }
         public DateTime CreatedOn { get; set; }

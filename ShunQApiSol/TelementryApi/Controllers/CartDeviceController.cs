@@ -23,7 +23,7 @@ namespace TelementryApi.Controllers
         }
 
         [HttpPost("item/add")]
-        public async Task<ActionResult> ItemAdded([FromBody]ItemAddedModel model)
+        public async Task<ActionResult<ItemAddedResult>> ItemAdded([FromBody]ItemAddedModel model)
         {
             var appId = ReadAppId();
             var deviceId = ReadDeviceId();
@@ -33,18 +33,18 @@ namespace TelementryApi.Controllers
             var arg = new CartDeviceEventArg();
             arg.AppId = appId;
             arg.DeviceId = deviceId;
-            arg.CartId = model.CartId;
+            arg.CartDeviceId = model.CartId;
             arg.CartWeight = model.CartWeight;
             arg.ProductId = model.ItemCode;
             
             await service.CartDeviceProductAddedAsync(arg);
 
-            return Ok("Event logged successfully. Event-Id: "+arg.Id);
+            return Ok(new ItemAddedResult { Status = "SUCCESS", EventId = arg.Id });
         }
 
 
         [HttpPost("item/remove")]
-        public async Task<ActionResult> ItemRemoved([FromBody]ItemAddedModel model)
+        public async Task<ActionResult<ItemAddedResult>> ItemRemoved([FromBody]ItemAddedModel model)
         {
             var appId = ReadAppId();
             var deviceId = ReadDeviceId();
@@ -54,13 +54,40 @@ namespace TelementryApi.Controllers
             var arg = new CartDeviceEventArg();
             arg.AppId = appId;
             arg.DeviceId = deviceId;
-            arg.CartId = model.CartId;
+            arg.CartDeviceId = model.CartId;
             arg.CartWeight = model.CartWeight;
             arg.ProductId = model.ItemCode;
 
             await service.CartDeviceProductRemovedAsync(arg);
 
-            return Ok("Event logged successfully. Event-Id: " + arg.Id);
+            return Ok(new ItemAddedResult { Status = "SUCCESS", EventId = arg.Id });
+        }
+
+        [HttpGet("item/logs")]
+        public async Task<List<string>> ReadItemLogs()
+        {
+            var appId = ReadAppId();
+            var deviceId = ReadDeviceId();
+
+            var service = CreateStoreService();
+
+            var results =await service.ReadCartDeviceLogsAsync();
+
+            return results;
+        }
+
+
+        [HttpGet("item/logs/{cartDeviceId}")]
+        public async Task<List<string>> ReadItemLogs(string cartDeviceId)
+        {
+            var appId = ReadAppId();
+            var deviceId = ReadDeviceId();
+
+            var service = CreateStoreService();
+
+            var results = await service.ReadCartDeviceLogsAsync(cartDeviceId);
+
+            return results;
         }
 
         [HttpGet("Ver")]

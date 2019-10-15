@@ -6,7 +6,7 @@ namespace BusinessCore
 {
     public class AppConfig
     {
-        public const string ADMIN_USER_NAME = "Admin";
+        public const string ADMIN_USER_NAME = "meetgirish.mjn@gmail.com";
         public string Environment { get; set; }
         public string CoreApiEndpoint { get; set; }
         public string ImageSrcEndpoint { get; set; }
@@ -16,7 +16,7 @@ namespace BusinessCore
         public string RedisConnectionString { get; set; }
         public string LogStorageAccount { get; set; }
         public string RequestLogLevel { get; set; }
-        
+        public string MerchangePaymentToken { get; set; } = "KTiotDpI;uc85JO4T0G";
     }
 }
         

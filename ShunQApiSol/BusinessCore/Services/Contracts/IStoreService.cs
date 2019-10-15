@@ -14,10 +14,11 @@ namespace BusinessCore.Services.Contracts
         IQueryable<Store> ReadStores(StoreReadOption options);
         Store GetStore(int id);
         Store GetStore(string qrCode);
+        Store GetStoreByDeviceId(string cartDeviceId);
         IQueryable<Store> ReadStores(int categoryId);
         StoreReview StoreReview(int storeId);
         List<StoreReview> StoreReviews(int[] storeIds);
-        ShoppingCart StartShopping(int storeId);
+        ShoppingCart StartShopping(string cartDeviceId);
         ShoppingCart GetCart(string cartId);
         ShoppingCart GetCart();
         ShoppingCart AddItemToCart(string productbarcode);
@@ -27,5 +28,7 @@ namespace BusinessCore.Services.Contracts
         void DiscardCart();
         Task<CartDeviceEventArg> CartDeviceProductAddedAsync(CartDeviceEventArg arg);
         Task<CartDeviceEventArg> CartDeviceProductRemovedAsync(CartDeviceEventArg arg);
+        Task<List<string>> ReadCartDeviceLogsAsync();
+        Task<List<string>> ReadCartDeviceLogsAsync(string cartDeviceId);
     }
 }

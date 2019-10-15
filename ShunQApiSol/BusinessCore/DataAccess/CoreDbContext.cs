@@ -33,6 +33,7 @@ namespace BusinessCore.DataAccess
         public DbSet<OTPCode> OTPCodes { get; set; }
         public DbSet<CartVoucher> CartVouchers { get; set; }
         public DbSet<DiscountVoucherMaster> DiscountVoucherMasters { get; set; }
+        public DbSet<CartDeviceMaster> CartDeviceMasters { get; set; }
         public DbSet<CartDeviceLog> CartDeviceLogs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -271,6 +272,22 @@ namespace BusinessCore.DataAccess
                 new StoreCategoryXref{Id=1022,StoreCategoryId=1005,StoreMasterId=1007 },
                 new StoreCategoryXref{Id=1023,StoreCategoryId=1005,StoreMasterId=1008 }
             });
+
+            var storeDeviceData = new List<CartDeviceMaster>();
+            storeData.ForEach(o =>
+            {
+                for (var c = 0; c < 5; c++)
+                {
+                    storeDeviceData.Add(new CartDeviceMaster
+                    {
+                        StoreMasterId = o.Id,
+                        CartDeviceId = Guid.NewGuid().ToString(),
+                        IsActive = true
+                    });
+                }
+            });
+
+            modelBuilder.Entity<CartDeviceMaster>().HasData(storeDeviceData);
             #endregion
 
             #region "ProductCategory"
@@ -340,6 +357,8 @@ namespace BusinessCore.DataAccess
                     Price = (float)Math.Round(float.Parse(price + "." + paisa), 2),
                     Discount = (float)Math.Round(float.Parse((mrp - price).ToString()), 2),
                     DiscountText = disc + "% Discount",
+                    Weight=100,
+                    WeightUnit="gm",
                     CompanyId = 1,
                     CreatedOn = DateTime.Now,
                     CreatedBy = 1,

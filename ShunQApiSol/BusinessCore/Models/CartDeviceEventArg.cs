@@ -9,7 +9,7 @@ namespace BusinessCore.Models
         public string Id { get; set; }
         public string AppId { get; set; }
         public string DeviceId { get; set; }
-        public string CartId { get; set; }
+        public string CartDeviceId { get; set; }
         public string LogType { get; set; }
         public string ProductId { get; set; }
         public float CartWeight { get; set; }

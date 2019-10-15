@@ -49,7 +49,6 @@ namespace BusinessCore.AppHandlers
             }
             else
             {
-
                 var data = Request.HttpContext.User.Claims.FirstOrDefault(o => o.Type == ClaimTypes.UserData);
                 if (data?.Value != null)//for allowAnonymouse actions
                 {

@@ -123,11 +123,7 @@ namespace WebApi.Controllers
             int.TryParse(code, out storeId);
 
             var service = CreateStoreService();
-            Store store = null;
-          //  if (storeId > 0)
-          //      store = service.GetStore(storeId);
-          //  else
-                store = service.GetStore(code);
+            var store = service.GetStore(code);
 
             if (store==null)
                 throw new BusinessException("Store not found for "+code);
@@ -160,9 +156,15 @@ namespace WebApi.Controllers
         [HttpPost("store/startShopping/{code}")]
         public StoreInfoViewModel StartShopping(string code)
         {
-            var storeVm = GetStoreByCode(code);
+            var cartDeviceId = code;
             var service = CreateStoreService();
-            service.StartShopping(storeVm.StoreId);
+
+            //temp
+            cartDeviceId = "temp";
+
+            var cart  = service.StartShopping(cartDeviceId);
+            var storeVm = GetStoreByCode(cart.StoreCode);
+
             storeVm.HasActiveCart = true;
             return storeVm;
         }
@@ -183,9 +185,7 @@ namespace WebApi.Controllers
         [HttpPost("startCart/{storeId}")]
         public ShoppingCart StartCart(int storeId)
         {
-            var cartService = CreateStoreService();
-            var cart = cartService.StartShopping(storeId);
-            return setCartImageUrl(cart);
+            throw new NotImplementedException("use store/startShopping/");
         }
 
         [HttpGet("getCart")]

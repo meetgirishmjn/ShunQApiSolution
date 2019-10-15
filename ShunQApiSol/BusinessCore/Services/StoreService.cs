@@ -134,9 +134,9 @@ namespace BusinessCore.Services
             return results;
         }
 
-        public ShoppingCart StartShopping(int storeId)
+        public ShoppingCart StartShopping(string cartDeviceId)
         {
-            var cart = shoppingCart.CreateCart(storeId);
+            var cart = shoppingCart.CreateCart(cartDeviceId);
             return cart;
         }
 
@@ -199,12 +199,20 @@ namespace BusinessCore.Services
             return result;
         }
 
+        public Store GetStoreByDeviceId(string cartDeviceId)
+        {
+            var context = ContextManager.GetContext();
+            var storeId = context.CartDeviceMasters.Where(o => o.IsActive && o.CartDeviceId == cartDeviceId).Select(o => o.StoreMasterId).FirstOrDefault();
+            var result = ReadStores().Where(o => o.Id == storeId).FirstOrDefault();
+            return result;
+        }
+
         private bool validateCartDeviceEventArg(CartDeviceEventArg arg)
         {
 
             arg.AppId = arg.AppId.TrimAll();
             arg.DeviceId = arg.DeviceId.TrimAll();
-            arg.CartId = arg.CartId.TrimAll();
+            arg.CartDeviceId = arg.CartDeviceId.TrimAll();
             arg.ProductId = arg.ProductId.TrimAll();
 
             if (arg.AppId.Length == 0)
@@ -216,7 +224,7 @@ namespace BusinessCore.Services
             if (arg.DeviceId.Length == 0)
                 throw new BusinessException("Device-Id is required.");
 
-            if (arg.CartId.Length == 0)
+            if (arg.CartDeviceId.Length == 0)
                 throw new BusinessException("Cart-Id is required.");
 
             if (arg.ProductId.Length == 0)
@@ -232,13 +240,16 @@ namespace BusinessCore.Services
             var context = ContextManager.GetContext();
             validateCartDeviceEventArg(arg);
 
+            var cartId = context.ShoppingCarts.Where(o => o.CartDeviceId == arg.CartDeviceId).Select(o => o.Id).FirstOrDefault();
+         
             var id = Guid.NewGuid().ToString();
             var objDb = new DataAccess.DbModels.CartDeviceLog
             {
                 Id = id,
                 AppId = arg.AppId,
                 DeviceId = arg.DeviceId,
-                CartId = arg.CartId,
+                CartDeviceId = arg.CartDeviceId,
+                ShoppingCartId= cartId,
                 CartWeight = arg.CartWeight,
                 ProductId = arg.ProductId,
                 LogType = "ADD",
@@ -262,13 +273,16 @@ namespace BusinessCore.Services
             var context = ContextManager.GetContext();
             validateCartDeviceEventArg(arg);
 
+            var cartId = context.ShoppingCarts.Where(o => o.CartDeviceId == arg.CartDeviceId).Select(o => o.Id).FirstOrDefault();
+
             var id = Guid.NewGuid().ToString();
             var objDb = new DataAccess.DbModels.CartDeviceLog
             {
                 Id = id,
                 AppId = arg.AppId,
                 DeviceId = arg.DeviceId,
-                CartId = arg.CartId,
+                CartDeviceId = arg.CartDeviceId,
+                ShoppingCartId= cartId,
                 CartWeight = arg.CartWeight,
                 ProductId = arg.ProductId,
                 LogType = "REMOVE",
@@ -286,5 +300,52 @@ namespace BusinessCore.Services
 
             return arg;
         }
+
+        public async Task<List<string>> ReadCartDeviceLogsAsync()
+        {
+            var context = ContextManager.GetContext();
+             var lst = await context.CartDeviceLogs.OrderByDescending(o => o.CreatedOn).Take(100).Select(o => new
+            {
+                o.CartDeviceId,
+                o.CartWeight,
+                o.DeviceId,
+                o.ShoppingCartId,
+                o.LogType,
+                o.ProductId,
+                o.CreatedOn,
+            }).ToListAsync();
+
+            var results = new List<string>();
+            lst.ForEach(o =>
+            {
+                results.Add($"Event:{o.LogType} | Device-Id:{o.DeviceId} | Cart-Device-Id:{o.CartDeviceId}| Shopping-Cart-Id:{o.ShoppingCartId} | Product-Id:{o.ProductId} | Cart-Weight:{o.CartWeight} |  Date-Time:{o.CreatedOn.ToLongDateString() }");
+            });
+
+            return results;
+        }
+
+        public async Task<List<string>> ReadCartDeviceLogsAsync(string cartDeviceId)
+        {
+            var context = ContextManager.GetContext();
+            var lst = await context.CartDeviceLogs.Where(o=>o.DeviceId== cartDeviceId).OrderByDescending(o => o.CreatedOn).Select(o => new
+            {
+                o.CartDeviceId,
+                o.CartWeight,
+                o.DeviceId,
+                o.ShoppingCartId,
+                o.LogType,
+                o.ProductId,
+                o.CreatedOn,
+            }).ToListAsync();
+
+            var results = new List<string>();
+            lst.ForEach(o =>
+            {
+                results.Add($"Event:{o.LogType} | Device-Id:{o.DeviceId} | Cart-Device-Id:{o.CartDeviceId}| Shopping-Cart-Id:{o.ShoppingCartId} | Product-Id:{o.ProductId} | Cart-Weight:{o.CartWeight} |  Date-Time:{o.CreatedOn.ToLongDateString() }");
+            });
+
+            return results;
+        }
+
     }
 }

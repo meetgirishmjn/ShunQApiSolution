@@ -167,7 +167,7 @@ namespace BusinessCore.Migrations
 
                     b.Property<string>("AppId");
 
-                    b.Property<string>("CartId");
+                    b.Property<string>("CartDeviceId");
 
                     b.Property<float>("CartWeight");
 
@@ -181,9 +181,275 @@ namespace BusinessCore.Migrations
 
                     b.Property<string>("ProductId");
 
+                    b.Property<string>("ShoppingCartId");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("CartDeviceId");
+
+                    b.HasIndex("ShoppingCartId");
+
                     b.ToTable("CartDeviceLogs");
+                });
+
+            modelBuilder.Entity("BusinessCore.DataAccess.DbModels.CartDeviceMaster", b =>
+                {
+                    b.Property<string>("CartDeviceId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<string>("StatusRemark");
+
+                    b.Property<int>("StoreMasterId");
+
+                    b.HasKey("CartDeviceId");
+
+                    b.HasIndex("StoreMasterId");
+
+                    b.ToTable("CartDeviceMasters");
+
+                    b.HasData(
+                        new
+                        {
+                            CartDeviceId = "0b433771-7b7b-4b15-a466-cbd0470ddccb",
+                            IsActive = true,
+                            StoreMasterId = 1001
+                        },
+                        new
+                        {
+                            CartDeviceId = "cab55b41-8102-4887-b9ad-a5eaf7a0ea49",
+                            IsActive = true,
+                            StoreMasterId = 1001
+                        },
+                        new
+                        {
+                            CartDeviceId = "28762bab-61f9-4093-b085-3ff1b5aa4751",
+                            IsActive = true,
+                            StoreMasterId = 1001
+                        },
+                        new
+                        {
+                            CartDeviceId = "78fb5769-1550-461b-b6ad-26394061e1c6",
+                            IsActive = true,
+                            StoreMasterId = 1001
+                        },
+                        new
+                        {
+                            CartDeviceId = "9b59d732-9312-44eb-a7f8-5a3c5b5653c6",
+                            IsActive = true,
+                            StoreMasterId = 1001
+                        },
+                        new
+                        {
+                            CartDeviceId = "87f58809-3ddc-40dc-be68-d037d9bef561",
+                            IsActive = true,
+                            StoreMasterId = 1002
+                        },
+                        new
+                        {
+                            CartDeviceId = "e9c143a2-52bc-41a9-a7ef-3f42ae846c04",
+                            IsActive = true,
+                            StoreMasterId = 1002
+                        },
+                        new
+                        {
+                            CartDeviceId = "0a86330a-d22e-4831-8b94-f504e47082f9",
+                            IsActive = true,
+                            StoreMasterId = 1002
+                        },
+                        new
+                        {
+                            CartDeviceId = "775b9a4c-178e-443a-8667-8d390f398ac6",
+                            IsActive = true,
+                            StoreMasterId = 1002
+                        },
+                        new
+                        {
+                            CartDeviceId = "3d8101aa-5086-4476-914e-5f0fda5bd065",
+                            IsActive = true,
+                            StoreMasterId = 1002
+                        },
+                        new
+                        {
+                            CartDeviceId = "90302e2c-57e2-41d7-951c-ea6a7c16e65a",
+                            IsActive = true,
+                            StoreMasterId = 1003
+                        },
+                        new
+                        {
+                            CartDeviceId = "3f3d6781-190f-41fa-afd7-0077db0dc13c",
+                            IsActive = true,
+                            StoreMasterId = 1003
+                        },
+                        new
+                        {
+                            CartDeviceId = "1c3b60c8-e79f-4390-b0c7-c2a849babdab",
+                            IsActive = true,
+                            StoreMasterId = 1003
+                        },
+                        new
+                        {
+                            CartDeviceId = "19ed2817-e400-4565-a9f8-6fe5a255d9e7",
+                            IsActive = true,
+                            StoreMasterId = 1003
+                        },
+                        new
+                        {
+                            CartDeviceId = "b285059f-2c60-4932-82f9-05fe30007de1",
+                            IsActive = true,
+                            StoreMasterId = 1003
+                        },
+                        new
+                        {
+                            CartDeviceId = "2921c541-d4ee-4e19-a355-753463ac8ea0",
+                            IsActive = true,
+                            StoreMasterId = 1004
+                        },
+                        new
+                        {
+                            CartDeviceId = "39c86ca7-72d3-4237-8c3f-c0eb99049f69",
+                            IsActive = true,
+                            StoreMasterId = 1004
+                        },
+                        new
+                        {
+                            CartDeviceId = "d0e4d171-629e-4ff1-917f-499ea57685d9",
+                            IsActive = true,
+                            StoreMasterId = 1004
+                        },
+                        new
+                        {
+                            CartDeviceId = "31f6f23e-85e4-4ee4-9863-f11c7aca0243",
+                            IsActive = true,
+                            StoreMasterId = 1004
+                        },
+                        new
+                        {
+                            CartDeviceId = "9d994da9-56b9-4bb9-a5d9-0a1e1b800320",
+                            IsActive = true,
+                            StoreMasterId = 1004
+                        },
+                        new
+                        {
+                            CartDeviceId = "d6092d5c-7718-4a0e-beae-f2e5c333f7a5",
+                            IsActive = true,
+                            StoreMasterId = 1005
+                        },
+                        new
+                        {
+                            CartDeviceId = "285cba82-ad9b-47d6-a83a-5aca3f7387ad",
+                            IsActive = true,
+                            StoreMasterId = 1005
+                        },
+                        new
+                        {
+                            CartDeviceId = "42b1d418-ab71-4365-ad13-dce1bf4fb3b8",
+                            IsActive = true,
+                            StoreMasterId = 1005
+                        },
+                        new
+                        {
+                            CartDeviceId = "f9a26e63-b57c-4d39-b042-305ec1ae7309",
+                            IsActive = true,
+                            StoreMasterId = 1005
+                        },
+                        new
+                        {
+                            CartDeviceId = "fac8f310-94d5-4dbb-ba5f-250d05c38ef4",
+                            IsActive = true,
+                            StoreMasterId = 1005
+                        },
+                        new
+                        {
+                            CartDeviceId = "ccc219db-c0c7-4b36-862e-8e5111cc88c0",
+                            IsActive = true,
+                            StoreMasterId = 1006
+                        },
+                        new
+                        {
+                            CartDeviceId = "3d5d8032-4b83-4c6a-9f35-58532a3057c0",
+                            IsActive = true,
+                            StoreMasterId = 1006
+                        },
+                        new
+                        {
+                            CartDeviceId = "9772bc8d-7ba5-4e81-8c37-77a7e4e2a4a0",
+                            IsActive = true,
+                            StoreMasterId = 1006
+                        },
+                        new
+                        {
+                            CartDeviceId = "99004754-15fe-48b0-ac14-f7e8037b4bae",
+                            IsActive = true,
+                            StoreMasterId = 1006
+                        },
+                        new
+                        {
+                            CartDeviceId = "ccf658a7-8eb4-4ecf-9b41-f4e4f7ed3bfd",
+                            IsActive = true,
+                            StoreMasterId = 1006
+                        },
+                        new
+                        {
+                            CartDeviceId = "3c2bdae6-f0d2-4b18-a7a4-515347e70b8b",
+                            IsActive = true,
+                            StoreMasterId = 1007
+                        },
+                        new
+                        {
+                            CartDeviceId = "6e6147f0-d45e-4aa2-80ee-3ef396e7bb2e",
+                            IsActive = true,
+                            StoreMasterId = 1007
+                        },
+                        new
+                        {
+                            CartDeviceId = "a8799420-3027-4f34-acd2-4ba99a74e3f2",
+                            IsActive = true,
+                            StoreMasterId = 1007
+                        },
+                        new
+                        {
+                            CartDeviceId = "f0fc2b90-cd1a-472a-bbbb-a4e3fa365b4e",
+                            IsActive = true,
+                            StoreMasterId = 1007
+                        },
+                        new
+                        {
+                            CartDeviceId = "fb4a0cf0-516d-4c0d-9fb3-e327e4109c84",
+                            IsActive = true,
+                            StoreMasterId = 1007
+                        },
+                        new
+                        {
+                            CartDeviceId = "ab76c73e-77ab-4568-bfa3-16911cbf23a5",
+                            IsActive = true,
+                            StoreMasterId = 1008
+                        },
+                        new
+                        {
+                            CartDeviceId = "d12fe427-0f86-495f-b2ae-7a2565f1fc54",
+                            IsActive = true,
+                            StoreMasterId = 1008
+                        },
+                        new
+                        {
+                            CartDeviceId = "8771c880-46f3-43a4-a5e6-1e4e0c736383",
+                            IsActive = true,
+                            StoreMasterId = 1008
+                        },
+                        new
+                        {
+                            CartDeviceId = "3c03b3e2-f4d9-4eae-93f1-efff54f1da7d",
+                            IsActive = true,
+                            StoreMasterId = 1008
+                        },
+                        new
+                        {
+                            CartDeviceId = "7b86dcf7-fbaf-4415-b1bf-c05f3677373b",
+                            IsActive = true,
+                            StoreMasterId = 1008
+                        });
                 });
 
             modelBuilder.Entity("BusinessCore.DataAccess.DbModels.CartVoucher", b =>
@@ -226,21 +492,21 @@ namespace BusinessCore.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "f994b6a6-444f-491e-9c83-d52364f4eab8",
+                            Id = "ceee59e5-13bb-488a-a589-d0cdd5fa8175",
                             Code = "BBVISA200",
                             Description = "Visa Card Offer (New Users) - Extra Rs 200 OFF on Rs 800",
                             Title = "Rs.200 off"
                         },
                         new
                         {
-                            Id = "03a98bd0-c37c-4d6a-873b-1d91c6b11c5e",
+                            Id = "7f87c95f-0274-40a4-ab3e-f0c68b8c2408",
                             Code = "DIP20",
                             Description = "Festival fever – On Order Of Rs.800 & Above",
                             Title = " Flat 20% Off"
                         },
                         new
                         {
-                            Id = "bddd704c-6d7d-42f1-b96c-e9df74e81d5f",
+                            Id = "2b3be70f-705f-4bd2-a7c5-9149d0a77cc3",
                             Code = "ICICIGTSEP",
                             Description = "ICICI Tuesday Offer - Flat 10% OFF on Order of Rs 1500",
                             Title = "10% off"
@@ -327,6 +593,10 @@ namespace BusinessCore.Migrations
 
                     b.Property<DateTime?>("UpdatedOn");
 
+                    b.Property<float>("Weight");
+
+                    b.Property<string>("WeightUnit");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ProductId");
@@ -336,1004 +606,1158 @@ namespace BusinessCore.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "3af843cf-924c-4e2f-a3b8-eaf9b0c3d14b",
+                            Id = "4716e1dc-e350-4045-b6f7-120ae9541d3b",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 89, DateTimeKind.Local).AddTicks(4446),
-                            Discount = 147f,
-                            DiscountText = "10% Discount",
-                            IsActive = true,
-                            MRP = 327.5f,
-                            Price = 180.5f,
-                            ProductId = "1"
-                        },
-                        new
-                        {
-                            Id = "cfe84806-bf1f-4174-86ff-80e7978bce0d",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 89, DateTimeKind.Local).AddTicks(9233),
-                            Discount = 1f,
-                            DiscountText = "5% Discount",
-                            IsActive = true,
-                            MRP = 185.5f,
-                            Price = 184.5f,
-                            ProductId = "2"
-                        },
-                        new
-                        {
-                            Id = "c5cf53f4-bc2a-4906-908d-d1db74cf0c7a",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 89, DateTimeKind.Local).AddTicks(9342),
-                            Discount = 271f,
-                            DiscountText = "8% Discount",
-                            IsActive = true,
-                            MRP = 807.5f,
-                            Price = 536.5f,
-                            ProductId = "3"
-                        },
-                        new
-                        {
-                            Id = "8855909d-91a5-4e18-a907-2fcdc692c784",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 89, DateTimeKind.Local).AddTicks(9387),
-                            Discount = 376f,
-                            DiscountText = "4% Discount",
-                            IsActive = true,
-                            MRP = 476.15f,
-                            Price = 100.15f,
-                            ProductId = "4"
-                        },
-                        new
-                        {
-                            Id = "516cbb7c-18b5-429b-ad17-2a62736f7364",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 89, DateTimeKind.Local).AddTicks(9429),
-                            Discount = 174f,
-                            DiscountText = "3% Discount",
-                            IsActive = true,
-                            MRP = 527.95f,
-                            Price = 353.95f,
-                            ProductId = "5"
-                        },
-                        new
-                        {
-                            Id = "51c833ad-99f0-4378-af74-fb21eb820e2d",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 89, DateTimeKind.Local).AddTicks(9501),
-                            Discount = 627f,
-                            DiscountText = "1% Discount",
-                            IsActive = true,
-                            MRP = 838.3f,
-                            Price = 211.3f,
-                            ProductId = "6"
-                        },
-                        new
-                        {
-                            Id = "07e04c3a-4b4d-46ad-a76f-4d6d6146ca61",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 89, DateTimeKind.Local).AddTicks(9540),
-                            Discount = 375f,
-                            DiscountText = "7% Discount",
-                            IsActive = true,
-                            MRP = 398.9f,
-                            Price = 23.9f,
-                            ProductId = "7"
-                        },
-                        new
-                        {
-                            Id = "77761a79-e712-4214-b162-65416dc2974c",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 89, DateTimeKind.Local).AddTicks(9586),
-                            Discount = 115f,
-                            DiscountText = "10% Discount",
-                            IsActive = true,
-                            MRP = 415.7f,
-                            Price = 300.7f,
-                            ProductId = "8"
-                        },
-                        new
-                        {
-                            Id = "9854ae26-ff8a-489d-8e56-b9684cff14b1",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 89, DateTimeKind.Local).AddTicks(9625),
-                            Discount = 198f,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(839),
+                            Discount = 80f,
                             DiscountText = "6% Discount",
                             IsActive = true,
-                            MRP = 285.6f,
-                            Price = 87.6f,
-                            ProductId = "9"
+                            MRP = 344.3f,
+                            Price = 264.3f,
+                            ProductId = "1",
+                            Weight = 100f,
+                            WeightUnit = "gm"
                         },
                         new
                         {
-                            Id = "c17087f6-ae91-4a5d-9b28-5cbcfc270b18",
+                            Id = "22860899-0769-4348-9a83-1631c57d4a2f",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 89, DateTimeKind.Local).AddTicks(9715),
-                            Discount = 89f,
-                            DiscountText = "1% Discount",
-                            IsActive = true,
-                            MRP = 508.85f,
-                            Price = 419.85f,
-                            ProductId = "10"
-                        },
-                        new
-                        {
-                            Id = "287e74dc-5b06-4f9f-b8df-ae378da69a40",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 89, DateTimeKind.Local).AddTicks(9759),
-                            Discount = 261f,
-                            DiscountText = "6% Discount",
-                            IsActive = true,
-                            MRP = 370.9f,
-                            Price = 109.9f,
-                            ProductId = "11"
-                        },
-                        new
-                        {
-                            Id = "a6aa1d2c-8820-4210-8fba-b31201ccc8eb",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 89, DateTimeKind.Local).AddTicks(9799),
-                            Discount = 18f,
-                            DiscountText = "3% Discount",
-                            IsActive = true,
-                            MRP = 71.45f,
-                            Price = 53.45f,
-                            ProductId = "12"
-                        },
-                        new
-                        {
-                            Id = "20a68682-6bfa-4920-a3f0-9358b1ca6746",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 89, DateTimeKind.Local).AddTicks(9841),
-                            Discount = 223f,
-                            DiscountText = "4% Discount",
-                            IsActive = true,
-                            MRP = 395.8f,
-                            Price = 172.8f,
-                            ProductId = "13"
-                        },
-                        new
-                        {
-                            Id = "45120bf4-d1c6-4060-85bf-fb8044d40f76",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 89, DateTimeKind.Local).AddTicks(9897),
-                            Discount = 76f,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(4922),
+                            Discount = 298f,
                             DiscountText = "7% Discount",
                             IsActive = true,
-                            MRP = 120.55f,
-                            Price = 44.55f,
-                            ProductId = "14"
+                            MRP = 423.35f,
+                            Price = 125.35f,
+                            ProductId = "2",
+                            Weight = 100f,
+                            WeightUnit = "gm"
                         },
                         new
                         {
-                            Id = "2aa48b89-bb67-45bf-a239-c75939fe0bf4",
+                            Id = "da8ac59a-a8ca-497a-a975-fe668b3cbb6d",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(81),
-                            Discount = 478f,
-                            DiscountText = "2% Discount",
-                            IsActive = true,
-                            MRP = 499.1f,
-                            Price = 21.1f,
-                            ProductId = "15"
-                        },
-                        new
-                        {
-                            Id = "fffa4b53-f80a-4e17-af16-8abcedbf2c7e",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(122),
-                            Discount = 89f,
-                            DiscountText = "2% Discount",
-                            IsActive = true,
-                            MRP = 354.15f,
-                            Price = 265.15f,
-                            ProductId = "16"
-                        },
-                        new
-                        {
-                            Id = "858379ea-8b6a-4deb-a914-1c1551f4ec50",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(161),
-                            Discount = 579f,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(4991),
+                            Discount = 161f,
                             DiscountText = "9% Discount",
                             IsActive = true,
-                            MRP = 666.1f,
-                            Price = 87.1f,
-                            ProductId = "17"
+                            MRP = 547.1f,
+                            Price = 386.1f,
+                            ProductId = "3",
+                            Weight = 100f,
+                            WeightUnit = "gm"
                         },
                         new
                         {
-                            Id = "5a80f588-4eb3-40fa-b854-d14ca140474e",
+                            Id = "5e87d208-a716-47ce-a2bd-77d64ef24aec",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(201),
-                            Discount = 366f,
-                            DiscountText = "5% Discount",
-                            IsActive = true,
-                            MRP = 671.2f,
-                            Price = 305.2f,
-                            ProductId = "18"
-                        },
-                        new
-                        {
-                            Id = "39d7d6b1-ca09-4337-b6b6-9e7b18ce7cf4",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(239),
-                            Discount = 415f,
-                            DiscountText = "10% Discount",
-                            IsActive = true,
-                            MRP = 623.7f,
-                            Price = 208.7f,
-                            ProductId = "19"
-                        },
-                        new
-                        {
-                            Id = "855d55fc-7e84-48e9-a956-d29d8e75c956",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(279),
-                            Discount = 283f,
-                            DiscountText = "9% Discount",
-                            IsActive = true,
-                            MRP = 719.55f,
-                            Price = 436.55f,
-                            ProductId = "20"
-                        },
-                        new
-                        {
-                            Id = "6912cdd9-78f4-4a07-a7f2-28467269c70e",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(325),
-                            Discount = 152f,
-                            DiscountText = "4% Discount",
-                            IsActive = true,
-                            MRP = 800.65f,
-                            Price = 648.65f,
-                            ProductId = "21"
-                        },
-                        new
-                        {
-                            Id = "0093513c-bc4b-4338-8126-7a2fab005e41",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(372),
-                            Discount = 184f,
-                            DiscountText = "6% Discount",
-                            IsActive = true,
-                            MRP = 326.95f,
-                            Price = 142.95f,
-                            ProductId = "22"
-                        },
-                        new
-                        {
-                            Id = "1494928a-bc6b-4f84-855b-d19ba15de6cb",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(458),
-                            Discount = 328f,
-                            DiscountText = "4% Discount",
-                            IsActive = true,
-                            MRP = 604.95f,
-                            Price = 276.95f,
-                            ProductId = "23"
-                        },
-                        new
-                        {
-                            Id = "4fdc961e-80e3-4a65-9ab8-042cd84a6ce0",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(501),
-                            Discount = 67f,
-                            DiscountText = "6% Discount",
-                            IsActive = true,
-                            MRP = 696.5f,
-                            Price = 629.5f,
-                            ProductId = "24"
-                        },
-                        new
-                        {
-                            Id = "e00c0cd9-6bf4-416d-b71f-bd60165f5da0",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(544),
-                            Discount = 89f,
-                            DiscountText = "8% Discount",
-                            IsActive = true,
-                            MRP = 168.6f,
-                            Price = 79.6f,
-                            ProductId = "25"
-                        },
-                        new
-                        {
-                            Id = "e825a3de-411b-40c2-b562-d8cb3e064d13",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(584),
-                            Discount = 826f,
-                            DiscountText = "2% Discount",
-                            IsActive = true,
-                            MRP = 875.9f,
-                            Price = 49.9f,
-                            ProductId = "26"
-                        },
-                        new
-                        {
-                            Id = "ec582b3c-cad1-4480-a9e5-65dbdc835a3b",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(623),
-                            Discount = 282f,
-                            DiscountText = "10% Discount",
-                            IsActive = true,
-                            MRP = 940.9f,
-                            Price = 658.9f,
-                            ProductId = "27"
-                        },
-                        new
-                        {
-                            Id = "439256b3-879a-4b9b-9b2b-2d76819f3c93",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(666),
-                            Discount = 350f,
-                            DiscountText = "4% Discount",
-                            IsActive = true,
-                            MRP = 407.75f,
-                            Price = 57.75f,
-                            ProductId = "28"
-                        },
-                        new
-                        {
-                            Id = "13a4fdee-8767-49d4-8aee-5963068be9db",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(870),
-                            Discount = 102f,
-                            DiscountText = "4% Discount",
-                            IsActive = true,
-                            MRP = 194.85f,
-                            Price = 92.85f,
-                            ProductId = "29"
-                        },
-                        new
-                        {
-                            Id = "f8f0b89f-11cb-48e0-95af-8fb8dd116aa8",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(923),
-                            Discount = 351f,
-                            DiscountText = "8% Discount",
-                            IsActive = true,
-                            MRP = 412.55f,
-                            Price = 61.55f,
-                            ProductId = "30"
-                        },
-                        new
-                        {
-                            Id = "9383df5e-c140-47a8-8ffe-6232c61c2393",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(968),
-                            Discount = 76f,
-                            DiscountText = "6% Discount",
-                            IsActive = true,
-                            MRP = 603.25f,
-                            Price = 527.25f,
-                            ProductId = "31"
-                        },
-                        new
-                        {
-                            Id = "53be352d-c5b8-4c6b-b8d3-ae2360546bb2",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(1007),
-                            Discount = 74f,
-                            DiscountText = "1% Discount",
-                            IsActive = true,
-                            MRP = 84.25f,
-                            Price = 10.25f,
-                            ProductId = "32"
-                        },
-                        new
-                        {
-                            Id = "dbe43188-7744-4ca0-830d-00014104f132",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(1085),
-                            Discount = 531f,
-                            DiscountText = "5% Discount",
-                            IsActive = true,
-                            MRP = 758.7f,
-                            Price = 227.7f,
-                            ProductId = "33"
-                        },
-                        new
-                        {
-                            Id = "f87ba88e-031c-49a4-8b4f-c8b201e4469d",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(1129),
-                            Discount = 88f,
-                            DiscountText = "9% Discount",
-                            IsActive = true,
-                            MRP = 822.3f,
-                            Price = 734.3f,
-                            ProductId = "34"
-                        },
-                        new
-                        {
-                            Id = "56322e29-68a9-4bd3-8604-b4e2e5b2170c",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(1170),
-                            Discount = 383f,
-                            DiscountText = "1% Discount",
-                            IsActive = true,
-                            MRP = 639.75f,
-                            Price = 256.75f,
-                            ProductId = "35"
-                        },
-                        new
-                        {
-                            Id = "be9874df-1954-4065-abc7-7c05193b7942",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(1219),
-                            Discount = 123f,
-                            DiscountText = "6% Discount",
-                            IsActive = true,
-                            MRP = 466.6f,
-                            Price = 343.6f,
-                            ProductId = "36"
-                        },
-                        new
-                        {
-                            Id = "65a4a805-9989-4628-9795-ad383d3ac9ef",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(1253),
-                            Discount = 45f,
-                            DiscountText = "3% Discount",
-                            IsActive = true,
-                            MRP = 96.5f,
-                            Price = 51.5f,
-                            ProductId = "37"
-                        },
-                        new
-                        {
-                            Id = "d0bb96b1-2af3-49c8-b58e-e282c7184ce7",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(1302),
-                            Discount = 538f,
-                            DiscountText = "3% Discount",
-                            IsActive = true,
-                            MRP = 563.25f,
-                            Price = 25.25f,
-                            ProductId = "38"
-                        },
-                        new
-                        {
-                            Id = "2fa0de8f-1db3-410c-af87-728bb6565f30",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(1340),
-                            Discount = 306f,
-                            DiscountText = "4% Discount",
-                            IsActive = true,
-                            MRP = 669.5f,
-                            Price = 363.5f,
-                            ProductId = "39"
-                        },
-                        new
-                        {
-                            Id = "5054f892-6292-4ece-bd21-b2972a3020a6",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(1374),
-                            Discount = 21f,
-                            DiscountText = "9% Discount",
-                            IsActive = true,
-                            MRP = 461.5f,
-                            Price = 440.5f,
-                            ProductId = "40"
-                        },
-                        new
-                        {
-                            Id = "350afdf1-2b08-4d99-a073-02e53ea2740b",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(1416),
-                            Discount = 518f,
-                            DiscountText = "1% Discount",
-                            IsActive = true,
-                            MRP = 693.9f,
-                            Price = 175.9f,
-                            ProductId = "41"
-                        },
-                        new
-                        {
-                            Id = "8e871e46-c2d6-4223-ada9-d3536d7078b3",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(1457),
-                            Discount = 653f,
-                            DiscountText = "1% Discount",
-                            IsActive = true,
-                            MRP = 720.15f,
-                            Price = 67.15f,
-                            ProductId = "42"
-                        },
-                        new
-                        {
-                            Id = "8dd83f7a-a15f-48f3-b52a-952acb773b0c",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(1533),
-                            Discount = 260f,
-                            DiscountText = "10% Discount",
-                            IsActive = true,
-                            MRP = 643.3f,
-                            Price = 383.3f,
-                            ProductId = "43"
-                        },
-                        new
-                        {
-                            Id = "dec84638-5bdd-44ee-81d6-be8714060bd8",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(1675),
-                            Discount = 69f,
-                            DiscountText = "8% Discount",
-                            IsActive = true,
-                            MRP = 90.5f,
-                            Price = 21.5f,
-                            ProductId = "44"
-                        },
-                        new
-                        {
-                            Id = "89c069c8-b338-4b66-ac91-af23261c2864",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(1722),
-                            Discount = 274f,
-                            DiscountText = "2% Discount",
-                            IsActive = true,
-                            MRP = 317.85f,
-                            Price = 43.85f,
-                            ProductId = "45"
-                        },
-                        new
-                        {
-                            Id = "a19f2760-4e11-49f5-8aa3-a0f8e8e1ecfa",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(1762),
-                            Discount = 168f,
-                            DiscountText = "2% Discount",
-                            IsActive = true,
-                            MRP = 709.6f,
-                            Price = 541.6f,
-                            ProductId = "46"
-                        },
-                        new
-                        {
-                            Id = "891795c2-a048-4a78-b254-a46c660dc9ed",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(1801),
-                            Discount = 47f,
-                            DiscountText = "7% Discount",
-                            IsActive = true,
-                            MRP = 84.7f,
-                            Price = 37.7f,
-                            ProductId = "47"
-                        },
-                        new
-                        {
-                            Id = "a0d43be6-043a-409b-a12a-b101fdde6e03",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(1837),
-                            Discount = 106f,
-                            DiscountText = "3% Discount",
-                            IsActive = true,
-                            MRP = 552.3f,
-                            Price = 446.3f,
-                            ProductId = "48"
-                        },
-                        new
-                        {
-                            Id = "eb162a9a-9e73-43de-8040-48ec0da38aa5",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(1874),
-                            Discount = 461f,
-                            DiscountText = "10% Discount",
-                            IsActive = true,
-                            MRP = 527.65f,
-                            Price = 66.65f,
-                            ProductId = "49"
-                        },
-                        new
-                        {
-                            Id = "17a1592a-6155-4071-85bd-a08bc39bce23",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(1910),
-                            Discount = 380f,
-                            DiscountText = "8% Discount",
-                            IsActive = true,
-                            MRP = 702.25f,
-                            Price = 322.25f,
-                            ProductId = "50"
-                        },
-                        new
-                        {
-                            Id = "8c374000-9834-4df8-abee-d519561be13c",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(1947),
-                            Discount = 402f,
-                            DiscountText = "7% Discount",
-                            IsActive = true,
-                            MRP = 412.5f,
-                            Price = 10.5f,
-                            ProductId = "51"
-                        },
-                        new
-                        {
-                            Id = "0d0a7e60-5909-4c0a-b0e8-9935a7a9d3e4",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(1986),
-                            Discount = 99f,
-                            DiscountText = "10% Discount",
-                            IsActive = true,
-                            MRP = 133.95f,
-                            Price = 34.95f,
-                            ProductId = "52"
-                        },
-                        new
-                        {
-                            Id = "00913d04-0334-48ce-a593-2186bf364af5",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(2018),
-                            Discount = 391f,
-                            DiscountText = "7% Discount",
-                            IsActive = true,
-                            MRP = 755.5f,
-                            Price = 364.5f,
-                            ProductId = "53"
-                        },
-                        new
-                        {
-                            Id = "15f51d48-c319-4989-9dce-60f627de1b7c",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(2065),
-                            Discount = 593f,
-                            DiscountText = "3% Discount",
-                            IsActive = true,
-                            MRP = 823.35f,
-                            Price = 230.35f,
-                            ProductId = "54"
-                        },
-                        new
-                        {
-                            Id = "a823b5bd-125b-4cd3-b288-bc7cbc7ca6ff",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(2099),
-                            Discount = 58f,
-                            DiscountText = "1% Discount",
-                            IsActive = true,
-                            MRP = 93.9f,
-                            Price = 35.9f,
-                            ProductId = "55"
-                        },
-                        new
-                        {
-                            Id = "a3bcd5ff-5091-49b0-b860-eecd3f8fb5bf",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(2137),
-                            Discount = 99f,
-                            DiscountText = "8% Discount",
-                            IsActive = true,
-                            MRP = 473.35f,
-                            Price = 374.35f,
-                            ProductId = "56"
-                        },
-                        new
-                        {
-                            Id = "a73ac5ac-2cc4-4cbc-aede-d4b04fc7c27d",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(2173),
-                            Discount = 226f,
-                            DiscountText = "5% Discount",
-                            IsActive = true,
-                            MRP = 300.8f,
-                            Price = 74.8f,
-                            ProductId = "57"
-                        },
-                        new
-                        {
-                            Id = "3ec507ef-ce39-4247-8b01-b3b874d1ce31",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(2209),
-                            Discount = 94f,
-                            DiscountText = "2% Discount",
-                            IsActive = true,
-                            MRP = 224.95f,
-                            Price = 130.95f,
-                            ProductId = "58"
-                        },
-                        new
-                        {
-                            Id = "7f65f2f4-82f7-47d6-a8d0-abb34edd1949",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(2336),
-                            Discount = 299f,
-                            DiscountText = "2% Discount",
-                            IsActive = true,
-                            MRP = 351.85f,
-                            Price = 52.85f,
-                            ProductId = "59"
-                        },
-                        new
-                        {
-                            Id = "574a7476-f308-4129-9467-fe77a6ce40a2",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(2377),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(5022),
                             Discount = 124f,
-                            DiscountText = "7% Discount",
-                            IsActive = true,
-                            MRP = 162.7f,
-                            Price = 38.7f,
-                            ProductId = "60"
-                        },
-                        new
-                        {
-                            Id = "a1763a9e-2280-448b-80a1-60ae1d8de4e0",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(2509),
-                            Discount = 375f,
-                            DiscountText = "6% Discount",
-                            IsActive = true,
-                            MRP = 424.85f,
-                            Price = 49.85f,
-                            ProductId = "61"
-                        },
-                        new
-                        {
-                            Id = "5b6aabde-ee59-4a4d-ba7d-ba9e3ca7ca0f",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(2558),
-                            Discount = 6f,
-                            DiscountText = "9% Discount",
-                            IsActive = true,
-                            MRP = 124.1f,
-                            Price = 118.1f,
-                            ProductId = "62"
-                        },
-                        new
-                        {
-                            Id = "8f655722-7d93-40b1-bef8-decb122f7bba",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(2594),
-                            Discount = 867f,
-                            DiscountText = "2% Discount",
-                            IsActive = true,
-                            MRP = 878.25f,
-                            Price = 11.25f,
-                            ProductId = "63"
-                        },
-                        new
-                        {
-                            Id = "7f3884ed-fb9a-43d8-a00e-a86fc54849c7",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(2634),
-                            Discount = 242f,
-                            DiscountText = "6% Discount",
-                            IsActive = true,
-                            MRP = 423.4f,
-                            Price = 181.4f,
-                            ProductId = "64"
-                        },
-                        new
-                        {
-                            Id = "e35b1280-6555-4924-964f-92d1e76f2bd6",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(2673),
-                            Discount = 58f,
-                            DiscountText = "7% Discount",
-                            IsActive = true,
-                            MRP = 261.6f,
-                            Price = 203.6f,
-                            ProductId = "65"
-                        },
-                        new
-                        {
-                            Id = "20b3bd8d-fb10-4e37-b1c2-2dfb23c69692",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(2748),
-                            Discount = 16f,
-                            DiscountText = "4% Discount",
-                            IsActive = true,
-                            MRP = 710.9f,
-                            Price = 694.9f,
-                            ProductId = "66"
-                        },
-                        new
-                        {
-                            Id = "5a572225-8dbc-493a-907b-8cbf46aa3ce4",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(2781),
-                            Discount = 52f,
-                            DiscountText = "1% Discount",
-                            IsActive = true,
-                            MRP = 314.2f,
-                            Price = 262.2f,
-                            ProductId = "67"
-                        },
-                        new
-                        {
-                            Id = "04328c30-a30a-49ba-9946-28b948a5c4fb",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(2807),
-                            Discount = 39f,
                             DiscountText = "8% Discount",
                             IsActive = true,
-                            MRP = 90.7f,
-                            Price = 51.7f,
-                            ProductId = "68"
+                            MRP = 214.4f,
+                            Price = 90.4f,
+                            ProductId = "4",
+                            Weight = 100f,
+                            WeightUnit = "gm"
                         },
                         new
                         {
-                            Id = "4ae2f7da-2161-4dfe-aca9-07bf90ea6e67",
+                            Id = "02fd4359-fb45-42f3-8192-11bef6e07f4a",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(2835),
-                            Discount = 583f,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(5050),
+                            Discount = 86f,
+                            DiscountText = "7% Discount",
+                            IsActive = true,
+                            MRP = 315.4f,
+                            Price = 229.4f,
+                            ProductId = "5",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "0712d864-a1dc-4a06-ae0d-fb68050e000f",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(5085),
+                            Discount = 118f,
                             DiscountText = "10% Discount",
                             IsActive = true,
-                            MRP = 703.9f,
-                            Price = 120.9f,
-                            ProductId = "69"
+                            MRP = 601.3f,
+                            Price = 483.3f,
+                            ProductId = "6",
+                            Weight = 100f,
+                            WeightUnit = "gm"
                         },
                         new
                         {
-                            Id = "3c661a7e-da80-48d7-9837-14244b577d97",
+                            Id = "e1253e7b-1fcc-4c62-a9a2-7eacdd927d6d",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(2972),
-                            Discount = 83f,
-                            DiscountText = "8% Discount",
-                            IsActive = true,
-                            MRP = 263.4f,
-                            Price = 180.4f,
-                            ProductId = "70"
-                        },
-                        new
-                        {
-                            Id = "6022a768-a6ed-4faf-8255-68d3435e82af",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(2999),
-                            Discount = 273f,
-                            DiscountText = "1% Discount",
-                            IsActive = true,
-                            MRP = 369.35f,
-                            Price = 96.35f,
-                            ProductId = "71"
-                        },
-                        new
-                        {
-                            Id = "903ea693-0ceb-4c69-ab81-28a2b1f56ec9",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(3124),
-                            Discount = 97f,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(5117),
+                            Discount = 779f,
                             DiscountText = "5% Discount",
                             IsActive = true,
-                            MRP = 435.25f,
-                            Price = 338.25f,
-                            ProductId = "72"
+                            MRP = 973.55f,
+                            Price = 194.55f,
+                            ProductId = "7",
+                            Weight = 100f,
+                            WeightUnit = "gm"
                         },
                         new
                         {
-                            Id = "f123d010-53fb-4508-a4c1-8ca42fa53583",
+                            Id = "b40a65c4-eebb-48bb-87cd-14897c315ee2",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(3150),
-                            Discount = 250f,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(5146),
+                            Discount = 16f,
+                            DiscountText = "6% Discount",
+                            IsActive = true,
+                            MRP = 26.45f,
+                            Price = 10.45f,
+                            ProductId = "8",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "1e093338-b27a-4095-990d-7ca368160e20",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(5194),
+                            Discount = 73f,
+                            DiscountText = "4% Discount",
+                            IsActive = true,
+                            MRP = 327.95f,
+                            Price = 254.95f,
+                            ProductId = "9",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "26351eef-889c-4275-a81b-ba4369ca219a",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(5225),
+                            Discount = 109f,
+                            DiscountText = "6% Discount",
+                            IsActive = true,
+                            MRP = 392.55f,
+                            Price = 283.55f,
+                            ProductId = "10",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "6c878cb4-027e-47e5-8c56-7f3faff87fa7",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(5252),
+                            Discount = 5f,
                             DiscountText = "5% Discount",
                             IsActive = true,
-                            MRP = 591.9f,
-                            Price = 341.9f,
-                            ProductId = "73"
+                            MRP = 16.25f,
+                            Price = 11.25f,
+                            ProductId = "11",
+                            Weight = 100f,
+                            WeightUnit = "gm"
                         },
                         new
                         {
-                            Id = "725b1c92-54cb-49d4-85eb-6cba89a7e6b4",
+                            Id = "c5da1294-3d46-4ab5-adf2-09bd2efbb29d",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(3173),
-                            Discount = 152f,
-                            DiscountText = "2% Discount",
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(5278),
+                            Discount = 62f,
+                            DiscountText = "4% Discount",
                             IsActive = true,
-                            MRP = 517.4f,
-                            Price = 365.4f,
-                            ProductId = "74"
+                            MRP = 913.25f,
+                            Price = 851.25f,
+                            ProductId = "12",
+                            Weight = 100f,
+                            WeightUnit = "gm"
                         },
                         new
                         {
-                            Id = "3e92e88a-ce05-4a34-bddc-d14c22053e0e",
+                            Id = "9d89c9f6-2bf9-4417-9a54-cb0180da6730",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(3198),
-                            Discount = 518f,
-                            DiscountText = "8% Discount",
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(5305),
+                            Discount = 556f,
+                            DiscountText = "4% Discount",
                             IsActive = true,
-                            MRP = 796.45f,
-                            Price = 278.45f,
-                            ProductId = "75"
+                            MRP = 890.2f,
+                            Price = 334.2f,
+                            ProductId = "13",
+                            Weight = 100f,
+                            WeightUnit = "gm"
                         },
                         new
                         {
-                            Id = "89680df6-caaa-4973-83e9-d31f1cba6577",
+                            Id = "84240b03-6565-44b1-a563-ce3976812e6f",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(3224),
-                            Discount = 783f,
-                            DiscountText = "2% Discount",
-                            IsActive = true,
-                            MRP = 945.3f,
-                            Price = 162.3f,
-                            ProductId = "76"
-                        },
-                        new
-                        {
-                            Id = "ec53df5b-6cd2-44de-a7cc-5f3abdd09627",
-                            CompanyId = 1,
-                            CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 90, DateTimeKind.Local).AddTicks(3253),
-                            Discount = 170f,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(5332),
+                            Discount = 130f,
                             DiscountText = "7% Discount",
                             IsActive = true,
-                            MRP = 232.35f,
-                            Price = 62.35f,
-                            ProductId = "77"
+                            MRP = 445.65f,
+                            Price = 315.65f,
+                            ProductId = "14",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "5c5ea7fb-8e5f-4bc7-9766-58d7804f9115",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(5361),
+                            Discount = 4f,
+                            DiscountText = "4% Discount",
+                            IsActive = true,
+                            MRP = 772.55f,
+                            Price = 768.55f,
+                            ProductId = "15",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "f0750cff-d868-48e0-85c4-d78e5a8fec27",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(5389),
+                            Discount = 675f,
+                            DiscountText = "1% Discount",
+                            IsActive = true,
+                            MRP = 856.25f,
+                            Price = 181.25f,
+                            ProductId = "16",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "76d32a0c-c7c1-4b2b-b38d-810f287d6d4c",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(5518),
+                            Discount = 20f,
+                            DiscountText = "1% Discount",
+                            IsActive = true,
+                            MRP = 183.5f,
+                            Price = 163.5f,
+                            ProductId = "17",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "6e776c9f-91be-4ec5-9d6a-ae2e34aff69a",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(5551),
+                            Discount = 68f,
+                            DiscountText = "1% Discount",
+                            IsActive = true,
+                            MRP = 95.45f,
+                            Price = 27.45f,
+                            ProductId = "18",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "299f9d50-40b7-4e3c-9d48-4f000a6e1899",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(5575),
+                            Discount = 86f,
+                            DiscountText = "3% Discount",
+                            IsActive = true,
+                            MRP = 170.6f,
+                            Price = 84.6f,
+                            ProductId = "19",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "9e747375-cd4a-4eda-9d61-62dd6f71d347",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(5604),
+                            Discount = 96f,
+                            DiscountText = "7% Discount",
+                            IsActive = true,
+                            MRP = 388.3f,
+                            Price = 292.3f,
+                            ProductId = "20",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "f8a33824-66ae-42a6-b271-037d54a155c2",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(5633),
+                            Discount = 676f,
+                            DiscountText = "6% Discount",
+                            IsActive = true,
+                            MRP = 886.5f,
+                            Price = 210.5f,
+                            ProductId = "21",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "325215c8-22f5-468e-9b09-454f33f629ce",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(5660),
+                            Discount = 96f,
+                            DiscountText = "6% Discount",
+                            IsActive = true,
+                            MRP = 629.65f,
+                            Price = 533.65f,
+                            ProductId = "22",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "015e8c7e-db11-4bc0-b95d-5cb3c282f539",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(5690),
+                            Discount = 22f,
+                            DiscountText = "8% Discount",
+                            IsActive = true,
+                            MRP = 105.6f,
+                            Price = 83.6f,
+                            ProductId = "23",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "4c2db037-f941-4cdc-82f6-e6a30e2e259c",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(5716),
+                            Discount = 220f,
+                            DiscountText = "4% Discount",
+                            IsActive = true,
+                            MRP = 339.4f,
+                            Price = 119.4f,
+                            ProductId = "24",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "e2277318-9f77-4371-ba99-deb9637cf45d",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(5747),
+                            Discount = 28f,
+                            DiscountText = "1% Discount",
+                            IsActive = true,
+                            MRP = 266.8f,
+                            Price = 238.8f,
+                            ProductId = "25",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "630e17c9-8dee-4539-a330-a9556f6ec206",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(5774),
+                            Discount = 111f,
+                            DiscountText = "2% Discount",
+                            IsActive = true,
+                            MRP = 869.5f,
+                            Price = 758.5f,
+                            ProductId = "26",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "748175ba-8749-4746-a411-dbadc4fce7a0",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(5798),
+                            Discount = 69f,
+                            DiscountText = "6% Discount",
+                            IsActive = true,
+                            MRP = 354.65f,
+                            Price = 285.65f,
+                            ProductId = "27",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "06ef6123-c934-4b14-956d-7b032070e328",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(5827),
+                            Discount = 273f,
+                            DiscountText = "2% Discount",
+                            IsActive = true,
+                            MRP = 447.95f,
+                            Price = 174.95f,
+                            ProductId = "28",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "3b87e6a0-8738-418c-8b45-6901552a8c31",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(5857),
+                            Discount = 247f,
+                            DiscountText = "4% Discount",
+                            IsActive = true,
+                            MRP = 386.5f,
+                            Price = 139.5f,
+                            ProductId = "29",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "f0c71589-75a5-4c9c-b059-34554468e9f8",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(5888),
+                            Discount = 406f,
+                            DiscountText = "9% Discount",
+                            IsActive = true,
+                            MRP = 674.6f,
+                            Price = 268.6f,
+                            ProductId = "30",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "2924e484-b263-48b2-a4f7-70dc88d14581",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(6006),
+                            Discount = 201f,
+                            DiscountText = "4% Discount",
+                            IsActive = true,
+                            MRP = 372.35f,
+                            Price = 171.35f,
+                            ProductId = "31",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "e2872d60-f833-4761-be80-2d7b86aff19c",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(6035),
+                            Discount = 162f,
+                            DiscountText = "3% Discount",
+                            IsActive = true,
+                            MRP = 444.3f,
+                            Price = 282.3f,
+                            ProductId = "32",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "54584561-d976-46d5-b54d-3a447a4c01a0",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(6066),
+                            Discount = 58f,
+                            DiscountText = "1% Discount",
+                            IsActive = true,
+                            MRP = 115.8f,
+                            Price = 57.8f,
+                            ProductId = "33",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "e1fe1cc8-6e9d-499b-9712-4a5354f5271f",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(6098),
+                            Discount = 275f,
+                            DiscountText = "2% Discount",
+                            IsActive = true,
+                            MRP = 682.5f,
+                            Price = 407.5f,
+                            ProductId = "34",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "9d262670-5ef1-4a58-bc59-2e031db84c14",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(6124),
+                            Discount = 18f,
+                            DiscountText = "4% Discount",
+                            IsActive = true,
+                            MRP = 127.5f,
+                            Price = 109.5f,
+                            ProductId = "35",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "eebc514d-7e44-4cb8-a303-0080f98f27c6",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(6153),
+                            Discount = 148f,
+                            DiscountText = "2% Discount",
+                            IsActive = true,
+                            MRP = 335.8f,
+                            Price = 187.8f,
+                            ProductId = "36",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "d5094367-d1e9-42e4-815d-2861cccbbf7e",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(6180),
+                            Discount = 157f,
+                            DiscountText = "1% Discount",
+                            IsActive = true,
+                            MRP = 620.7f,
+                            Price = 463.7f,
+                            ProductId = "37",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "29f34bfa-e4f8-4986-98e3-ea385602f5fd",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(6205),
+                            Discount = 262f,
+                            DiscountText = "2% Discount",
+                            IsActive = true,
+                            MRP = 991.95f,
+                            Price = 729.95f,
+                            ProductId = "38",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "d02301e8-fe4f-4d42-84bf-e1bb3a84581f",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(6234),
+                            Discount = 258f,
+                            DiscountText = "7% Discount",
+                            IsActive = true,
+                            MRP = 994.85f,
+                            Price = 736.85f,
+                            ProductId = "39",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "6e592e10-9f86-4ba2-8c67-606c702c8fca",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(6261),
+                            Discount = 109f,
+                            DiscountText = "3% Discount",
+                            IsActive = true,
+                            MRP = 538.45f,
+                            Price = 429.45f,
+                            ProductId = "40",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "148c8331-7ac1-4851-9123-a81a228730a1",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(6292),
+                            Discount = 168f,
+                            DiscountText = "9% Discount",
+                            IsActive = true,
+                            MRP = 545.7f,
+                            Price = 377.7f,
+                            ProductId = "41",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "99204e32-6247-4263-814a-2b031193aae0",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(6321),
+                            Discount = 112f,
+                            DiscountText = "4% Discount",
+                            IsActive = true,
+                            MRP = 342.95f,
+                            Price = 230.95f,
+                            ProductId = "42",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "b613c474-49a9-4bd5-ac93-fabc47bdfe9b",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(6350),
+                            Discount = 114f,
+                            DiscountText = "6% Discount",
+                            IsActive = true,
+                            MRP = 178.75f,
+                            Price = 64.75f,
+                            ProductId = "43",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "7eb3c768-0c39-495d-9ba2-9d3ed2be475d",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(6380),
+                            Discount = 82f,
+                            DiscountText = "10% Discount",
+                            IsActive = true,
+                            MRP = 98.8f,
+                            Price = 16.8f,
+                            ProductId = "44",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "3de9576d-86a1-49f7-806b-47f28f7908c0",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(6492),
+                            Discount = 102f,
+                            DiscountText = "7% Discount",
+                            IsActive = true,
+                            MRP = 276.8f,
+                            Price = 174.8f,
+                            ProductId = "45",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "f16f1b81-1ae7-4f0a-8e3a-8852d9364e9c",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(6520),
+                            Discount = 447f,
+                            DiscountText = "9% Discount",
+                            IsActive = true,
+                            MRP = 621.7f,
+                            Price = 174.7f,
+                            ProductId = "46",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "ff620797-7770-4b9a-954e-04cc9e556b9c",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(6544),
+                            Discount = 267f,
+                            DiscountText = "5% Discount",
+                            IsActive = true,
+                            MRP = 331.4f,
+                            Price = 64.4f,
+                            ProductId = "47",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "130ef6be-81c4-4b2a-a232-22e40863181e",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(6573),
+                            Discount = 230f,
+                            DiscountText = "5% Discount",
+                            IsActive = true,
+                            MRP = 933.9f,
+                            Price = 703.9f,
+                            ProductId = "48",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "c8681a11-309c-489d-9ce1-42ef27f71888",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(6607),
+                            Discount = 250f,
+                            DiscountText = "3% Discount",
+                            IsActive = true,
+                            MRP = 606.35f,
+                            Price = 356.35f,
+                            ProductId = "49",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "95f9fc1e-807b-4b03-a79f-a70d5b2a4f95",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(6635),
+                            Discount = 542f,
+                            DiscountText = "4% Discount",
+                            IsActive = true,
+                            MRP = 679.65f,
+                            Price = 137.65f,
+                            ProductId = "50",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "fcfac6e0-5025-43dc-bfde-cebd6452850f",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(6663),
+                            Discount = 308f,
+                            DiscountText = "9% Discount",
+                            IsActive = true,
+                            MRP = 405.95f,
+                            Price = 97.95f,
+                            ProductId = "51",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "b21e4203-ad20-4b26-8cea-cbbd226b7eaa",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(6689),
+                            Discount = 155f,
+                            DiscountText = "8% Discount",
+                            IsActive = true,
+                            MRP = 233.65f,
+                            Price = 78.65f,
+                            ProductId = "52",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "3a7d6478-f12d-42b7-9fb3-55d35a2f2b69",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(6715),
+                            Discount = 119f,
+                            DiscountText = "2% Discount",
+                            IsActive = true,
+                            MRP = 741.9f,
+                            Price = 622.9f,
+                            ProductId = "53",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "1abde162-3481-4568-b43f-d9ad4703be3f",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(6742),
+                            Discount = 43f,
+                            DiscountText = "2% Discount",
+                            IsActive = true,
+                            MRP = 105.9f,
+                            Price = 62.9f,
+                            ProductId = "54",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "5c4000f9-7576-4438-ba65-cdd272368e1a",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(6766),
+                            Discount = 422f,
+                            DiscountText = "7% Discount",
+                            IsActive = true,
+                            MRP = 848.3f,
+                            Price = 426.3f,
+                            ProductId = "55",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "6ccb44dd-472b-42c6-a5ce-0f69bd6ba4ce",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(6793),
+                            Discount = 101f,
+                            DiscountText = "9% Discount",
+                            IsActive = true,
+                            MRP = 179.2f,
+                            Price = 78.2f,
+                            ProductId = "56",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "1795efc0-7845-4160-9dcc-1606e28a2a80",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(6827),
+                            Discount = 684f,
+                            DiscountText = "3% Discount",
+                            IsActive = true,
+                            MRP = 846.4f,
+                            Price = 162.4f,
+                            ProductId = "57",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "0c322c94-8350-4bb6-87b4-68bfa04e2242",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(6855),
+                            Discount = 502f,
+                            DiscountText = "2% Discount",
+                            IsActive = true,
+                            MRP = 790.5f,
+                            Price = 288.5f,
+                            ProductId = "58",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "16731efa-089e-41c6-9eed-3d8d26c48aa4",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(6883),
+                            Discount = 59f,
+                            DiscountText = "3% Discount",
+                            IsActive = true,
+                            MRP = 239.1f,
+                            Price = 180.1f,
+                            ProductId = "59",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "242692d6-8292-4806-b7a3-8bb5f93e3d68",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(6996),
+                            Discount = 368f,
+                            DiscountText = "2% Discount",
+                            IsActive = true,
+                            MRP = 455.4f,
+                            Price = 87.4f,
+                            ProductId = "60",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "67758436-8303-45ca-948f-c91948952045",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(7023),
+                            Discount = 166f,
+                            DiscountText = "3% Discount",
+                            IsActive = true,
+                            MRP = 396.5f,
+                            Price = 230.5f,
+                            ProductId = "61",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "7c9e9eff-c1e4-48e3-b3b8-6e0a89a7f99c",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(7051),
+                            Discount = 258f,
+                            DiscountText = "3% Discount",
+                            IsActive = true,
+                            MRP = 602.1f,
+                            Price = 344.1f,
+                            ProductId = "62",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "8dc34a4b-603d-4ae2-ba70-5d3dacdae4bf",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(7079),
+                            Discount = 468f,
+                            DiscountText = "8% Discount",
+                            IsActive = true,
+                            MRP = 484.1f,
+                            Price = 16.1f,
+                            ProductId = "63",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "04b92eab-124a-4d7e-9f9b-898b2d258316",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(7106),
+                            Discount = 409f,
+                            DiscountText = "8% Discount",
+                            IsActive = true,
+                            MRP = 534.2f,
+                            Price = 125.2f,
+                            ProductId = "64",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "5b78b0dc-478a-4dca-b2d8-7c1f6359e879",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(7140),
+                            Discount = 218f,
+                            DiscountText = "9% Discount",
+                            IsActive = true,
+                            MRP = 372.95f,
+                            Price = 154.95f,
+                            ProductId = "65",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "771e97dc-6f05-4ce8-9a2a-39a50a835dc2",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(7170),
+                            Discount = 64f,
+                            DiscountText = "2% Discount",
+                            IsActive = true,
+                            MRP = 97.5f,
+                            Price = 33.5f,
+                            ProductId = "66",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "f545bed6-c9e3-4f42-9412-80182e7ccabc",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(7195),
+                            Discount = 635f,
+                            DiscountText = "7% Discount",
+                            IsActive = true,
+                            MRP = 696.4f,
+                            Price = 61.4f,
+                            ProductId = "67",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "47c66798-98bf-414c-8368-d1af10110071",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(7222),
+                            Discount = 74f,
+                            DiscountText = "9% Discount",
+                            IsActive = true,
+                            MRP = 260.35f,
+                            Price = 186.35f,
+                            ProductId = "68",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "f46f4387-c0a8-4428-b81b-e1c4fbf138c7",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(7247),
+                            Discount = 123f,
+                            DiscountText = "8% Discount",
+                            IsActive = true,
+                            MRP = 356.65f,
+                            Price = 233.65f,
+                            ProductId = "69",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "2d8bea9b-fb16-43b9-b6e3-0372bf80ed59",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(7273),
+                            Discount = 48f,
+                            DiscountText = "9% Discount",
+                            IsActive = true,
+                            MRP = 208.6f,
+                            Price = 160.6f,
+                            ProductId = "70",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "ebdeccdb-65ea-4e5a-a2f2-ec28cd63e437",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(7302),
+                            Discount = 787f,
+                            DiscountText = "1% Discount",
+                            IsActive = true,
+                            MRP = 955.3f,
+                            Price = 168.3f,
+                            ProductId = "71",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "4ec4320f-2868-47d7-914d-12f7048856ca",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(7330),
+                            Discount = 20f,
+                            DiscountText = "6% Discount",
+                            IsActive = true,
+                            MRP = 565.75f,
+                            Price = 545.75f,
+                            ProductId = "72",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "513369fe-7677-4da0-b210-25750cade8e5",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(7551),
+                            Discount = 670f,
+                            DiscountText = "1% Discount",
+                            IsActive = true,
+                            MRP = 965.5f,
+                            Price = 295.5f,
+                            ProductId = "73",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "73419ec2-e1a5-4f51-8b5d-34a874848764",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(7589),
+                            Discount = 314f,
+                            DiscountText = "10% Discount",
+                            IsActive = true,
+                            MRP = 360.5f,
+                            Price = 46.5f,
+                            ProductId = "74",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "e0e8eda2-9ee4-4d8c-bdb0-3265328e692a",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(8712),
+                            Discount = 78f,
+                            DiscountText = "5% Discount",
+                            IsActive = true,
+                            MRP = 443.15f,
+                            Price = 365.15f,
+                            ProductId = "75",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "2fb49ecd-b338-4547-9337-bcfe0318375d",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(8753),
+                            Discount = 107f,
+                            DiscountText = "8% Discount",
+                            IsActive = true,
+                            MRP = 880.5f,
+                            Price = 773.5f,
+                            ProductId = "76",
+                            Weight = 100f,
+                            WeightUnit = "gm"
+                        },
+                        new
+                        {
+                            Id = "3f94e132-a4df-41ee-b39d-0258122f8340",
+                            CompanyId = 1,
+                            CreatedBy = 1L,
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 528, DateTimeKind.Local).AddTicks(8781),
+                            Discount = 166f,
+                            DiscountText = "9% Discount",
+                            IsActive = true,
+                            MRP = 199.75f,
+                            Price = 33.75f,
+                            ProductId = "77",
+                            Weight = 100f,
+                            WeightUnit = "gm"
                         });
                 });
 
@@ -1396,7 +1820,7 @@ namespace BusinessCore.Migrations
                             Id = 1,
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 81, DateTimeKind.Local).AddTicks(8277),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 516, DateTimeKind.Local).AddTicks(7023),
                             Description = "Soft drinks, coffees, teas, beers, and ales",
                             Name = "Beverages"
                         },
@@ -1405,7 +1829,7 @@ namespace BusinessCore.Migrations
                             Id = 2,
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 82, DateTimeKind.Local).AddTicks(1947),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 516, DateTimeKind.Local).AddTicks(9494),
                             Description = "Sweet and savory sauces, relishes, spreads, and seasonings",
                             Name = "Condiments"
                         },
@@ -1414,7 +1838,7 @@ namespace BusinessCore.Migrations
                             Id = 7,
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 82, DateTimeKind.Local).AddTicks(1982),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 516, DateTimeKind.Local).AddTicks(9526),
                             Description = "Dried fruit and bean curd",
                             Name = "Produce"
                         },
@@ -1423,7 +1847,7 @@ namespace BusinessCore.Migrations
                             Id = 6,
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 82, DateTimeKind.Local).AddTicks(2315),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 516, DateTimeKind.Local).AddTicks(9534),
                             Description = "Prepared meats",
                             Name = "Meat/Poultry"
                         },
@@ -1432,7 +1856,7 @@ namespace BusinessCore.Migrations
                             Id = 8,
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 82, DateTimeKind.Local).AddTicks(2339),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 516, DateTimeKind.Local).AddTicks(9542),
                             Description = "Seaweed and fish",
                             Name = "Seafood"
                         },
@@ -1441,7 +1865,7 @@ namespace BusinessCore.Migrations
                             Id = 4,
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 82, DateTimeKind.Local).AddTicks(2360),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 516, DateTimeKind.Local).AddTicks(9562),
                             Description = "Cheeses",
                             Name = "Dairy Products"
                         },
@@ -1450,7 +1874,7 @@ namespace BusinessCore.Migrations
                             Id = 3,
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 82, DateTimeKind.Local).AddTicks(2453),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 516, DateTimeKind.Local).AddTicks(9569),
                             Description = "Desserts, candies, and sweet breads",
                             Name = "Confections"
                         },
@@ -1459,7 +1883,7 @@ namespace BusinessCore.Migrations
                             Id = 5,
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 82, DateTimeKind.Local).AddTicks(2466),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 516, DateTimeKind.Local).AddTicks(9576),
                             Description = "Breads, crackers, pasta, and cereal",
                             Name = "Grains/Cereals"
                         });
@@ -1989,7 +2413,7 @@ namespace BusinessCore.Migrations
                             Code = "1",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 84, DateTimeKind.Local).AddTicks(7009),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 520, DateTimeKind.Local).AddTicks(1364),
                             Description = "",
                             IsActive = true,
                             Name = "Chai",
@@ -2003,7 +2427,7 @@ namespace BusinessCore.Migrations
                             Code = "2",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(2751),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(3226),
                             Description = "",
                             IsActive = true,
                             Name = "Chang",
@@ -2017,7 +2441,7 @@ namespace BusinessCore.Migrations
                             Code = "3",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(2854),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(3334),
                             Description = "",
                             IsActive = true,
                             Name = "Aniseed Syrup",
@@ -2031,7 +2455,7 @@ namespace BusinessCore.Migrations
                             Code = "4",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(2989),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(3344),
                             Description = "",
                             IsActive = true,
                             Name = "Chef Anton's Cajun Seasoning",
@@ -2045,7 +2469,7 @@ namespace BusinessCore.Migrations
                             Code = "5",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(2999),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(3353),
                             Description = "",
                             IsActive = true,
                             Name = "Chef Anton's Gumbo Mix",
@@ -2059,7 +2483,7 @@ namespace BusinessCore.Migrations
                             Code = "6",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(3019),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(3371),
                             Description = "",
                             IsActive = true,
                             Name = "Grandma's Boysenberry Spread",
@@ -2073,7 +2497,7 @@ namespace BusinessCore.Migrations
                             Code = "7",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(3027),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(3491),
                             Description = "",
                             IsActive = true,
                             Name = "Uncle Bob's Organic Dried Pears",
@@ -2087,7 +2511,7 @@ namespace BusinessCore.Migrations
                             Code = "8",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(3035),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(3500),
                             Description = "",
                             IsActive = true,
                             Name = "Northwoods Cranberry Sauce",
@@ -2101,7 +2525,7 @@ namespace BusinessCore.Migrations
                             Code = "9",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(3044),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(3507),
                             Description = "",
                             IsActive = true,
                             Name = "Mishi Kobe Niku",
@@ -2115,7 +2539,7 @@ namespace BusinessCore.Migrations
                             Code = "10",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(3057),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(3520),
                             Description = "",
                             IsActive = true,
                             Name = "Ikura",
@@ -2129,7 +2553,7 @@ namespace BusinessCore.Migrations
                             Code = "11",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(3066),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(3527),
                             Description = "",
                             IsActive = true,
                             Name = "Queso Cabrales",
@@ -2143,7 +2567,7 @@ namespace BusinessCore.Migrations
                             Code = "12",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(3074),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(3535),
                             Description = "",
                             IsActive = true,
                             Name = "Queso Manchego La Pastora",
@@ -2157,7 +2581,7 @@ namespace BusinessCore.Migrations
                             Code = "13",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(3083),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(3543),
                             Description = "",
                             IsActive = true,
                             Name = "Konbu",
@@ -2171,7 +2595,7 @@ namespace BusinessCore.Migrations
                             Code = "14",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(3092),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(3551),
                             Description = "",
                             IsActive = true,
                             Name = "Tofu",
@@ -2185,7 +2609,7 @@ namespace BusinessCore.Migrations
                             Code = "15",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(3101),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(3560),
                             Description = "",
                             IsActive = true,
                             Name = "Genen Shouyu",
@@ -2199,7 +2623,7 @@ namespace BusinessCore.Migrations
                             Code = "16",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(3110),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(3569),
                             Description = "",
                             IsActive = true,
                             Name = "Pavlova",
@@ -2213,7 +2637,7 @@ namespace BusinessCore.Migrations
                             Code = "17",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(3118),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(3578),
                             Description = "",
                             IsActive = true,
                             Name = "Alice Mutton",
@@ -2227,7 +2651,7 @@ namespace BusinessCore.Migrations
                             Code = "18",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(3130),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(3589),
                             Description = "",
                             IsActive = true,
                             Name = "Carnarvon Tigers",
@@ -2241,7 +2665,7 @@ namespace BusinessCore.Migrations
                             Code = "19",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(3139),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(3598),
                             Description = "",
                             IsActive = true,
                             Name = "Teatime Chocolate Biscuits",
@@ -2255,7 +2679,7 @@ namespace BusinessCore.Migrations
                             Code = "20",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(3147),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(3606),
                             Description = "",
                             IsActive = true,
                             Name = "Sir Rodney's Marmalade",
@@ -2269,7 +2693,7 @@ namespace BusinessCore.Migrations
                             Code = "21",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(3237),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(3616),
                             Description = "",
                             IsActive = true,
                             Name = "Sir Rodney's Scones",
@@ -2283,7 +2707,7 @@ namespace BusinessCore.Migrations
                             Code = "22",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(3247),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(3623),
                             Description = "",
                             IsActive = true,
                             Name = "Gustaf's Knäckebröd",
@@ -2297,7 +2721,7 @@ namespace BusinessCore.Migrations
                             Code = "23",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(3256),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(3631),
                             Description = "",
                             IsActive = true,
                             Name = "Tunnbröd",
@@ -2311,7 +2735,7 @@ namespace BusinessCore.Migrations
                             Code = "24",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(3264),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(3723),
                             Description = "",
                             IsActive = true,
                             Name = "Guaraná Fantástica",
@@ -2325,7 +2749,7 @@ namespace BusinessCore.Migrations
                             Code = "25",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(3273),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(3731),
                             Description = "",
                             IsActive = true,
                             Name = "NuNuCa Nuß-Nougat-Creme",
@@ -2339,7 +2763,7 @@ namespace BusinessCore.Migrations
                             Code = "26",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(3282),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(3739),
                             Description = "",
                             IsActive = true,
                             Name = "Gumbär Gummibärchen",
@@ -2353,7 +2777,7 @@ namespace BusinessCore.Migrations
                             Code = "27",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(3292),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(3746),
                             Description = "",
                             IsActive = true,
                             Name = "Schoggi Schokolade",
@@ -2367,7 +2791,7 @@ namespace BusinessCore.Migrations
                             Code = "28",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(3301),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(3753),
                             Description = "",
                             IsActive = true,
                             Name = "Rössle Sauerkraut",
@@ -2381,7 +2805,7 @@ namespace BusinessCore.Migrations
                             Code = "29",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(3309),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(3761),
                             Description = "",
                             IsActive = true,
                             Name = "Thüringer Rostbratwurst",
@@ -2395,7 +2819,7 @@ namespace BusinessCore.Migrations
                             Code = "30",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(3318),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(3769),
                             Description = "",
                             IsActive = true,
                             Name = "Nord-Ost Matjeshering",
@@ -2409,7 +2833,7 @@ namespace BusinessCore.Migrations
                             Code = "31",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(3329),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(3777),
                             Description = "",
                             IsActive = true,
                             Name = "Gorgonzola Telino",
@@ -2423,7 +2847,7 @@ namespace BusinessCore.Migrations
                             Code = "32",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(3338),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(3786),
                             Description = "",
                             IsActive = true,
                             Name = "Mascarpone Fabioli",
@@ -2437,7 +2861,7 @@ namespace BusinessCore.Migrations
                             Code = "33",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(3346),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(3794),
                             Description = "",
                             IsActive = true,
                             Name = "Geitost",
@@ -2451,7 +2875,7 @@ namespace BusinessCore.Migrations
                             Code = "34",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(3358),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(3806),
                             Description = "",
                             IsActive = true,
                             Name = "Sasquatch Ale",
@@ -2465,7 +2889,7 @@ namespace BusinessCore.Migrations
                             Code = "35",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(3367),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(3814),
                             Description = "",
                             IsActive = true,
                             Name = "Steeleye Stout",
@@ -2479,7 +2903,7 @@ namespace BusinessCore.Migrations
                             Code = "36",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(3376),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(3822),
                             Description = "",
                             IsActive = true,
                             Name = "Inlagd Sill",
@@ -2493,7 +2917,7 @@ namespace BusinessCore.Migrations
                             Code = "37",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(3462),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(3832),
                             Description = "",
                             IsActive = true,
                             Name = "Gravad lax",
@@ -2507,7 +2931,7 @@ namespace BusinessCore.Migrations
                             Code = "38",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(3470),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(3841),
                             Description = "",
                             IsActive = true,
                             Name = "Côte de Blaye",
@@ -2521,7 +2945,7 @@ namespace BusinessCore.Migrations
                             Code = "39",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(3482),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(3849),
                             Description = "",
                             IsActive = true,
                             Name = "Chartreuse verte",
@@ -2535,7 +2959,7 @@ namespace BusinessCore.Migrations
                             Code = "40",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(3492),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(4059),
                             Description = "",
                             IsActive = true,
                             Name = "Boston Crab Meat",
@@ -2549,7 +2973,7 @@ namespace BusinessCore.Migrations
                             Code = "41",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(3502),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(4068),
                             Description = "",
                             IsActive = true,
                             Name = "Jack's New England Clam Chowder",
@@ -2563,7 +2987,7 @@ namespace BusinessCore.Migrations
                             Code = "42",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(3696),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(4075),
                             Description = "",
                             IsActive = true,
                             Name = "Singaporean Hokkien Fried Mee",
@@ -2577,7 +3001,7 @@ namespace BusinessCore.Migrations
                             Code = "43",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(3729),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(4083),
                             Description = "",
                             IsActive = true,
                             Name = "Ipoh Coffee",
@@ -2591,7 +3015,7 @@ namespace BusinessCore.Migrations
                             Code = "44",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(3744),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(4091),
                             Description = "",
                             IsActive = true,
                             Name = "Gula Malacca",
@@ -2605,7 +3029,7 @@ namespace BusinessCore.Migrations
                             Code = "45",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(3756),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(4100),
                             Description = "",
                             IsActive = true,
                             Name = "Rogede sild",
@@ -2619,7 +3043,7 @@ namespace BusinessCore.Migrations
                             Code = "46",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(4085),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(4108),
                             Description = "",
                             IsActive = true,
                             Name = "Spegesild",
@@ -2633,7 +3057,7 @@ namespace BusinessCore.Migrations
                             Code = "47",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(4099),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(4117),
                             Description = "",
                             IsActive = true,
                             Name = "Zaanse koeken",
@@ -2647,7 +3071,7 @@ namespace BusinessCore.Migrations
                             Code = "48",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(4109),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(4124),
                             Description = "",
                             IsActive = true,
                             Name = "Chocolade",
@@ -2661,7 +3085,7 @@ namespace BusinessCore.Migrations
                             Code = "49",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(4118),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(4132),
                             Description = "",
                             IsActive = true,
                             Name = "Maxilaku",
@@ -2675,7 +3099,7 @@ namespace BusinessCore.Migrations
                             Code = "50",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(4127),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(4140),
                             Description = "",
                             IsActive = true,
                             Name = "Valkoinen suklaa",
@@ -2689,7 +3113,7 @@ namespace BusinessCore.Migrations
                             Code = "51",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(4136),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(4148),
                             Description = "",
                             IsActive = true,
                             Name = "Manjimup Dried Apples",
@@ -2703,7 +3127,7 @@ namespace BusinessCore.Migrations
                             Code = "52",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(4145),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(4157),
                             Description = "",
                             IsActive = true,
                             Name = "Filo Mix",
@@ -2717,7 +3141,7 @@ namespace BusinessCore.Migrations
                             Code = "53",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(4153),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(4166),
                             Description = "",
                             IsActive = true,
                             Name = "Perth Pasties",
@@ -2731,7 +3155,7 @@ namespace BusinessCore.Migrations
                             Code = "54",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(4164),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(4175),
                             Description = "",
                             IsActive = true,
                             Name = "Tourtière",
@@ -2745,7 +3169,7 @@ namespace BusinessCore.Migrations
                             Code = "55",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(4173),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(4183),
                             Description = "",
                             IsActive = true,
                             Name = "Pâté chinois",
@@ -2759,7 +3183,7 @@ namespace BusinessCore.Migrations
                             Code = "56",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(4401),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(4191),
                             Description = "",
                             IsActive = true,
                             Name = "Gnocchi di nonna Alice",
@@ -2773,7 +3197,7 @@ namespace BusinessCore.Migrations
                             Code = "57",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(4411),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(4198),
                             Description = "",
                             IsActive = true,
                             Name = "Ravioli Angelo",
@@ -2787,7 +3211,7 @@ namespace BusinessCore.Migrations
                             Code = "58",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(4420),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(4206),
                             Description = "",
                             IsActive = true,
                             Name = "Escargots de Bourgogne",
@@ -2801,7 +3225,7 @@ namespace BusinessCore.Migrations
                             Code = "59",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(4428),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(4300),
                             Description = "",
                             IsActive = true,
                             Name = "Raclette Courdavault",
@@ -2815,7 +3239,7 @@ namespace BusinessCore.Migrations
                             Code = "60",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(4438),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(4308),
                             Description = "",
                             IsActive = true,
                             Name = "Camembert Pierrot",
@@ -2829,7 +3253,7 @@ namespace BusinessCore.Migrations
                             Code = "61",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(4446),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(4318),
                             Description = "",
                             IsActive = true,
                             Name = "Sirop d'érable",
@@ -2843,7 +3267,7 @@ namespace BusinessCore.Migrations
                             Code = "62",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(4455),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(4326),
                             Description = "",
                             IsActive = true,
                             Name = "Tarte au sucre",
@@ -2857,7 +3281,7 @@ namespace BusinessCore.Migrations
                             Code = "63",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(4467),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(4333),
                             Description = "",
                             IsActive = true,
                             Name = "Vegie-spread",
@@ -2871,7 +3295,7 @@ namespace BusinessCore.Migrations
                             Code = "64",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(4475),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(4341),
                             Description = "",
                             IsActive = true,
                             Name = "Wimmers gute Semmelknödel",
@@ -2885,7 +3309,7 @@ namespace BusinessCore.Migrations
                             Code = "65",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(4484),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(4349),
                             Description = "",
                             IsActive = true,
                             Name = "Louisiana Fiery Hot Pepper Sauce",
@@ -2899,7 +3323,7 @@ namespace BusinessCore.Migrations
                             Code = "66",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(4501),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(4363),
                             Description = "",
                             IsActive = true,
                             Name = "Louisiana Hot Spiced Okra",
@@ -2913,7 +3337,7 @@ namespace BusinessCore.Migrations
                             Code = "67",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(4510),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(4372),
                             Description = "",
                             IsActive = true,
                             Name = "Laughing Lumberjack Lager",
@@ -2927,7 +3351,7 @@ namespace BusinessCore.Migrations
                             Code = "68",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(4519),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(4380),
                             Description = "",
                             IsActive = true,
                             Name = "Scottish Longbreads",
@@ -2941,7 +3365,7 @@ namespace BusinessCore.Migrations
                             Code = "69",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(4527),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(4388),
                             Description = "",
                             IsActive = true,
                             Name = "Gudbrandsdalsost",
@@ -2955,7 +3379,7 @@ namespace BusinessCore.Migrations
                             Code = "70",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(4617),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(4397),
                             Description = "",
                             IsActive = true,
                             Name = "Outback Lager",
@@ -2969,7 +3393,7 @@ namespace BusinessCore.Migrations
                             Code = "71",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(4627),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(4404),
                             Description = "",
                             IsActive = true,
                             Name = "Flotemysost",
@@ -2983,7 +3407,7 @@ namespace BusinessCore.Migrations
                             Code = "72",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(4635),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(4413),
                             Description = "",
                             IsActive = true,
                             Name = "Mozzarella di Giovanni",
@@ -2997,7 +3421,7 @@ namespace BusinessCore.Migrations
                             Code = "73",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(4644),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(4504),
                             Description = "",
                             IsActive = true,
                             Name = "Röd Kaviar",
@@ -3011,7 +3435,7 @@ namespace BusinessCore.Migrations
                             Code = "74",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(4653),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(4513),
                             Description = "",
                             IsActive = true,
                             Name = "Longlife Tofu",
@@ -3025,7 +3449,7 @@ namespace BusinessCore.Migrations
                             Code = "75",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(4662),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(4520),
                             Description = "",
                             IsActive = true,
                             Name = "Rhönbräu Klosterbier",
@@ -3039,7 +3463,7 @@ namespace BusinessCore.Migrations
                             Code = "76",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(4671),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(4528),
                             Description = "",
                             IsActive = true,
                             Name = "Lakkalikööri",
@@ -3053,7 +3477,7 @@ namespace BusinessCore.Migrations
                             Code = "77",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 86, DateTimeKind.Local).AddTicks(4679),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 522, DateTimeKind.Local).AddTicks(4535),
                             Description = "",
                             IsActive = true,
                             Name = "Original Frankfurter grüne Soße",
@@ -3099,6 +3523,8 @@ namespace BusinessCore.Migrations
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("CartDeviceId");
 
                     b.Property<int>("CompanyId");
 
@@ -3167,7 +3593,7 @@ namespace BusinessCore.Migrations
                             Id = 1001,
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 15, DateTimeKind.Local).AddTicks(9157),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 358, DateTimeKind.Local).AddTicks(4371),
                             Description = "",
                             Name = "Departmental Stores"
                         },
@@ -3176,7 +3602,7 @@ namespace BusinessCore.Migrations
                             Id = 1002,
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 16, DateTimeKind.Local).AddTicks(338),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 358, DateTimeKind.Local).AddTicks(5729),
                             Description = "",
                             Name = "Grocery"
                         },
@@ -3185,7 +3611,7 @@ namespace BusinessCore.Migrations
                             Id = 1003,
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 16, DateTimeKind.Local).AddTicks(348),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 358, DateTimeKind.Local).AddTicks(5746),
                             Description = "",
                             Name = "Kid Care/Toys"
                         },
@@ -3194,7 +3620,7 @@ namespace BusinessCore.Migrations
                             Id = 1004,
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 16, DateTimeKind.Local).AddTicks(351),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 358, DateTimeKind.Local).AddTicks(5749),
                             Description = "",
                             Name = "Stationery"
                         },
@@ -3203,7 +3629,7 @@ namespace BusinessCore.Migrations
                             Id = 1005,
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 16, DateTimeKind.Local).AddTicks(354),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 358, DateTimeKind.Local).AddTicks(5751),
                             Description = "",
                             Name = "Electronics"
                         });
@@ -3415,7 +3841,7 @@ namespace BusinessCore.Migrations
                             Code = "STR-1",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 17, DateTimeKind.Local).AddTicks(329),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 359, DateTimeKind.Local).AddTicks(7381),
                             Description = "A top company in the category Supermarkets, also known for Mineral Water Dealers, Spice Retailers, Raisin Retailers",
                             Image = "STR-1-Thumb.jpg",
                             IsActive = true,
@@ -3430,7 +3856,7 @@ namespace BusinessCore.Migrations
                             Code = "STR-2",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 17, DateTimeKind.Local).AddTicks(3045),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 360, DateTimeKind.Local).AddTicks(988),
                             Description = "This neighborhood grocery store is committed to delight customers and gauge their success through efficient service and a smile. The friendly store staff are always close at hand to assist you. They have almost all products that you may require on a daily basis. With exclusive offers and best prices, they ensure the customers more than one reason to come back for more. The heart of their core value lies in the commitment toward providing quality service.",
                             Image = "STR-2-Thumb.jpg",
                             IsActive = true,
@@ -3445,7 +3871,7 @@ namespace BusinessCore.Migrations
                             Code = "STR-3",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 17, DateTimeKind.Local).AddTicks(3060),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 360, DateTimeKind.Local).AddTicks(1013),
                             Description = "This neighborhood grocery store is committed to delight customers and gauge their success through efficient service and a smile. The friendly store staff are always close at hand to assist you. They have almost all products that you may require on a daily basis. With exclusive offers and best prices, they ensure the customers more than one reason to come back for more. The heart of their core value lies in the commitment toward providing quality service.",
                             Image = "STR-3-Thumb.jpg",
                             IsActive = true,
@@ -3460,7 +3886,7 @@ namespace BusinessCore.Migrations
                             Code = "STR-4",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 17, DateTimeKind.Local).AddTicks(3063),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 360, DateTimeKind.Local).AddTicks(1017),
                             Description = "DMart is a one stop supermarket chain that aims to offer customers a wide range of basic home and personal products under one roof. Each DMart store stocks home utility products - including food, toiletries, beauty products, garments, kitchenware, bed and bath linen, home appliances and more available at competitive prices that their customers appreciate.",
                             Image = "STR-4-Thumb.jpg",
                             IsActive = true,
@@ -3475,7 +3901,7 @@ namespace BusinessCore.Migrations
                             Code = "STR-5",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 17, DateTimeKind.Local).AddTicks(3065),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 360, DateTimeKind.Local).AddTicks(1019),
                             Description = "One of the most popular supermarket chains of India, they offer an urban shopping environment for all kinds of home and personal care needs. Their stores are a place where one can find groceries, fresh fruits and veggies, confectioneries, personal care items, fashionable clothing for men, women, and kids, and so much more! They are a brand that the consumers trust for their dedication towards quality and providing a seamless shopping experience.",
                             Image = "STR-5-Thumb.jpg",
                             IsActive = true,
@@ -3490,7 +3916,7 @@ namespace BusinessCore.Migrations
                             Code = "STR-6",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 17, DateTimeKind.Local).AddTicks(3072),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 360, DateTimeKind.Local).AddTicks(1026),
                             Description = "This local grocery store is always looking to deliver a unique shopping experience by putting you first. They understand the value of your time and will get you what you are looking for. They have almost all products that you may require on a daily basis. They make products available at low prices resulting in more savings. When it comes to customer value, they have progressed in leaps & bounds.",
                             Image = "STR-6-Thumb.jpg",
                             IsActive = true,
@@ -3505,7 +3931,7 @@ namespace BusinessCore.Migrations
                             Code = "STR-7",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 17, DateTimeKind.Local).AddTicks(3074),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 360, DateTimeKind.Local).AddTicks(1028),
                             Description = "A unique shopping experience by putting you first. The friendly store staff are always close at hand to assist you. They have almost all products that you may require on a daily basis. They make products available at low prices resultingin more savings. The heart of their core values lies in the commitment towards providing quality service.",
                             Image = "STR-7-Thumb.jpg",
                             IsActive = true,
@@ -3520,7 +3946,7 @@ namespace BusinessCore.Migrations
                             Code = "STR-8",
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 17, DateTimeKind.Local).AddTicks(3077),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 360, DateTimeKind.Local).AddTicks(1031),
                             Description = "We understand the value of your time and will get you what you are looking for. They have almost all products that you may require on a daily basis. With exclusive offers and best prices, they ensure the customers more than one reason to come back for more. The heart of their core value lies in the commitment toward providing quality service.",
                             Image = "STR-8-Thumb.jpg",
                             IsActive = true,
@@ -3585,7 +4011,7 @@ namespace BusinessCore.Migrations
                             Id = 1L,
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 11, DateTimeKind.Local).AddTicks(16),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 351, DateTimeKind.Local).AddTicks(4919),
                             Email = "meetgirish.mjn@gmail.com",
                             EmailVerified = true,
                             FirstName = "Girish",
@@ -3597,7 +4023,7 @@ namespace BusinessCore.Migrations
                             LastName = " Mahajan",
                             MobileNumber = "8871384762",
                             MobileVerified = true,
-                            Name = "Admin",
+                            Name = "meetgirish.mjn@gmail.com",
                             Password = "0E37EZvfM10P1jAH1JRpV+OVlsT39xs451MD2WqKcsU=",
                             Props = ""
                         });
@@ -3671,13 +4097,32 @@ namespace BusinessCore.Migrations
                             Id = 1,
                             CompanyId = 1,
                             CreatedBy = 1L,
-                            CreatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 13, DateTimeKind.Local).AddTicks(6767),
+                            CreatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 356, DateTimeKind.Local).AddTicks(4407),
                             IsActive = true,
                             RoleMasterId = 1,
                             UpdatedBy = 1L,
-                            UpdatedOn = new DateTime(2019, 10, 4, 17, 10, 25, 12, DateTimeKind.Local).AddTicks(9419),
+                            UpdatedOn = new DateTime(2019, 10, 11, 17, 27, 21, 356, DateTimeKind.Local).AddTicks(693),
                             UserMasterId = 1L
                         });
+                });
+
+            modelBuilder.Entity("BusinessCore.DataAccess.DbModels.CartDeviceLog", b =>
+                {
+                    b.HasOne("BusinessCore.DataAccess.DbModels.CartDeviceMaster", "CartDevice")
+                        .WithMany()
+                        .HasForeignKey("CartDeviceId");
+
+                    b.HasOne("BusinessCore.DataAccess.DbModels.ShoppingCart", "Cart")
+                        .WithMany()
+                        .HasForeignKey("ShoppingCartId");
+                });
+
+            modelBuilder.Entity("BusinessCore.DataAccess.DbModels.CartDeviceMaster", b =>
+                {
+                    b.HasOne("BusinessCore.DataAccess.DbModels.StoreMaster", "Store")
+                        .WithMany()
+                        .HasForeignKey("StoreMasterId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("BusinessCore.DataAccess.DbModels.CartVoucher", b =>

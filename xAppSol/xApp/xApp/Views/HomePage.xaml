@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:carousel="clr-namespace:Syncfusion.SfCarousel.XForms;assembly=Syncfusion.SfCarousel.XForms"
+             xmlns:local="clr-namespace:xApp.ViewModels"
+             xmlns:behaviour="clr-namespace:xApp.Rederers"
+             xmlns:syncfusion="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
+             xmlns:controls="clr-namespace:CarouselView.FormsPlugin.Abstractions;assembly=CarouselView.FormsPlugin.Abstractions"
+             mc:Ignorable="d"
+             x:Class="xApp.Views.HomePage"
+             Title="ShunQ - Home2"
+             x:Name="BrowseItemsPage">
+    <!--<NavigationPage.TitleView>
+        <Image Source="tab_feed.png"
+               VerticalOptions="CenterAndExpand"
+               HorizontalOptions="CenterAndExpand" />
+    </NavigationPage.TitleView>-->
+    <ContentPage.BindingContext>
+        <local:CarouselViewModel/>
+    </ContentPage.BindingContext>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Color x:Key="Primary">#2196F3</Color>
+            <Color x:Key="Accent">#35464d</Color>
+            <Color x:Key="Accent2">#27383f</Color>
+            <Color x:Key="LightTextColor">#999999</Color>
+
+            <DataTemplate x:Key="itemTemplate">
+                <Grid>
+                    <Image Source="{Binding Image}" 
+                       Aspect="AspectFit"/>
+                </Grid>
+            </DataTemplate>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+  
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+       
+        <ScrollView Grid.Row="0">
+            <StackLayout>
+
+
+                <controls:CarouselViewControl HorizontalOptions="FillAndExpand"  ShowArrows="True"
+                    AnimateTransition="True"  HeightRequest="250" Position="0" ItemsSource="{Binding ImageCollection}"
+                                              ItemTemplate="{StaticResource itemTemplate}" 
+                 >
+                    <controls:CarouselViewControl.Behaviors>
+                        <behaviour:AutoscrollCarouselBehavior />
+                    </controls:CarouselViewControl.Behaviors>
+
+                </controls:CarouselViewControl>
+
+                <Label Text="lll2" FontSize="22" HorizontalOptions="Center" TextColor="Red">
+
+                </Label>
+                <syncfusion:SfListView x:Name="listView" Margin="0" ItemsSource="{Binding ImageCollection}" >
+                    
+                    <syncfusion:SfListView.ItemTemplate>
+                        <DataTemplate>
+                            <Label Text="ggg" FontSize="22" HorizontalOptions="Center" TextColor="Red">
+
+                            </Label>
+                        </DataTemplate>
+                    </syncfusion:SfListView.ItemTemplate>
+                </syncfusion:SfListView>
+                <Label Text="----" FontSize="22" HorizontalOptions="Center" TextColor="Red">
+
+                </Label>
+            </StackLayout>
+
+        </ScrollView>
+        <StackLayout  Grid.Row="1" BackgroundColor="{StaticResource Accent}" VerticalOptions="FillAndExpand" HorizontalOptions="Fill">
+            <StackLayout Orientation="Horizontal" HorizontalOptions="Start" VerticalOptions="Center">
+                <ContentView VerticalOptions="FillAndExpand">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition  Width="Auto"  />
+                            <ColumnDefinition Width="*"   />
+                        </Grid.ColumnDefinitions>
+                        <Label WidthRequest="50" HeightRequest="50" VerticalTextAlignment="Center" FontSize="Medium" HorizontalTextAlignment="Center"  Text="&#xf07a;" FontFamily="{StaticResource FontAwesomeSolid}" TextColor="White" BackgroundColor="{StaticResource Accent2}" Grid.Row="0" Grid.Column="0"></Label>
+                        <StackLayout Grid.Column="1" Orientation="Horizontal"  Padding="50,0,0,0"  HorizontalOptions="Fill" 
+                   VerticalOptions="CenterAndExpand" >
+                            <ContentView HorizontalOptions="Center" >
+                                <Label   Text="Start Shopping" HorizontalTextAlignment="Center" TextColor="White" FontSize="Subtitle" VerticalTextAlignment="Center"  HorizontalOptions="Center"  ></Label>
+
+                            </ContentView>
+                        </StackLayout>
+
+                    </Grid>
+                </ContentView>
+            </StackLayout>
+        </StackLayout>
+    </Grid>
+  
+
+</ContentPage>

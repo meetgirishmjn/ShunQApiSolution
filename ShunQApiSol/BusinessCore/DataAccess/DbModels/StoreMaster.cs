@@ -24,7 +24,6 @@ namespace BusinessCore.DataAccess.DbModels
 
         [ForeignKey("AddressId")]
         public AddressMaster Address { get; set; }
-
     }
 
 
