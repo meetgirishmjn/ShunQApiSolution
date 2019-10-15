@@ -9,11 +9,14 @@ namespace xApp
     public partial class App : Application
     {
         const string SYNCFUSION_LICENSE_KEY = "MTU2NTgxQDMxMzcyZTMzMmUzMFZGUExvMkRXTys5cXliMkc3U2FzRS9IQXE3VVpaY2V4VFBkdDlxa2lCSXM9";
+        public static string BaseImageUrl { get; } = "https://cdn.syncfusion.com/essential-ui-kit-for-xamarin.forms/common/uikitimages/";
         public App()
         {
             Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(SYNCFUSION_LICENSE_KEY);
             InitializeComponent();
 
+            //Application.Current.Resources["Gray-200"] = "#ebecef";
+            //Application.Current.Resources["Gray-900"] = "#333942";
             DependencyService.Register<MockDataStore>();
             MainPage = new AppShell();
         }

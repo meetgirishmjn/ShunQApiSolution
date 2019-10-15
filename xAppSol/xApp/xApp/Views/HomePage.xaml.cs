@@ -8,50 +8,44 @@ using Xamarin.Forms.Xaml;
 using Syncfusion.SfCarousel.XForms;
 using System.Collections.ObjectModel;
 using xApp.ViewModels;
+using xApp.ViewModels.Detail;
+using xApp.Models.Detail;
 
 namespace xApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class HomePage : ContentPage
     {
+        public Uri TImg { get; set; }
         public HomePage()
         {
-            InitializeComponent();
-
-            ObservableCollection<SfCarouselItem> carouselItems = new ObservableCollection<SfCarouselItem>();
-            carouselItems.Add(new SfCarouselItem() { ImageName = "Promo1.png" });
-            carouselItems.Add(new SfCarouselItem() { ImageName = "Promo2.jpg" });
-            carouselItems.Add(new SfCarouselItem() { ImageName = "Promo3.jpg" });
-            carouselItems.Add(new SfCarouselItem() { ImageName = "Promo4.jpg" });
-
-            var carouselModel = new List<CarouselModel>
+            try
             {
-                new CarouselModel("Promo1.png"),
-                new CarouselModel("Promo2.jpg"),
-                new CarouselModel("Promo3.jpg"),
-                new CarouselModel("Promo4.jpg"),
+                this.TImg = new Uri("http://i0.wp.com/vanillicon.com/b41c9603fd56030185e177f2c0e43981_200.png");
+                InitializeComponent();
+
+                var vm = new DetailPageViewModel();
+                vm.Categories = new ObservableCollection<Category>()
+            {
+                new Category
+                {
+                    Icon="tab_feed.png",
+                     Name="Cate 1", }
+                //},
+                //  new Category
+                //{
+                //    Icon="tab_feed.png",
+                //     Name="Cate 3",
+                //}
             };
 
-            //var dataTemplate = new DataTemplate(() =>
-            //{
-            //    var grid = new Grid();
-            //    var nameLabel = new Image();
-            //    nameLabel.SetBinding(Image.SourceProperty, "Image");
-            //    grid.Children.Add(nameLabel);
-            //    return grid;
-            //});
+                this.BindingContext = vm;
+            }
+            catch(Exception ex)
+            {
 
-            //carousel1.ItemWidth = 170;
-            //carousel1.ItemHeight = 200;
-
-            //////carousel1.ItemTemplate = dataTemplate;
-            //carousel1.ItemsSource = carouselModel;
-            //var vm = new CarouselViewModel()
-            //{
-            //    ImageCollection = carouselModel
-            //};
-
-            //this.BindingContext = vm;
+            }
+            
         }
     }
 }

@@ -3,29 +3,59 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:carousel="clr-namespace:Syncfusion.SfCarousel.XForms;assembly=Syncfusion.SfCarousel.XForms"
              xmlns:local="clr-namespace:xApp.ViewModels"
-             xmlns:behaviour="clr-namespace:xApp.Rederers"
-             xmlns:syncfusion="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
-             xmlns:controls="clr-namespace:CarouselView.FormsPlugin.Abstractions;assembly=CarouselView.FormsPlugin.Abstractions"
+              xmlns:controls="clr-namespace:xApp.Controls"
+              xmlns:behavior="clr-namespace:xApp.Behaviors"
+              xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+             xmlns:listView="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
+             xmlns:views="clr-namespace:xApp.Views"
              mc:Ignorable="d"
              x:Class="xApp.Views.HomePage"
-             Title="ShunQ - Home2"
+             Title="ShunQ - Home"
              x:Name="BrowseItemsPage">
     <!--<NavigationPage.TitleView>
         <Image Source="tab_feed.png"
                VerticalOptions="CenterAndExpand"
                HorizontalOptions="CenterAndExpand" />
     </NavigationPage.TitleView>-->
-    <ContentPage.BindingContext>
-        <local:CarouselViewModel/>
-    </ContentPage.BindingContext>
+   
     <ContentPage.Resources>
         <ResourceDictionary>
             <Color x:Key="Primary">#2196F3</Color>
             <Color x:Key="Accent">#35464d</Color>
             <Color x:Key="Accent2">#27383f</Color>
             <Color x:Key="LightTextColor">#999999</Color>
+            <Color x:Key="Transparent">Transparent</Color>
+
+            <Style x:Key="SfListViewStyle" TargetType="listView:SfListView">
+                <Setter Property="BackgroundColor" Value="{StaticResource Gray-White}" />
+                <Setter Property="FocusBorderThickness" Value="0" />
+                <Setter Property="SelectionBackgroundColor" Value="Transparent" />
+                <Setter Property="IsScrollBarVisible" Value="False" />
+                <Setter Property="VerticalOptions" Value="FillAndExpand" />
+            </Style>
+
+            
+            <Style x:Key="IconButtonStyle" TargetType="buttons:SfButton">
+                <Setter Property="TextColor" Value="{DynamicResource Gray-600}" />
+                <Setter Property="BackgroundColor" Value="{StaticResource Transparent}" />
+                <Setter Property="FontFamily" Value="{StaticResource FontIcons}" />
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+                <Setter Property="VerticalTextAlignment" Value="Center" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="HeightRequest" Value="40" />
+                <Setter Property="WidthRequest" Value="40" />
+            </Style>
+
+            <!--  Common style for SfButtons  -->
+            <Style x:Key="SfButtonStyle" TargetType="buttons:SfButton">
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="TextColor" Value="{DynamicResource Gray-700}" />
+                <Setter Property="FontFamily" Value="Montserrat-Regular" />
+                <Setter Property="FontSize" Value="16" />
+            </Style>
 
             <DataTemplate x:Key="itemTemplate">
                 <Grid>
@@ -46,33 +76,99 @@
         <ScrollView Grid.Row="0">
             <StackLayout>
 
+                <views:HomePage_Slider></views:HomePage_Slider>
 
-                <controls:CarouselViewControl HorizontalOptions="FillAndExpand"  ShowArrows="True"
-                    AnimateTransition="True"  HeightRequest="250" Position="0" ItemsSource="{Binding ImageCollection}"
-                                              ItemTemplate="{StaticResource itemTemplate}" 
-                 >
-                    <controls:CarouselViewControl.Behaviors>
-                        <behaviour:AutoscrollCarouselBehavior />
-                    </controls:CarouselViewControl.Behaviors>
 
-                </controls:CarouselViewControl>
+                <Image
+                                Aspect="AspectFill"
+                                BackgroundColor="{StaticResource Gray-200}"
+                                HeightRequest="150"                              
+                                WidthRequest="160">
+                    <Image.Source>
+                        <UriImageSource CachingEnabled="False"  Uri="http://i0.wp.com/vanillicon.com/b41c9603fd56030185e177f2c0e43981_200.png" />
+                    </Image.Source>
+                </Image>
+                
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
 
-                <Label Text="lll2" FontSize="22" HorizontalOptions="Center" TextColor="Red">
+                    <!--  Title View  -->
+                    <controls:TitleView Title="Categories" Grid.Row="0">
+                        <controls:TitleView.TrailingView>
+                            <StackLayout HorizontalOptions="End" Orientation="Horizontal">
+                                <buttons:SfButton
+                            
+                            CornerRadius="4"
+                            Style="{StaticResource IconButtonStyle}"
+                            Text="{StaticResource Bell}" />
+                            </StackLayout>
+                        </controls:TitleView.TrailingView>
+                    </controls:TitleView>
 
-                </Label>
-                <syncfusion:SfListView x:Name="listView" Margin="0" ItemsSource="{Binding ImageCollection}" >
-                    
-                    <syncfusion:SfListView.ItemTemplate>
-                        <DataTemplate>
-                            <Label Text="ggg" FontSize="22" HorizontalOptions="Center" TextColor="Red">
+                    <!--  ListView for Category  -->
+                    <listView:SfListView
+                x:Name="CategoryTile"
+                Grid.Row="1"
+                Padding="8"
+                AutoFitMode="Height"
+                HorizontalOptions="FillAndExpand"
+                ItemSpacing="8"
+                ItemsSource="{Binding Categories}"
+                Style="{StaticResource SfListViewStyle}">
 
-                            </Label>
-                        </DataTemplate>
-                    </syncfusion:SfListView.ItemTemplate>
-                </syncfusion:SfListView>
-                <Label Text="----" FontSize="22" HorizontalOptions="Center" TextColor="Red">
+                        <!--<listView:SfListView.Behaviors>
+                            <behavior:SfListViewTapBehavior Command="{Binding Path=BindingContext.CategorySelectedCommand, Source={x:Reference categoryPage}}"/>
+                        </listView:SfListView.Behaviors>-->
 
-                </Label>
+                        <listView:SfListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid RowSpacing="8">
+
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+
+                                    <!--  Category Image  -->
+                                    <Image
+                                Grid.Row="0"
+                                Aspect="AspectFill"
+                                BackgroundColor="{StaticResource Gray-200}"
+                                HeightRequest="150"                              
+                                WidthRequest="160">
+                                        <Image.Source>
+                                            <FileImageSource File="{Binding Icon}" />
+                                        </Image.Source>
+                                    </Image>
+
+                                    <!--  Category Name  -->
+                                    <Label
+                                Grid.Row="1"
+                                Margin="0,0,0,8"
+                                FontFamily="{StaticResource Montserrat-SemiBold}"
+                                FontSize="14"
+                                HorizontalOptions="Center"
+                                HorizontalTextAlignment="Center"
+                                LineHeight="{OnPlatform Default=-1,
+                                                        Android=1.5}"
+                                Text="{Binding Name}"
+                                TextColor="{StaticResource Gray-900}" />
+
+                                </Grid>
+                            </DataTemplate>
+                        </listView:SfListView.ItemTemplate>
+
+                        <!--  Layout to customize no. of columns in SfListView  -->
+                        <listView:SfListView.LayoutManager>
+                            <listView:GridLayout SpanCount="2" />
+                        </listView:SfListView.LayoutManager>
+
+                    </listView:SfListView>
+
+                </Grid>
             </StackLayout>
 
         </ScrollView>
