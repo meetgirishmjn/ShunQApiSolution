@@ -29,14 +29,24 @@ namespace xApp.Views
             {
                 new Category
                 {
-                    Icon="tab_feed.png",
-                     Name="Cate 1", }
-                //},
-                //  new Category
-                //{
-                //    Icon="tab_feed.png",
-                //     Name="Cate 3",
-                //}
+                    Icon="https://cdn0storage0shunq0dev.blob.core.windows.net/images/Promos/Cat1.jpg",
+                     Name="Cate 1",
+                },
+                  new Category
+                {
+                   Icon="https://cdn0storage0shunq0dev.blob.core.windows.net/images/Promos/Cat2.jpg",
+                     Name="Cate 2",
+                },
+                   new Category
+                {
+                    Icon="https://cdn0storage0shunq0dev.blob.core.windows.net/images/Promos/Cat3.jpg",
+                     Name="Cate 3",
+                },
+                  new Category
+                {
+                   Icon="https://cdn0storage0shunq0dev.blob.core.windows.net/images/Promos/Cat4.jpg",
+                     Name="Cate 4",
+                }
             };
 
                 this.BindingContext = vm;
