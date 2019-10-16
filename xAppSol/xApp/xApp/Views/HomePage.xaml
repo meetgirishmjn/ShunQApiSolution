@@ -10,6 +10,7 @@
              xmlns:listView="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
              xmlns:views="clr-namespace:xApp.Views"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:badge="clr-namespace:Syncfusion.XForms.BadgeView;assembly=Syncfusion.SfBadgeView.XForms"
              mc:Ignorable="d"
              x:Class="xApp.Views.HomePage"
              Title="ShunQ - Home"
@@ -78,7 +79,37 @@
             <StackLayout>
 
                 <views:HomePage_Slider></views:HomePage_Slider>
-                 
+
+                <ScrollView x:Name="scrollView" HorizontalScrollBarVisibility="Never">
+                    <ScrollView.Resources>
+                        <ResourceDictionary>
+                            <Style TargetType="Label">
+                                <Setter Property="Margin" Value="15,0"/>
+                            </Style>
+                        </ResourceDictionary>
+                    </ScrollView.Resources>
+
+                    <StackLayout  x:Name="mainStack" Orientation="Vertical"  BackgroundColor="{StaticResource Gray-200}" HorizontalOptions="FillAndExpand" Margin="5">
+                       
+
+                        <Grid  HeightRequest="70"
+                      >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Image Source="tab_about.png" Grid.Column="0"  Grid.Row="0"></Image>
+                            <Image Source="tab_about.png" Grid.Column="1"  Grid.Row="0"></Image>
+                            <Image Source="tab_about.png" Grid.Column="2"  Grid.Row="0"></Image>
+                        </Grid>
+                    </StackLayout>
+                    
+                </ScrollView>
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
@@ -164,25 +195,24 @@
 
         </ScrollView>
         <StackLayout  Grid.Row="1" BackgroundColor="{StaticResource Accent}" VerticalOptions="FillAndExpand" HorizontalOptions="Fill">
-            <StackLayout Orientation="Horizontal" HorizontalOptions="Start" VerticalOptions="Center">
-                <ContentView VerticalOptions="FillAndExpand">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition  Width="Auto"  />
-                            <ColumnDefinition Width="*"   />
-                        </Grid.ColumnDefinitions>
-                        <Label WidthRequest="50" HeightRequest="50" VerticalTextAlignment="Center" FontSize="Medium" HorizontalTextAlignment="Center"  Text="&#xf07a;" FontFamily="{StaticResource FontAwesomeSolid}" TextColor="White" BackgroundColor="{StaticResource Accent2}" Grid.Row="0" Grid.Column="0"></Label>
-                        <StackLayout Grid.Column="1" Orientation="Horizontal"  Padding="50,0,0,0"  HorizontalOptions="Fill" 
-                   VerticalOptions="CenterAndExpand" >
-                            <ContentView HorizontalOptions="Center" >
-                                <Label   Text="Start Shopping" HorizontalTextAlignment="Center" TextColor="White" FontSize="Subtitle" VerticalTextAlignment="Center"  HorizontalOptions="Center"  ></Label>
-
-                            </ContentView>
-                        </StackLayout>
-
-                    </Grid>
-                </ContentView>
-            </StackLayout>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition  Width="Auto"  />
+                    <ColumnDefinition Width="*"     />
+                </Grid.ColumnDefinitions>
+                <StackLayout BackgroundColor="{StaticResource Accent2}" WidthRequest="50" HeightRequest="50" Grid.Row="0" Grid.Column="0">
+                    <badge:SfBadgeView BadgeText=""  >
+                        <badge:SfBadgeView.BadgeSettings>
+                            <badge:BadgeSetting   BadgePosition="TopRight"/>
+                        </badge:SfBadgeView.BadgeSettings>
+                        <badge:SfBadgeView.Content >
+                            <Label  VerticalTextAlignment="Center" HeightRequest="50" FontSize="Medium" HorizontalTextAlignment="Center"  Text="&#xf07a;" FontFamily="{StaticResource FontAwesomeSolid}" TextColor="White" >
+                            </Label>
+                        </badge:SfBadgeView.Content>
+                    </badge:SfBadgeView>
+                </StackLayout>
+                <Button Clicked="OnStartShoppingClicked" Text="Start Shopping" WidthRequest="50" HeightRequest="50" ContentLayout="Right,0" Image="arrow_32.ico"  Grid.Column="1" TextColor="White" BackgroundColor="{StaticResource Accent}"   HorizontalOptions="FillAndExpand" />
+            </Grid>
         </StackLayout>
     </Grid>
   

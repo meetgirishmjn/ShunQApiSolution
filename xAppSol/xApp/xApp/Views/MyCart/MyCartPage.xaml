@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+               xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
+             x:Class="xApp.Views.MyCart.MyCartPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <BoxView Grid.Row="0" BackgroundColor="Chocolate"/>
+                <zxing:ZXingScannerView Grid.Row="1" x:Name="_scanView" OnScanResult="Handle_OnScanResult" 
+                                WidthRequest="200" HeightRequest="200" />
+                <zxing:ZXingDefaultOverlay x:Name="overlay" Grid.Row="1" IsVisible="{Binding Source={x:Reference _scanView},Path=IsScanning}"
+                                       TopText = "Hold your phone up to the barcode"
+                                       BottomText = ""
+                                       ShowFlashButton="False"
+                                       FlashButtonClicked="overlay_FlashButtonClicked"/>
+                
+                <StackLayout Grid.Row="2" BackgroundColor="Blue" >
+                    <Button Text="Start" Clicked="Button1_Clicked" ></Button>
+                    <Button Text="Stop" Clicked="Button2_Clicked" ></Button>
+                    <Label Text="{Binding Source={x:Reference _scanView},Path=IsScanning,Mode=TwoWay}" TextColor="White" ></Label>
+                </StackLayout>
+            </Grid>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

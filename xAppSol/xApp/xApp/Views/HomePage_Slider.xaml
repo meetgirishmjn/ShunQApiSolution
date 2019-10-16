@@ -52,6 +52,7 @@
                     NavigationStripMode="Dots"
                     SelectedDotColor="{StaticResource Blue}"
                     UnselectedDotColor="{StaticResource Gray-200}"
+                    HeightRequest="200"
                     VerticalOptions="Start" />
 
         </ContentView>

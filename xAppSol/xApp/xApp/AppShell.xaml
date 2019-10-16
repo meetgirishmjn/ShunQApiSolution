@@ -68,13 +68,13 @@
             <Tab.Icon>
                 <FontImageSource FontFamily="{StaticResource FontAwesomeSolid}" Glyph="&#xf07a;" />
             </Tab.Icon>
-            <ShellContent ContentTemplate="{DataTemplate local:AboutPage}" />
+            <ShellContent ContentTemplate="{DataTemplate local:MyCart.MyCartPage}" />
         </Tab>
         <Tab Title="Category">
             <Tab.Icon>
                 <FontImageSource FontFamily="{StaticResource FontAwesomeSolid}" Glyph="&#xf46d;" />
             </Tab.Icon>
-            <ShellContent ContentTemplate="{DataTemplate local:AboutPage}" />
+            <ShellContent ContentTemplate="{DataTemplate local:Store.StoreScanPage}" />
         </Tab>
     </TabBar>
 

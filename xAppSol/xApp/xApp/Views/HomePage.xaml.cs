@@ -10,6 +10,7 @@ using System.Collections.ObjectModel;
 using xApp.ViewModels;
 using xApp.ViewModels.Detail;
 using xApp.Models.Detail;
+using xApp.Views.Store;
 
 namespace xApp.Views
 {
@@ -56,6 +57,11 @@ namespace xApp.Views
 
             }
             
+        }
+
+        private void OnStartShoppingClicked(object sender, EventArgs e)
+        {
+            App.Current.MainPage =  new NavigationPage(new StoreScanPage());
         }
     }
 }
