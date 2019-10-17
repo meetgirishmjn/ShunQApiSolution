@@ -21,7 +21,14 @@ namespace xApp.Views.Store
             {
                 InitializeComponent();
                 renderScannerImage();
-                this.ProfileImage.Source = App.BaseImageUrl + "ContactProfileImage.png";
+                //this.ProfileImage.Source = App.BaseImageUrl + "ContactProfileImage.png";
+                this.ProfileImage.Source = "store_1001.jpg";
+                Task.Run(async () =>
+                {
+                    await Task.Delay(2000);
+                    var context = this.BindingContext as ContactProfileViewModel;
+                    context.IsLoading = false;
+                });
             }
             catch(Exception ex)
             {
@@ -62,20 +69,11 @@ namespace xApp.Views.Store
                 HorizontalOptions = LayoutOptions.FillAndExpand,
                 VerticalOptions = LayoutOptions.FillAndExpand,
                 AutomationId = "zxingScannerView",
+                IsScanning=true,
+                IsAnalyzing=true
             };
 
-            zxingView.OnScanResult += (result) =>
-               Device.BeginInvokeOnMainThread(async () => {
-
-                   // Stop analysis until we navigate away so we don't keep reading barcodes
-                   zxingView.IsAnalyzing = false;
-
-                    // Show an alert
-                    await DisplayAlert("Scanned Barcode", result.Text, "OK");
-
-                    // Navigate away
-                  //  await Navigation.PopAsync();
-               });
+            zxingView.OnScanResult += OnScanResult;
 
             zxingOverlay = new ZXingDefaultOverlay
             {
@@ -97,6 +95,27 @@ namespace xApp.Views.Store
 
             ScannerContainer.Children.Add(zxingView);
             ScannerContainer.Children.Add(zxingOverlay);
+        }
+
+        bool isAnalysing = false;
+       public void OnScanResult(Result result)
+        {
+            if (isAnalysing)
+                return;
+
+            Device.BeginInvokeOnMainThread(async () => {
+
+                if (!isAnalysing)
+                {
+                    isAnalysing = true;
+                    // Show an alert
+                    await DisplayAlert("Scanned Barcode", result.Text, "OK");
+                    isAnalysing = false;
+                }
+
+                // Navigate away
+                //  await Navigation.PopAsync();
+            });
         }
 
         private void OnScanReturn_Clicked(object sender, EventArgs e)

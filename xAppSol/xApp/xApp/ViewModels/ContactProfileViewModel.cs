@@ -33,6 +33,7 @@ namespace xApp.ViewModels
                 this.NotifyPropertyChanged();
             }
         }
+        
 
         /// <summary>
         /// Gets or sets the property that has been bound with view, which displays the Favourite.
@@ -50,6 +51,27 @@ namespace xApp.ViewModels
             }
         }
 
+        private bool isLoading=true;
+        public bool IsLoading
+        {
+            get
+            {
+                return this.isLoading;
+            }
+            set
+            {
+                this.isLoading = value;
+                this.NotifyPropertyChanged();
+                this.NotifyPropertyChanged(nameof(IsNotLoading));
+            }
+        }
+        public bool IsNotLoading
+        {
+            get
+            {
+                return !this.isLoading;
+            }
+        }
         #region Field
 
         private ObservableCollection<ContactProfile> profileInfo;

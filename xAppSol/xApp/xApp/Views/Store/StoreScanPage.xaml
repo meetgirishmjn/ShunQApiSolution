@@ -10,13 +10,23 @@
        xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
               xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
     xmlns:viewModel="clr-namespace:xApp.ViewModels"
-    BackgroundColor="{DynamicResource Gray-White}"
+             xmlns:busyindicator="clr-namespace:Syncfusion.SfBusyIndicator.XForms;assembly=Syncfusion.SfBusyIndicator.XForms"
+             BackgroundColor="{DynamicResource Gray-White}"
             Title="Store Shop2"
              x:Class="xApp.Views.Store.StoreScanPage">
 
-    <ContentPage.ToolbarItems  >
-        <ToolbarItem Icon="tab_about.png"  Text="Home" />
-    </ContentPage.ToolbarItems>
+    <NavigationPage.TitleView>
+        <StackLayout Orientation="Horizontal" VerticalOptions="Center">
+            <Label Text="Store Shop-Cart" TextColor="White" VerticalTextAlignment="Center" FontSize="Subtitle" ></Label>
+            <Button HorizontalOptions="EndAndExpand" Text="&#xf015;" BackgroundColor="Transparent" TextColor="White">
+                <Button.FontFamily>
+                    <OnPlatform x:TypeArguments="x:String">
+                        <On Platform="Android" Value="{StaticResource FontAwesomeSolid}" />
+                    </OnPlatform>
+                </Button.FontFamily>
+            </Button>
+        </StackLayout>
+    </NavigationPage.TitleView>
     <ContentPage.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -32,24 +42,28 @@
 
     <ContentPage.Content>
 
-        <ScrollView>
-            
-        <StackLayout BackgroundColor="{DynamicResource Gray-White}" Spacing="0">
 
-            <Grid>
+            <ScrollView >
+
+                <StackLayout   BackgroundColor="{DynamicResource Gray-White}" Spacing="0">
+
+                <busyindicator:SfBusyIndicator IsVisible="{Binding IsLoading}" IsBusy="{Binding IsLoading}" Title="wait...." VerticalOptions="FillAndExpand" Grid.Row="0" x:Name="sfbusyindicator"  BackgroundColor="White"/>
+
+
+                <Grid IsVisible="{Binding IsNotLoading}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-
-                <ffimageloading:CachedImage 
+                    <ffimageloading:CachedImage 
                         x:Name="ProfileImage"
                         Grid.Row="0"
                         Grid.ColumnSpan="3"
                         Aspect="AspectFill"
                         BackgroundColor="{DynamicResource Gray-200}"
                         HeightRequest="250" />
+
 
 
 
@@ -94,11 +108,11 @@
                         helper:RTLHelper.CornerRadius="{OnIdiom Default='32,32,0,0'}"
                         BackgroundColor="{DynamicResource Gray-White}"
                         BorderWidth="0"
-                        HeightRequest="87"
+                        HeightRequest="67"
                         VerticalOptions="End">
                     <border:SfBorder.Content>
                         <Grid
-                                Margin="0,22,0,0"
+                                Margin="0,5,0,0"
                                 Padding="16,7"
                                 ColumnSpacing="8"
                                 RowSpacing="0">
@@ -168,7 +182,7 @@
                 </border:SfBorder>
             </Grid>
 
-            <Grid VerticalOptions="FillAndExpand">
+                <Grid IsVisible="{Binding IsNotLoading}" VerticalOptions="FillAndExpand">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
@@ -216,6 +230,7 @@ TextColor="{StaticResource Gray-White}" Margin="5,0,0,0"  />
 
         </StackLayout>
         </ScrollView>
+
 
     </ContentPage.Content>
     
