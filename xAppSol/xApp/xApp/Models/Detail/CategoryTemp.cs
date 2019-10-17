@@ -9,7 +9,7 @@ namespace xApp.Models.Detail
     /// </summary>
     [Preserve(AllMembers = true)]
     [DataContract]
-    public class Category
+    public class CategoryTemp
     {
         private string icon;
 

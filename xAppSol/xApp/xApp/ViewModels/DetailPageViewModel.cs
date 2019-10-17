@@ -24,7 +24,7 @@ namespace xApp.ViewModels.Detail
 
         private Product productDetail;
 
-        private ObservableCollection<Category> categories;
+        private ObservableCollection<CategoryTemp> categories;
 
         private ObservableCollection<Review> reviews;
 
@@ -108,9 +108,9 @@ namespace xApp.ViewModels.Detail
             if (this.productRating > 0)
                 this.ProductDetail.OverallRating = this.productRating / this.ProductDetail.Reviews.Count;
 
-            this.Categories = new ObservableCollection<Category>
+            this.Categories = new ObservableCollection<CategoryTemp>
             {
-                new Category
+                new CategoryTemp
                 {
                     Name = "Electronics",
                     SubCategories = new List<string>
@@ -118,7 +118,7 @@ namespace xApp.ViewModels.Detail
                         "Laptops", "Mobiles", "Tablets", "Televisions", "Printers and Monitors"
                     }
                 },
-                new Category
+                new CategoryTemp
                 {
                     Name = "Fashion",
                     SubCategories = new List<string>
@@ -126,7 +126,7 @@ namespace xApp.ViewModels.Detail
                         "Shirts", "Skirts", "Casual Wear", "Jeans", "Kurtis"
                     }
                 },
-                new Category
+                new CategoryTemp
                 {
                     Name = "Home and Furniture",
                     SubCategories = new List<string>
@@ -134,7 +134,7 @@ namespace xApp.ViewModels.Detail
                         "Diwans", "Sofas", "Curtains"
                     }
                 },
-                new Category
+                new CategoryTemp
                 {
                     Name = "Personal Care",
                     SubCategories = new List<string>
@@ -142,7 +142,7 @@ namespace xApp.ViewModels.Detail
                         "Laptops", "Mobiles", "Tablets", "Televisions", "Printers and Monitors"
                     }
                 },
-                new Category
+                new CategoryTemp
                 {
                     Name = "Sports and Books",
                     SubCategories = new List<string>
@@ -150,7 +150,7 @@ namespace xApp.ViewModels.Detail
                         "Laptops", "Mobiles", "Tablets", "Televisions", "Printers and Monitors"
                     }
                 },
-                new Category
+                new CategoryTemp
                 {
                     Name = "Grocery",
                     SubCategories = new List<string>
@@ -158,7 +158,7 @@ namespace xApp.ViewModels.Detail
                         "Laptops", "Mobiles", "Tablets", "Televisions", "Printers and Monitors"
                     }
                 },
-                new Category
+                new CategoryTemp
                 {
                     Name = "Toys and Baby",
                     SubCategories = new List<string>
@@ -216,7 +216,7 @@ namespace xApp.ViewModels.Detail
         /// <summary>
         /// Gets or sets the property that has been bound with StackLayout, which displays the categories using ComboBox.
         /// </summary>
-        public ObservableCollection<Category> Categories
+        public ObservableCollection<CategoryTemp> Categories
         {
             get
             {

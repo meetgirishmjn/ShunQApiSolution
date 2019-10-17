@@ -19,39 +19,26 @@ namespace xApp.Views.MyCart
         {
             InitializeComponent();
         }
-
-        public void Handle_OnScanResult(Result result)
+        /// <summary>
+        /// Invoked when view size is changed.
+        /// </summary>
+        /// <param name="width">The Width</param>
+        /// <param name="height">The Height</param>
+        protected override void OnSizeAllocated(double width, double height)
         {
-            Device.BeginInvokeOnMainThread(async () =>
+            base.OnSizeAllocated(width, height);
+
+            if (width > height)
             {
-                await DisplayAlert("Scanned result", result.Text, "OK");
-            });
-        }
-
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-        }
-
-        protected override void OnDisappearing()
-        {
-            base.OnDisappearing();
-        }
-
-        private void Button1_Clicked(object sender, EventArgs e)
-        {
-             
-        }
-
-        private void Button2_Clicked(object sender, EventArgs e)
-        {
-            
-             
-        }
-
-        private void overlay_FlashButtonClicked(Button sender, EventArgs e)
-        {
-
+                if (Device.Idiom == TargetIdiom.Phone)
+                {
+                    ErrorImage.IsVisible = false;
+                }
+            }
+            else
+            {
+                ErrorImage.IsVisible = true;
+            }
         }
     }
 }

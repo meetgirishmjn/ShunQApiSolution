@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Xamarin.Forms;
+﻿
 using Xamarin.Forms.Internals;
 using Xamarin.Forms.Xaml;
+using Xamarin.Forms;
 
-namespace xApp.Views.Store
+namespace xApp.Views.Category
 {
-    /// <summary>
     /// Class helps to reduce repetitive markup, and allows an apps appearance to be more easily changed.
     /// </summary>
     [Preserve(AllMembers = true)]

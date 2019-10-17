@@ -11,6 +11,7 @@ using xApp.ViewModels;
 using xApp.ViewModels.Detail;
 using xApp.Models.Detail;
 using xApp.Views.Store;
+using xApp.Views.StoreShop;
 
 namespace xApp.Views
 {
@@ -26,24 +27,24 @@ namespace xApp.Views
                 InitializeComponent();
 
                 var vm = new DetailPageViewModel();
-                vm.Categories = new ObservableCollection<Category>()
+                vm.Categories = new ObservableCollection<CategoryTemp>()
             {
-                new Category
+                new CategoryTemp
                 {
                     Icon="https://cdn0storage0shunq0dev.blob.core.windows.net/images/Promos/Cat1.jpg",
                      Name="Cate 1",
                 },
-                  new Category
+                  new CategoryTemp
                 {
                    Icon="https://cdn0storage0shunq0dev.blob.core.windows.net/images/Promos/Cat2.jpg",
                      Name="Cate 2",
                 },
-                   new Category
+                   new CategoryTemp
                 {
                     Icon="https://cdn0storage0shunq0dev.blob.core.windows.net/images/Promos/Cat3.jpg",
                      Name="Cate 3",
                 },
-                  new Category
+                  new CategoryTemp
                 {
                    Icon="https://cdn0storage0shunq0dev.blob.core.windows.net/images/Promos/Cat4.jpg",
                      Name="Cate 4",
@@ -61,7 +62,7 @@ namespace xApp.Views
 
         private void OnStartShoppingClicked(object sender, EventArgs e)
         {
-            App.Current.MainPage =  new NavigationPage(new StoreScanPage());
+            App.Current.MainPage =  new NavigationPage(new StoreShopPage());
         }
     }
 }

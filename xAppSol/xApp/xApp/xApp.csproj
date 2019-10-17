@@ -6,7 +6,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SkiaSharp" Version="1.68.0" />
+    <None Remove="Images\EmptyCart.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Images\EmptyCart.svg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SkiaSharp.Extended" Version="1.60.0" />
+    <PackageReference Include="SkiaSharp.Svg" Version="1.60.0" />
     <PackageReference Include="SkiaSharp.Views.Forms" Version="1.68.0" />
     <PackageReference Include="Syncfusion.Xamarin.Buttons" Version="17.3.0.14" />
     <PackageReference Include="Syncfusion.Xamarin.Cards" Version="17.3.0.14" />
@@ -15,6 +24,7 @@
     <PackageReference Include="Syncfusion.Xamarin.SfBusyIndicator" Version="17.3.0.17" />
     <PackageReference Include="Syncfusion.Xamarin.SfCarousel" Version="17.3.0.14" />
     <PackageReference Include="Syncfusion.Xamarin.SfListView" Version="17.3.0.14" />
+    <PackageReference Include="Syncfusion.Xamarin.SfRating" Version="17.3.0.17" />
     <PackageReference Include="Syncfusion.Xamarin.SfRotator" Version="17.3.0.14" />
     <PackageReference Include="Xamarin.FFImageLoading" Version="2.4.11.982" />
     <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.11.982" />
@@ -27,6 +37,12 @@
     <EmbeddedResource Update="Theme\Styles.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Views\Category\CategoryPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Category\Styles.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\HomePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
@@ -36,7 +52,16 @@
     <EmbeddedResource Update="Views\MyCart\MyCartPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Views\MyCart\Styles.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\StoreShop\Styles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\Store\StoreScanPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Store\StoreSearchPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\Store\Styles.xaml">
@@ -47,6 +72,12 @@
   <ItemGroup>
     <Compile Update="Views\MyCart\MyCartPage.xaml.cs">
       <DependentUpon>MyCartPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\StoreShop\StoreShopPage.xaml.cs">
+      <DependentUpon>StoreShopPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\StoreShop\Styles.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>

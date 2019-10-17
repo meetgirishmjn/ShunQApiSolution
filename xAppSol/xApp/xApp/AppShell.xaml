@@ -62,7 +62,7 @@
             <Tab.Icon>
                 <FontImageSource FontFamily="{StaticResource FontAwesomeSolid}" Glyph="&#xf54f;" />
             </Tab.Icon>
-            <ShellContent ContentTemplate="{DataTemplate local:AboutPage}" />
+            <ShellContent ContentTemplate="{DataTemplate local:Store.StoreSearchPage}" />
         </Tab>
         <Tab Title="My Cart">
             <Tab.Icon>
@@ -74,7 +74,7 @@
             <Tab.Icon>
                 <FontImageSource FontFamily="{StaticResource FontAwesomeSolid}" Glyph="&#xf46d;" />
             </Tab.Icon>
-            <ShellContent ContentTemplate="{DataTemplate local:Store.StoreScanPage}" />
+            <ShellContent ContentTemplate="{DataTemplate local:Category.CategoryPage}" />
         </Tab>
     </TabBar>
 
