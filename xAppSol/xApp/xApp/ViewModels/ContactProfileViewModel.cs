@@ -15,6 +15,41 @@ namespace xApp.ViewModels
     [Preserve(AllMembers = true)]
     public class ContactProfileViewModel : INotifyPropertyChanged
     {
+        private bool isScannerOn = false;
+        private bool isScannerOff = true;
+
+        /// <summary>
+        /// Gets or sets the property that has been bound with view, which displays the Favourite.
+        /// </summary>
+        public bool IsScannerOn
+        {
+            get
+            {
+                return this.isScannerOn;
+            }
+            set
+            {
+                this.isScannerOn = value;
+                this.NotifyPropertyChanged();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the property that has been bound with view, which displays the Favourite.
+        /// </summary>
+        public bool IsScannerOff
+        {
+            get
+            {
+                return this.isScannerOff;
+            }
+            set
+            {
+                this.isScannerOff = value;
+                this.NotifyPropertyChanged();
+            }
+        }
+
         #region Field
 
         private ObservableCollection<ContactProfile> profileInfo;
