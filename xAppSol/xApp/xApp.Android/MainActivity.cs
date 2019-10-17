@@ -36,5 +36,18 @@ namespace xApp.Droid
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
+
+        protected override void OnDestroy()
+        {
+            try
+            {
+                base.OnDestroy();
+            }
+            catch(Exception ex)
+            {
+            
+            }
+          
+        }
     }
 }

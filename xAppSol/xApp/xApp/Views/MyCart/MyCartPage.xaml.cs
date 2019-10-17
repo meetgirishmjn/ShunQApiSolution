@@ -35,7 +35,6 @@ namespace xApp.Views.MyCart
 
         protected override void OnDisappearing()
         {
-            _scanView.IsScanning = false;
             base.OnDisappearing();
         }
 
