@@ -24,5 +24,10 @@ namespace xApp
                 return true;
             }
         }
+
+        private void MenuItem_Clicked(object sender, EventArgs e)
+        {
+            App.Current.MainPage = new NavigationPage(new Views.LogIn.LoginPage());
+        }
     }
 }
