@@ -23,23 +23,27 @@
 
 
     <ContentPage.Content>
-        <StackLayout Padding="10,10,10,5" >
+        <StackLayout >
             <!--  Album images  -->
             <listView:SfListView
                 x:Name="ListView"
-                Padding="15,0,15,15"
+                ItemsSource="{Binding CategoryList}"
+               Padding="15,0,15,15"
                 AutoFitMode="Height"
                 IsScrollBarVisible="False"
-                ItemSpacing="0,0,32,32"
-                ItemsSource="{Binding CategoryList}"
+                ItemSpacing="{core:OnPlatformOrientationThickness Default='0,0,32,32',
+                                                                  PhonePortrait='0,0,0,16',
+                                                                  PhoneLandscape='0,0,16,16',
+                                                                  Desktop='0,0,24,24'}"
                 SelectionBackgroundColor="Transparent"
                 TapCommand="{Binding ImageTapCommand}"
-                HorizontalOptions="CenterAndExpand"
                 VerticalOptions="FillAndExpand">
 
+                <!--  Layout to customize number of columns in SfListView  -->
                 <listView:SfListView.LayoutManager>
                     <listView:GridLayout SpanCount="{core:OnPlatformOrientationIntValue PhonePortrait=1, PhoneLandscape=2, TabletPortrait=2, TabletLandscape=2, Desktop=4}" />
                 </listView:SfListView.LayoutManager>
+
 
                 <listView:SfListView.ItemTemplate>
                     <DataTemplate>
@@ -47,6 +51,7 @@
                         <StackLayout Orientation="Horizontal" Spacing="0">
                             <Frame
                             Padding="0"
+                            BackgroundColor="{DynamicResource Gray-White}"
                             BorderColor="{DynamicResource Gray-White}"
                             CornerRadius="8"
                             HasShadow="True"

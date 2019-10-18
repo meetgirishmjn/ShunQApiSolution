@@ -52,31 +52,37 @@ namespace xApp.Controls
         /// <param name="args">The arguments</param>
         private void CanvasView_PaintSurface(object sender, SKPaintSurfaceEventArgs args)
         {
-            SKCanvas skCanvas = args.Surface.Canvas;
-            skCanvas.Clear();
-
-            if (string.IsNullOrEmpty(this.Source))
+            try
             {
-                return;
-            }
+                SKCanvas skCanvas = args.Surface.Canvas;
+                skCanvas.Clear();
 
-            // Get the assembly information to access the local image
-            var assembly = typeof(SVGImage).GetTypeInfo().Assembly.GetName();
+                if (string.IsNullOrEmpty(this.Source))
+                {
+                    return;
+                }
 
-            // Update the canvas with the SVG image
-            using (Stream stream = typeof(SVGImage).GetTypeInfo().Assembly.GetManifestResourceStream(assembly.Name + ".Images." + Source))
+                // Get the assembly information to access the local image
+                var assembly = typeof(SVGImage).GetTypeInfo().Assembly.GetName();
+
+                // Update the canvas with the SVG image
+                using (Stream stream = typeof(SVGImage).GetTypeInfo().Assembly.GetManifestResourceStream(assembly.Name + ".Images." + Source))
+                {
+                    SkiaSharp.Extended.Svg.SKSvg skSVG = new SkiaSharp.Extended.Svg.SKSvg();
+                    skSVG.Load(stream);
+                    SKImageInfo imageInfo = args.Info;
+                    skCanvas.Translate(imageInfo.Width / 2f, imageInfo.Height / 2f);
+                    SKRect rectBounds = skSVG.ViewBox;
+                    float xRatio = imageInfo.Width / rectBounds.Width;
+                    float yRatio = imageInfo.Height / rectBounds.Height;
+                    float minRatio = Math.Min(xRatio, yRatio);
+                    skCanvas.Scale(minRatio);
+                    skCanvas.Translate(-rectBounds.MidX, -rectBounds.MidY);
+                    skCanvas.DrawPicture(skSVG.Picture);
+                }
+            }catch(Exception ex)
             {
-                SkiaSharp.Extended.Svg.SKSvg skSVG = new SkiaSharp.Extended.Svg.SKSvg();
-                skSVG.Load(stream);
-                SKImageInfo imageInfo = args.Info;
-                skCanvas.Translate(imageInfo.Width / 2f, imageInfo.Height / 2f);
-                SKRect rectBounds = skSVG.ViewBox;
-                float xRatio = imageInfo.Width / rectBounds.Width;
-                float yRatio = imageInfo.Height / rectBounds.Height;
-                float minRatio = Math.Min(xRatio, yRatio);
-                skCanvas.Scale(minRatio);
-                skCanvas.Translate(-rectBounds.MidX, -rectBounds.MidY);
-                skCanvas.DrawPicture(skSVG.Picture);
+               
             }
         }
     }

@@ -11,6 +11,8 @@
              xmlns:views="clr-namespace:xApp.Views"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:badge="clr-namespace:Syncfusion.XForms.BadgeView;assembly=Syncfusion.SfBadgeView.XForms"
+             xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms"
+             xmlns:behaviour="clr-namespace:xApp.Behaviors.Feedback"
              mc:Ignorable="d"
              x:Class="xApp.Views.HomePage"
              Title="ShunQ - Home"
@@ -65,6 +67,40 @@
                        Aspect="AspectFit"/>
                 </Grid>
             </DataTemplate>
+
+
+            <!--  Style for version label  -->
+            <Style x:Key="VersionLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{DynamicResource Gray-700}" />
+                <Setter Property="FontFamily" Value="{StaticResource Montserrat-Medium}" />
+                <Setter Property="FontSize" Value="12" />
+                <Setter Property="LineHeight" Value="{OnPlatform Default=1.25, iOS=-1}"/>
+            </Style>
+
+            <!--  Style for header label  -->
+            <Style x:Key="HeaderLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{DynamicResource Gray-900}" />
+                <Setter Property="FontFamily" Value="{StaticResource Montserrat-SemiBold}" />
+                <Setter Property="FontSize" Value="16" />
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+                <Setter Property="LineHeight" Value="1.25"/>
+                <Setter Property="Margin" Value="0,16,0,8"/>
+            </Style>
+
+            <!--  Style for description label  -->
+            <Style x:Key="DescriptionLabelStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="{DynamicResource Gray-700}" />
+                <Setter Property="FontFamily" Value="{StaticResource Montserrat-Medium}" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="HorizontalTextAlignment" Value="Start" />
+                <Setter Property="LineHeight" Value="{OnPlatform Default=1.25}"/>
+            </Style>
+
+            <!--  Style for Images  -->
+            <Style x:Key="AboutUsImageStyle" TargetType="Image">
+                <Setter Property="HeightRequest" Value="64" />
+                <Setter Property="WidthRequest" Value="64" />
+            </Style>
         </ResourceDictionary>
     </ContentPage.Resources>
   
@@ -80,40 +116,101 @@
 
                 <views:HomePage_Slider></views:HomePage_Slider>
 
-                <ScrollView x:Name="scrollView" HorizontalScrollBarVisibility="Never">
-                    <ScrollView.Resources>
-                        <ResourceDictionary>
-                            <Style TargetType="Label">
-                                <Setter Property="Margin" Value="15,0"/>
-                            </Style>
-                        </ResourceDictionary>
-                    </ScrollView.Resources>
 
-                    <StackLayout  x:Name="mainStack" Orientation="Vertical"  BackgroundColor="{StaticResource Gray-200}" HorizontalOptions="FillAndExpand" Margin="5">
-                       
+                    <Grid RowSpacing="0" VerticalOptions="Center">
+                        <Grid.BindingContext>
+                            <local:OurServicesViewModel />
+                        </Grid.BindingContext>
 
-                        <Grid  HeightRequest="70"
-                      >
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="50"/>
-                                <RowDefinition Height="*"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Image Source="tab_about.png" Grid.Column="0"  Grid.Row="0"></Image>
-                            <Image Source="tab_about.png" Grid.Column="1"  Grid.Row="0"></Image>
-                            <Image Source="tab_about.png" Grid.Column="2"  Grid.Row="0"></Image>
-                        </Grid>
-                    </StackLayout>
-                    
-                </ScrollView>
-                <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <!--  Background image  -->
+                        <Image Grid.Row="1"
+                Aspect="AspectFill"
+                BackgroundColor="{DynamicResource Gray-200}"
+                HorizontalOptions="Fill"
+                Source="OurServicesBG.png"
+                VerticalOptions="Fill" />
+
+
+                        <!--  To display the services  -->
+                        <listView:SfListView
+                x:Name="lstvwServices"
+                Grid.Row="1"
+                AutoFitMode="Height"
+                ItemsSource="{Binding AllServices}"
+                SelectionMode="None"
+                TapCommand="{Binding ItemSelectedCommand}"
+                VerticalOptions="Start">
+
+                            <listView:SfListView.HeaderTemplate>
+                                <DataTemplate>
+                                    <!--  Header  -->
+                                    <Label
+                            Margin="0,60,0,5"
+                            FontSize="20"
+                            Style="{StaticResource HeaderLabelStyle}"
+                            Text="Our Services"
+                            TextColor="{DynamicResource Gray-White}" />
+                                </DataTemplate>
+                            </listView:SfListView.HeaderTemplate>
+
+                            <listView:SfListView.ItemTemplate>
+                                <DataTemplate>
+
+                                    <!--  Details of each employee  -->
+                                    <StackLayout Margin="15,15,15,24" Spacing="0">
+
+                                        <!--  Profile image  -->
+                                        <border:SfBorder
+                                Margin="0,0,0,8"
+                                BorderWidth="0"
+                                CornerRadius="32"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center">
+                                        <ffimageloading:CachedImage Source="{Binding ImageUrl}"
+                                    BackgroundColor="{DynamicResource Gray-200}"
+                                     HeightRequest="64" WidthRequest="64"  />
+                                    </border:SfBorder>
+
+                                        <!--  Employee name  -->
+                                        <Label
+                                FontFamily="{StaticResource Montserrat-SemiBold}"
+                                HorizontalTextAlignment="Center"
+                                Style="{StaticResource DescriptionLabelStyle}"
+                                Text="{Binding Name}"
+                                TextColor="White" />
+
+                                        <!--  Designation  -->
+                                        <Label
+                                HorizontalTextAlignment="Center"
+                                Style="{StaticResource VersionLabelStyle}"
+                                Text="{Binding Description}"
+                                TextColor="White" />
+
+                                    </StackLayout>
+                                </DataTemplate>
+                            </listView:SfListView.ItemTemplate>
+
+                            <listView:SfListView.LayoutManager>
+                                <listView:GridLayout SpanCount="3" />
+                            </listView:SfListView.LayoutManager>
+
+                            <!--Behavior added to handle scrolling of ListView-->
+                            <listView:SfListView.Behaviors>
+                                <behaviour:ListViewBehavior/>
+                            </listView:SfListView.Behaviors>
+                        </listView:SfListView>
+
+                    </Grid>
+
+                <Grid HeightRequest="450">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
                     <!--  Title View  -->
@@ -151,7 +248,7 @@
 
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="*" />
                                     </Grid.RowDefinitions>
 
                                     <!--  Category Image  -->

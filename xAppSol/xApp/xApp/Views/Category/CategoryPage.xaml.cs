@@ -46,7 +46,7 @@ namespace xApp.Views.Category
             };
                 InitializeComponent();
                ListView.ItemsSource = CategoryList;
-              //  EmployeeView.ItemsSource = CategoryList;
+                //  EmployeeView.ItemsSource = CategoryList;
             }
             catch(Exception ex)
             {

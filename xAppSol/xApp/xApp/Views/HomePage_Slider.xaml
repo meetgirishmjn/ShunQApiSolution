@@ -12,23 +12,19 @@
               xmlns:rotator="clr-namespace:Syncfusion.SfRotator.XForms;assembly=Syncfusion.SfRotator.XForms"
             xmlns:controls="clr-namespace:xApp.Controls"
               xmlns:converter="clr-namespace:xApp.Converters"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              x:Class="xApp.Views.HomePage_Slider">
     <ContentView.Resources>
         <ResourceDictionary>
 
             <DataTemplate x:Key="PortraitTemplate">
-                <Image
+                <ffimageloading:CachedImage
                     Margin="3"
                     Aspect="{OnIdiom Default=AspectFill,
                                      Tablet=AspectFit}"
                     BackgroundColor="{StaticResource Gray-200}"
                     HorizontalOptions="Center"
-                    VerticalOptions="Center">
-                    <Image.Source>
-                        <FileImageSource  
-                           File="{Binding .}" />
-                    </Image.Source>
-                </Image>
+                    VerticalOptions="Center" Source="{Binding .}" />
             </DataTemplate>
             
         </ResourceDictionary>

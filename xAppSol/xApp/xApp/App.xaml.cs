@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using xApp.Services;
 using xApp.Views;
+using xApp.Views.CheckoutPages;
 
 namespace xApp
 {
@@ -34,6 +36,50 @@ namespace xApp
         protected override void OnResume()
         {
             // Handle when your app resumes
+        }
+
+        private void onLoadPage(Page sender)
+        {
+
+        }
+
+        public void GoToCheckoutPage()
+        {
+            MainPage = new NavigationPage(new CheckoutPage());
+
+            MainPage = new NavigationPage(new LoadingPage(async (Page sender) =>
+            {
+                MainPage = new NavigationPage(new CheckoutPage());
+            }));
+        }
+    }
+
+    public class NavigationWorkGrs
+    {
+        private static NavigationPage _currentNavigationPage
+        {
+            get
+            {
+                return ((App)Application.Current).MainPage as NavigationPage;
+            }
+        }
+
+        public static async Task ReplaceRoot(ContentPage page)
+        {
+            var root = _currentNavigationPage.Navigation.NavigationStack[0];
+            _currentNavigationPage.Navigation.InsertPageBefore(page, root);
+            await PopToRootAsync();
+        }
+        private static async Task PopToRootAsync()
+        {
+            while (_currentNavigationPage.Navigation.ModalStack.Count > 0)
+            {
+                await _currentNavigationPage.Navigation.PopModalAsync(false);
+            }
+            while (_currentNavigationPage.CurrentPage != _currentNavigationPage.Navigation.NavigationStack[0])
+            {
+                await _currentNavigationPage.PopAsync(false);
+            }
         }
     }
 }

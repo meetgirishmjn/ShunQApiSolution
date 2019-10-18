@@ -150,5 +150,10 @@ namespace xApp.Views.StoreShop
             };
             ScannerContainer.Children.Add(img);
         }
+
+        private void OnCheckout_Clicked(object sender, EventArgs e)
+        {
+            ( App.Current as App).GoToCheckoutPage();
+        }
     }
 }

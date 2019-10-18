@@ -89,7 +89,7 @@
                         Margin="10"
                         Padding="0"
                         BackgroundColor="{StaticResource Blue}"
-                        Command="{Binding EditCommand}"
+                       Clicked="OnCheckout_Clicked"
                         CornerRadius="4"
                         HorizontalOptions="End"
                         Text="Check-Out"
