@@ -22,5 +22,10 @@ namespace xApp.Views.CheckoutPages
 
             }
         }
+
+        private void ContentPage_MeasureInvalidated(object sender, EventArgs e)
+        {
+
+        }
     }
 }

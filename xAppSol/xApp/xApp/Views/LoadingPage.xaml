@@ -5,8 +5,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:busyindicator="clr-namespace:Syncfusion.SfBusyIndicator.XForms;assembly=Syncfusion.SfBusyIndicator.XForms"
              mc:Ignorable="d"
-             NavigationPage.HasBackButton="False"
-             NavigationPage.HasNavigationBar="False"
+             NavigationPage.HasBackButton="True"
+             NavigationPage.HasNavigationBar="True"
              x:Class="xApp.Views.LoadingPage"
              BackgroundColor="White">
     <ContentPage.Content>

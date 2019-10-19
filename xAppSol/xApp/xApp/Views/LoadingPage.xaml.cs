@@ -15,9 +15,13 @@ namespace xApp.Views
     public partial class LoadingPage : ContentPage
     {
         OnLoadPageCallback callback;
-        public LoadingPage(OnLoadPageCallback callback) :this()
+        bool isCallbackUsed = false;
+        public LoadingPage(OnLoadPageCallback callback,string title="") :this()
         {
             this.callback = callback;
+            this.isCallbackUsed = false;
+            if (!string.IsNullOrEmpty(title))
+                this.Title = title;
         }
         public LoadingPage()
         {
@@ -28,9 +32,15 @@ namespace xApp.Views
         protected async override void OnAppearing()
         {
             base.OnAppearing();
-            await Task.Delay(3000);
-            if (this.callback != null)
-                callback(this);
+            if (!isCallbackUsed)
+            {
+                await Task.Delay(3000);
+                if (this.callback != null)
+                {
+                    isCallbackUsed = true;
+                    callback(this);
+                }
+            }
         }
     }
 

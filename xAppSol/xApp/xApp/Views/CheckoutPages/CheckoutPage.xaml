@@ -30,7 +30,7 @@
                 <Label Text="Invoice: #FRU037020142097" HeightRequest="40" FontSize="16" TextColor="#222222" Opacity="1.0" VerticalTextAlignment="Center" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="CenterAndExpand"/>
                 <expander:SfExpander HeaderIconPosition="End" BackgroundColor="#FFFFFF" HeaderBackgroundColor="#FFFFFF" AnimationDuration="200" IsExpanded="True">
                     <expander:SfExpander.Header>
-                        <Grid>
+                        <Grid Padding="3,0,0,0">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="50"/>
                             </Grid.RowDefinitions>
@@ -38,7 +38,7 @@
                                 <ColumnDefinition Width="35"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Image Source="InvoiceCalendar.png" Margin="3" Aspect="AspectFit"/>
+                            <Label VerticalOptions="Center" Text="&#xf07a;" FontFamily="{StaticResource FontAwesomeSolid}" Margin="3" />
                             <Label TextColor="#495F6E" Text="Invoice Date" FontSize="16" Grid.Column="1" VerticalOptions="CenterAndExpand"/>
                         </Grid>
                     </expander:SfExpander.Header>
@@ -65,7 +65,7 @@
                                 <ColumnDefinition Width="35"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Image Source="InvoiceItem.png" Margin="3" HeightRequest="30" Aspect="AspectFit"/>
+                            <Label Text="&#xf778;" FontFamily="{StaticResource FontAwesomeSolid}" Margin="3" HeightRequest="30" />
                             <Label TextColor="#495F6E" Text="Item (s)" FontSize="16" Grid.Column="1" VerticalOptions="CenterAndExpand"/>
                         </Grid>
                     </expander:SfExpander.Header>
@@ -134,7 +134,7 @@
                                 <ColumnDefinition Width="35"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Image Source="InvoicePaidDetails.png" Margin="3" HeightRequest="30" Aspect="AspectFit"/>
+                            <Label Text="&#xf778;" FontFamily="{StaticResource FontAwesomeSolid}" Margin="3" HeightRequest="30"  />
                             <Label Text="Payment Details" FontSize="16" TextColor="#495F6E" Grid.Column="1" VerticalOptions="CenterAndExpand"/>
                         </Grid>
                     </expander:SfExpander.Header>
@@ -175,7 +175,7 @@
                                 <ColumnDefinition Width="35"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <Image Source="InvoiceLocation.png" Margin="3" HeightRequest="30" Aspect="AspectFit"/>
+                            <Label Text="&#xf778;" FontFamily="{StaticResource FontAwesomeSolid}" Margin="3" HeightRequest="30" TextColor="#495F6E"/>
                             <Label TextColor="#495F6E" FontSize="16" Text="Address" Grid.Column="1" VerticalOptions="CenterAndExpand"/>
                         </Grid>
                     </expander:SfExpander.Header>

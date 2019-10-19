@@ -46,6 +46,16 @@
         <Setter Property="VerticalOptions" Value="Center" />
         <Setter Property="HorizontalOptions" Value="Start" />
     </Style>
+
+    <OnPlatform x:TypeArguments="x:String" 
+                x:Key="FontAwesomeSolid">
+        <On Platform="Android" 
+          Value="FontAwesome5Solid.otf#Regular" />
+        <On Platform="iOS" 
+          Value="FontAwesome5Free-Solid" />
+        <On Platform="UWP" 
+          Value="/Assets/FontAwesome5Solid.otf#Font Awesome 5 Free" />
+    </OnPlatform>
     
     <Style
         x:Key="PriceLabelStyle"
