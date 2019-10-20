@@ -69,12 +69,14 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("pay/callback/success")]
+        [AllowAnonymous]
         public ActionResult<InitPaymentViewModel> OnPaymentSuccess()
         {
             return Ok();
         }
 
         [HttpPost("pay/callback/failure")]
+        [AllowAnonymous]
         public ActionResult<InitPaymentViewModel> OnPaymentFailure()
         {
             return Ok();
