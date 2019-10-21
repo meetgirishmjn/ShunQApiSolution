@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:views="clr-namespace:xApp.ViewModels"
+             mc:Ignorable="d"
+             NavigationPage.HasNavigationBar="False"
+             x:Class="xApp.Views.WebViewPage">
+    <ContentPage.Content>
+        <StackLayout >
+            <ActivityIndicator x:Name="activity_indicator" BackgroundColor="White" Margin="50" Color="DarkGray" />
+
+            <views:ExtendedWebView x:Name="Browser" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+
+            </views:ExtendedWebView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

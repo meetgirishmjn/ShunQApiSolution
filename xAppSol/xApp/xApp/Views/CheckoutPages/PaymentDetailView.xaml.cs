@@ -37,5 +37,10 @@ namespace xApp.Views.CheckoutPages
         }
 
         #endregion
+
+        private void PayNow_Clicked(object sender, System.EventArgs e)
+        {
+            (App.Current as App).GoToPayULaunch();
+        }
     }
 }

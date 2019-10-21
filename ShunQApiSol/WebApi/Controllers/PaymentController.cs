@@ -108,12 +108,40 @@ namespace WebApi.Controllers
             var hashStr = getHashString(hash);
 
             var sbHtml = new StringBuilder();
-            var logoUrl = "https://image.freepik.com/free-vector/gradient-logo-template-with-abstract-shape_23-2148204210.jpg";
+            var logoUrl = AppConfig.ImageSrcEndpoint + "app/logo_light_sm.png";
 
             var launchStr = string.Format("key:'{0}',txnid:'{1}',hash:'{2}',amount:{3},firstname:'{4}',email:'{5}',phone:'{6}',productinfo:'{7}',udf5:'{8}',surl:'{9}',furl:'{10}'", data.key, data.txnid, hashStr, data.amount, data.fname, data.email, data.mobile, data.prodInfo, data.udf5, AppConfig.CoreApiEndpoint + "merchant/pay/callback/success", AppConfig.CoreApiEndpoint + "merchant/pay/callback/failure");
             sbHtml.Append("<!DOCTYPE html> <html lang = \"en\"> <head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no\" > ");
             sbHtml.Append("<script id=\"bolt\" src=\"https://sboxcheckout-static.citruspay.com/bolt/run/bolt.min.js\" bolt-color=\"#0173CF\" bolt-logo=\"" + logoUrl + "\"></script></head>");
             sbHtml.Append("<body><script type=\"text/javascript\">bolt.launch({"+ launchStr + "},{responseHandler:function(BOLT){console.log(BOLT);console.log(BOLT.response.txnStatus);},catchException:function(BOLT){console.log(BOLT);alert(BOLT.message);}});</script></body></html>");
+
+            return new ContentResult
+            {
+                ContentType = "text/html",
+                StatusCode = (int)System.Net.HttpStatusCode.OK,
+                Content = sbHtml.ToString()
+            };
+        }
+
+        [HttpGet("pay/checkout-launch/v2")]
+        [AllowAnonymous]
+        public ContentResult GetPayUHtmlV2()
+        {
+            byte[] hash;
+            var data = new { key = "KTiotDpI", txnid = "T124", amount = 12.75, prodInfo = "My G Product", fname = "Grs", email = "meetgirish.mjn@gmail.com", mobile = "8871384762", udf5 = "", salt = "uc85JO4T0G" };
+            string d = data.key + "|" + data.txnid + "|" + data.amount + "|" + data.prodInfo + "|" + data.fname + "|" + data.email + "|||||" + data.udf5 + "||||||" + data.salt;
+            var datab = Encoding.UTF8.GetBytes(d);
+            using (var shaM = new System.Security.Cryptography.SHA512Managed())
+            {
+                hash = shaM.ComputeHash(datab);
+            }
+            var hashStr = getHashString(hash);
+
+            var sbHtml = new StringBuilder();
+            var logoUrl = AppConfig.ImageSrcEndpoint + "app/logo_light_sm.png";
+
+            var launchStr = string.Format("key:'{0}',txnid:'{1}',hash:'{2}',amount:{3},firstname:'{4}',email:'{5}',phone:'{6}',productinfo:'{7}',udf5:'{8}',surl:'{9}',furl:'{10}'", data.key, data.txnid, hashStr, data.amount, data.fname, data.email, data.mobile, data.prodInfo, data.udf5, AppConfig.CoreApiEndpoint + "merchant/pay/callback/success", AppConfig.CoreApiEndpoint + "merchant/pay/callback/failure");
+            sbHtml.Append("<!DOCTYPE html><html lang=\"en\"><head><title>Portal-Shun#Q</title><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no\"> <script id=\"bolt\" src=\"https://sboxcheckout-static.citruspay.com/bolt/run/bolt.min.js\" bolt-color=\"e34524\" bolt-logo=\"http://boltiswatching.com/wp-content/uploads/2015/09/Bolt-Logo-e14421724859591.png\"></script> <style> </style></head><body><script type=\"text/javascript\"> bolt.launch({"+launchStr+"}, { responseHandler: function (BOLT) { console.log('success'); console.log(BOLT); }, catchException: function (BOLT) { console.log('catchException');console.log(BOLT); alert(BOLT.message); } });</script></body></html>");
 
             return new ContentResult
             {

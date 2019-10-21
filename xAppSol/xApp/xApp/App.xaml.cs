@@ -12,6 +12,7 @@ namespace xApp
     {
         const string SYNCFUSION_LICENSE_KEY = "MTU2NTgxQDMxMzcyZTMzMmUzMFZGUExvMkRXTys5cXliMkc3U2FzRS9IQXE3VVpaY2V4VFBkdDlxa2lCSXM9";
         public static string BaseImageUrl { get; } = "https://cdn.syncfusion.com/essential-ui-kit-for-xamarin.forms/common/uikitimages/";
+        public static string PAYU_LAUNCH_URL { get; } = "https://shunq-api-dev.azurewebsites.net/api/v1/merchant/pay/checkout-launch";
         public App()
         {
             Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(SYNCFUSION_LICENSE_KEY);
@@ -50,6 +51,11 @@ namespace xApp
             {
                 await MainPage.Navigation.PushAsync(new CheckoutPage());
             },"Checkout"));
+        }
+
+        public void GoToPayULaunch()
+        {
+             MainPage.Navigation.PushAsync( new WebViewPage());
         }
     }
 

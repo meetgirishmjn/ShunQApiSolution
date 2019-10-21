@@ -29,9 +29,9 @@ namespace WebApi.Controllers
                 return cart;
 
             var imageUrl = this.AppConfig.ImageSrcEndpoint;
-            cart.StoreImage = imageUrl + cart.StoreImage;
-            cart.StoreBannerImage = imageUrl + cart.StoreBannerImage;
-            cart.Items.ForEach(o => o.ThumbImage = imageUrl + "Product/" + o.ThumbImage);
+            cart.StoreImage = imageUrl +"stores/"+ cart.StoreImage;
+            cart.StoreBannerImage = imageUrl + "stores/" + cart.StoreBannerImage;
+            cart.Items.ForEach(o => o.ThumbImage = imageUrl + "products/" + o.ThumbImage);
             return cart;
         }
         [HttpGet("store/category")]

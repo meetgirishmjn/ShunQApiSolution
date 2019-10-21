@@ -25,6 +25,7 @@ namespace xApp
             }
         }
 
+
         private void MenuItem_Clicked(object sender, EventArgs e)
         {
             App.Current.MainPage = new NavigationPage(new Views.LogIn.LoginPage());
