@@ -21,8 +21,8 @@ namespace xApp.Views
             Browser.BackgroundColor = Color.FromRgba(0, 0, 0, 0.75);
             this.BackgroundColor = Browser.BackgroundColor;
 
-            activity_indicator.IsVisible = false;
-            //activity_indicator.IsRunning = true;
+            //activity_indicator.IsVisible = false;
+           // activity_indicator.IsRunning = true;
             Browser.IsVisible = true;
             Browser.Source = xApp.App.PAYU_LAUNCH_URL;
         }
