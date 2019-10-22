@@ -16,15 +16,21 @@ namespace xApp.Views
         public ExtendedWebView WebView;
         public WebViewPage()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
 
-            Browser.BackgroundColor = Color.FromRgba(0, 0, 0, 0.75);
-            this.BackgroundColor = Browser.BackgroundColor;
+                Browser.BackgroundColor = Color.FromRgba(0, 0, 0, 0.75);
+                this.BackgroundColor = Browser.BackgroundColor;
 
-            //activity_indicator.IsVisible = false;
-           // activity_indicator.IsRunning = true;
-            Browser.IsVisible = true;
-            Browser.Source = xApp.App.PAYU_LAUNCH_URL;
+                //activity_indicator.IsVisible = false;
+                // activity_indicator.IsRunning = true;
+                Browser.IsVisible = true;
+                Browser.Source = xApp.App.PAYU_LAUNCH_URL;
+            }catch(Exception ex)
+            {
+
+            }
         }
     }
 }

@@ -20,6 +20,8 @@
 
     <ContentPage.Resources>
         <ResourceDictionary>
+            <converter:StringToBooleanConverter x:Key="StringToBooleanConverter" />
+            <converter:ErrorValidationColorConverter x:Key="ErrorValidationColorConverter" PageVariantParameter="0" />
             <converter:BooleanToColorConverter x:Key="ColorConverter" />
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles.xaml" />
@@ -86,7 +88,52 @@
                             Text="Let's get to work" />
 
                         <!--  Entry to get email ID from user  -->
-                        <local:EmailEntry Grid.Row="2" Padding="0,24" />
+                        <StackLayout Grid.Row="2" Padding="0,24">
+                            <border:SfBorder BorderColor="{Binding Path=IsFocused, 
+                Source={x:Reference Email}, 
+                Converter={x:StaticResource ErrorValidationColorConverter}, 
+                ConverterParameter={x:Reference Email}}" 
+                             Style="{StaticResource SfBorderStyle}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <control:BorderlessEntry
+                        x:Name="Email"
+                        Placeholder="Email"
+                        Style="{StaticResource EntryStyle}"
+                        Text="{Binding Email}" />
+
+                                    <Label
+                        Margin="15,0"
+                        FontFamily="{StaticResource FontIcons}"
+                        FontSize="18"
+                        HorizontalOptions="EndAndExpand"
+                        HorizontalTextAlignment="End"
+                        IsVisible="{Binding Path=IsVisible, Source={x:Reference ValidationLabel}}"
+                        Text="&#xe707;"
+                        TextColor="{DynamicResource Red}"
+                        VerticalOptions="Center" />
+
+
+                                </Grid>
+                            </border:SfBorder>
+
+                            <Label
+                x:Name="ValidationLabel"
+                Margin="15,-5,0,0"
+                FontSize="12"
+                IsVisible="{Binding Path=IsFocused, 
+                Source={x:Reference Email}, 
+                Converter={StaticResource StringToBooleanConverter}, 
+                ConverterParameter={x:Reference Email}}"
+                Text="Please enter the valid e-mail"
+                TextColor="{DynamicResource Red}"
+                VerticalOptions="FillAndExpand" />
+
+                        </StackLayout>
 
                         <!--  Entry to get password from user  -->
                         <border:SfBorder
@@ -109,10 +156,10 @@
                             FontFamily="{StaticResource Montserrat-SemiBold}"
                             FontSize="12"
                             HorizontalOptions="End"
-                            Text="FORGOT PASSWORD?"
+                            Text="FORGOT PASSWORD?" IsEnabled="{Binding IsNotLoading}"
                             TextColor="White">
                             <Label.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding ForgotPasswordCommand}" CommandParameter="{x:Reference ForgotPasswordLabel}" />
+                                <TapGestureRecognizer  Command="{Binding ForgotPasswordCommand}" CommandParameter="{x:Reference ForgotPasswordLabel}" />
                             </Label.GestureRecognizers>
                         </Label>
 
@@ -120,9 +167,10 @@
                         <buttons:SfButton
                             Grid.Row="5"
                             Margin="0,16"
+                            x:Name="btnLogIn"
                           Clicked="LogIn_Clicked"
                             Style="{StaticResource SfButtonStyle}"
-                            Text="LOG IN" />
+                            Text="LOG IN" IsEnabled="{Binding IsNotLoading}" />
 
 
                         <Label
@@ -134,7 +182,7 @@
 
                         <!--  Login through facebook account  -->
                         <buttons:SfButton
-                            Grid.Row="7"
+                            Grid.Row="7" IsEnabled="{Binding IsNotLoading}"
                             Margin="0,16,0,16"
                             BackgroundColor="{DynamicResource FacebookBlue}"
                             Command="{Binding SocialMediaLoginCommand}"
@@ -176,7 +224,7 @@
                             VerticalTextAlignment="Center" />
 
                         <!--  Sign-up button  -->
-                        <buttons:SfButton
+                        <buttons:SfButton IsEnabled="{Binding IsNotLoading}"
                             Command="{Binding SignUpCommand}"
                             CornerRadius="4"
                             Style="{StaticResource SfFlatButtonStyle}"

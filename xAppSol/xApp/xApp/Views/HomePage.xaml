@@ -15,7 +15,7 @@
              xmlns:behaviour="clr-namespace:xApp.Behaviors.Feedback"
              mc:Ignorable="d"
              x:Class="xApp.Views.HomePage"
-             Title="ShunQ - Home"
+             Title="ShunQ - Home2"
              x:Name="BrowseItemsPage">
     <!--<NavigationPage.TitleView>
         <Image Source="tab_feed.png"

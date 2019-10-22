@@ -5,6 +5,7 @@ using Xamarin.Forms.Xaml;
 using xApp.Services;
 using xApp.Views;
 using xApp.Views.CheckoutPages;
+using Xamarin.Essentials;
 
 namespace xApp
 {
@@ -20,8 +21,10 @@ namespace xApp
 
             //Application.Current.Resources["Gray-200"] = "#ebecef";
             //Application.Current.Resources["Gray-900"] = "#333942";
-            DependencyService.Register<MockDataStore>();
-            MainPage = new AppShell();
+             DependencyService.Register<MockDataStore>();
+
+
+            MainPage = new AppLaunch();
         }
 
         protected override void OnStart()
