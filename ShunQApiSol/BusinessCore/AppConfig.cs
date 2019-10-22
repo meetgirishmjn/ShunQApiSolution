@@ -16,7 +16,7 @@ namespace BusinessCore
         public string RedisConnectionString { get; set; }
         public string LogStorageAccount { get; set; }
         public string RequestLogLevel { get; set; }
-        public string MerchangePaymentToken { get; set; } = "KTiotDpI;uc85JO4T0G";
+        public string MerchangePaymentTokenTest { get; set; } = "KTiotDpI;uc85JO4T0G";
     }
 }
         

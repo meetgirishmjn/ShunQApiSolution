@@ -21,11 +21,9 @@ namespace WebApi.Controllers
     [Authorize]
     public class PaymentController : BaseController
     {
-
         public PaymentController(IServiceProvider serviceProvider, IOptions<AppConfig> appConfig) : base(serviceProvider, appConfig)
         {
         }
-
 
         string computeSha512Hash(string strToHash)
         {
@@ -44,14 +42,13 @@ namespace WebApi.Controllers
             }
         }
 
-        [HttpPost("pay/init")]
-        public ActionResult<InitPaymentViewModel> InitPayment(LogInModel model)
+        [HttpGet("app/payu/init")]
+        [AllowAnonymous]
+        public ActionResult<InitPayUViewModel> InitPayU()
         {
-            var viewModel = new InitPaymentViewModel();
-
             var service = CreateStoreService();
+            var tokens = this.AppConfig.MerchangePaymentTokenTest.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
 
-            var tokens = this.AppConfig.MerchangePaymentToken.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
             var cart = service.GetCart();
             if (cart == null)
                 throw new BusinessException("Cart does not exist");
@@ -59,13 +56,39 @@ namespace WebApi.Controllers
             if (cart.NetAmount <= 0)
                 throw new BusinessException("Invalid net-amount in Cart");
 
-            var productInfo = "Purchase of " + cart.ItemCount;
+            var salt = tokens[1];
 
-            //String hashSequence = key | txnid | amount | productinfo | firstname | email | phone | udf1 | udf2 | udf3 | udf4 | udf5 |||||| salt;
-            string hashSequence = tokens[0] + "|" + cart.Id + "|" + cart.NetAmount + "|" + productInfo + "|" + CurrentUser.FirstName + "|" + CurrentUser.Email + "|" + CurrentUser.MobileNumber + "| udf1 ||||||" + tokens[1];
-            viewModel.HashCode = computeSha512Hash(hashSequence);
+            var vm = new InitPayUViewModel()
+            {
+                IsDebug = true,
+                Key = tokens[0],
+                Amount = cart.NetAmount,
+                Email = CurrentUser.Email,
+                Phone = CurrentUser.MobileNumber,
+                firstName = CurrentUser.FullName,
+                TxnId = cart.Id,
+                ProductName = "Purchase at " + cart.StoreName,
+                udf1 = "u1",
+                udf2 = "u2",
+                udf3 = "u3",
+                udf4 = "u4",
+                udf5 = "u5",
+                surl = AppConfig.CoreApiEndpoint + "merchant/pay/callback/success",
+                furl = AppConfig.CoreApiEndpoint + "merchant/pay/callback/failure",
+                ColorCode = "#0173CF",
+                LogoUrl = AppConfig.ImageSrcEndpoint + "app/logo_light_sm.png"
+            };
 
-            return Ok(viewModel);
+            string shaIn = $"{vm.Key}|{vm.TxnId}|{vm.Amount}|{vm.ProductName}|{vm.firstName}|{vm.Email}|{vm.udf1}|{vm.udf2}|{vm.udf3}|{vm.udf4}|{vm.udf5}||||||{salt}";
+            
+            var shaBytes = Encoding.UTF8.GetBytes(shaIn);
+            using (var shaM = new System.Security.Cryptography.SHA512Managed())
+            {
+                var hash = shaM.ComputeHash(shaBytes);
+                vm.HashCode = getHashString(hash);
+            }
+
+            return Ok(vm);
         }
 
         [HttpPost("pay/callback/success")]
@@ -93,24 +116,32 @@ namespace WebApi.Controllers
             return result.ToString();
         }
 
+
+      
+
         [HttpGet("pay/checkout-launch")]
         [AllowAnonymous]
         public ContentResult GetPayUHtml()
         {
             byte[] hash;
-            var data = new { key = "KTiotDpI", txnid = "T124", amount = 12.75, prodInfo = "My G Product", fname = "Grs", email = "meetgirish.mjn@gmail.com",mobile="8871384762", udf5 = "", salt = "uc85JO4T0G" };
-            string d = data.key + "|" + data.txnid + "|" + data.amount + "|" + data.prodInfo + "|" + data.fname + "|" + data.email + "|||||" + data.udf5 + "||||||" + data.salt;
-            var datab = Encoding.UTF8.GetBytes(d);
+            var data = new { key = "KTiotDpI", txnid = "T124", amount = 12.75, productinfo = "My G Product", firstname = "Grs", email = "meetgirish.mjn@gmail.com",mobile="8871384762", udf1 = "u1", udf2 = "u2", udf3 = "u3", udf4 = "u4", udf5 = "u5", SALT = "" };
+
+            // before  sha512(key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5||||||SALT)
+            // after   sha512(SALT|status||||||udf5|udf4|udf3|udf2|udf1|email|firstname|productinfo|amount|txnid|key) 
+
+            string shaIn = $"{data.key}|{data.txnid}|{data.amount}|{data.productinfo}|{data.firstname}|{data.email}|{data.udf1}|{data.udf2}|{data.udf3}|{data.udf4}|{data.udf5}||||||{data.SALT}";
+
+            var shaBytes = Encoding.UTF8.GetBytes(shaIn);
             using (var shaM = new System.Security.Cryptography.SHA512Managed())
             {
-                hash = shaM.ComputeHash(datab);
+                hash = shaM.ComputeHash(shaBytes);
             }
             var hashStr = getHashString(hash);
 
             var sbHtml = new StringBuilder();
             var logoUrl = AppConfig.ImageSrcEndpoint + "app/logo_light_sm.png";
 
-            var launchStr = string.Format("key:'{0}',txnid:'{1}',hash:'{2}',amount:{3},firstname:'{4}',email:'{5}',phone:'{6}',productinfo:'{7}',udf5:'{8}',surl:'{9}',furl:'{10}'", data.key, data.txnid, hashStr, data.amount, data.fname, data.email, data.mobile, data.prodInfo, data.udf5, AppConfig.CoreApiEndpoint + "merchant/pay/callback/success", AppConfig.CoreApiEndpoint + "merchant/pay/callback/failure");
+            var launchStr = string.Format("key:'{0}',txnid:'{1}',hash:'{2}',amount:{3},firstname:'{4}',email:'{5}',phone:'{6}',productinfo:'{7}',udf5:'{8}',surl:'{9}',furl:'{10}'", data.key, data.txnid, hashStr, data.amount, data.firstname, data.email, data.mobile, data.productinfo, data.udf5, AppConfig.CoreApiEndpoint + "merchant/pay/callback/success", AppConfig.CoreApiEndpoint + "merchant/pay/callback/failure");
             sbHtml.Append("<!DOCTYPE html> <html lang = \"en\"> <head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no\" > ");
             sbHtml.Append("<script id=\"bolt\" src=\"https://sboxcheckout-static.citruspay.com/bolt/run/bolt.min.js\" bolt-color=\"#0173CF\" bolt-logo=\"" + logoUrl + "\"></script></head>");
             sbHtml.Append("<body><script type=\"text/javascript\">bolt.launch({"+ launchStr + "},{responseHandler:function(BOLT){console.log(BOLT);console.log(BOLT.response.txnStatus);},catchException:function(BOLT){console.log(BOLT);alert(BOLT.message);}});</script></body></html>");
