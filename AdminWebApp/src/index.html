@@ -4,49 +4,35 @@
 
 <head>
   <title>Portal-Shun#Q</title>
-  <base href="/">
-  <!-- BEGIN META -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="keywords" content="your,keywords">
-  <meta name="description" content="Short explanation about this website">
-  <!-- END META -->
-  <!-- BEGIN STYLESHEETS -->
-  <!-- please-wait -->
-  <link href="assets/please-wait/please-wait.css" rel="stylesheet" />
-  <script src="assets/please-wait/please-wait.min.js"></script>
-  <!-- please-wait -->
 
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
-  <link href='http://fonts.googleapis.com/css?family=Roboto:300italic,400italic,300,400,500,700,900' rel='stylesheet' type='text/css' />
-  <link type="text/css" rel="stylesheet" href="assets/codecovers/css/bootstrap.css" />
-  <link type="text/css" rel="stylesheet" href="assets/codecovers/css/materialadmin.css" />
-  <link type="text/css" rel="stylesheet" href="assets/codecovers/css/font-awesome.min.css" />
-  <link type="text/css" rel="stylesheet" href="assets/codecovers/css/material-design-iconic-font.min.css" />
-  <link type="text/css" rel="stylesheet" href="assets/animate.css" />
-
-  <!-- END STYLESHEETS -->
+  <script id="bolt" src="https://sboxcheckout-static.citruspay.com/bolt/run/bolt.min.js" bolt-
+          color="#0173CF" bolt-logo="https://cdn0storage0shunq0dev.blob.core.windows.net/images/app/logo_light_sm.png"></script>
 
 
 </head>
 
 <body class="menubar-hoverable header-fixed">
 
-  <!-- please-wait -->
-  <script type="text/javascript">
-    window.loadingScreen = window.pleaseWait({
-      logo: "assets/images/app-logo.jpg",
-      backgroundColor: '#364150',
-      loadingHtml: '<div class="sk-spinner"> <div class="sk-rect1"></div> <div class="sk-rect2"></div>  <div class="sk-rect3"></div>  <div class="sk-rect4"></div>  <div class="sk-rect5"></div></div>'
-    });
-  </script>
-  <!-- BEGIN HEADER-->
-  <app-root></app-root>
-
-  <script src="assets/codecovers/js/jquery-1.11.2.min.js"></script>
-  <script src="assets/codecovers/js/jquery-ui.min.js"></script>
-  <script src="assets/codecovers/js/bootstrap.min.js"></script>
-  <script src="assets/codecovers/js/core.js"></script>
-
+  <form action="https://sandboxsecure.payu.in/_payment" method="post" id="testform">
+    <input type="hidden" name="key" value="KTiotDpI">
+    <input type="hidden" name="firstname" value="Girish Mahajan">
+    <input type="hidden" name="email" value="meetgirish.mjn@gmail.com">
+    <input type="hidden" name="phone" value="8871384762">
+    <input type="hidden" name="productinfo" value="Sandbox text">
+    <input type="hidden" name="udf1" value="">
+    <input type="hidden" name="udf2" value="">
+    <input type="hidden" name="udf3" value="">
+    <input type="hidden" name="udf4" value="">
+    <input type="hidden" name="udf5" value="">
+    <input type="hidden" name="surl" value="https://www.payumoney.com/merchant-dashboard/#/transactions">
+    <input type="hidden" name="furl" value="https://www.payumoney.com/merchant-dashboard/#/transactions">
+    <input type="hidden" name="txnid" value="tid1571742458409">
+    <input type="hidden" name="hash" value="500fc0932704f12f6f80ac77c47f15e6a9668c2ed8f84222f768db235b64bcf4ea95685be011bda23eb1501c03b3145058e48e4990625a6d23b6c02232a5148f">
+    <input type="hidden" name="service_provider" value="payu_paisa">
+    <input type="hidden" name="salt" value="uc85JO4T0G">
+    <input type="hidden" name="amount" value="12">
+  </form>
 </body>
 </html>

@@ -44,19 +44,29 @@ namespace WebApi.Controllers
 
         [HttpGet("app/payu/init")]
         [AllowAnonymous]
-        public ActionResult<InitPayUViewModel> InitPayU()
+        public InitPayUViewModel  InitPayU()
         {
             var service = CreateStoreService();
             var tokens = this.AppConfig.MerchangePaymentTokenTest.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
 
             var cart = service.GetCart();
+            cart = new ShoppingCart();
             if (cart == null)
                 throw new BusinessException("Cart does not exist");
 
+            cart.NetAmount = 2867.65F;
             if (cart.NetAmount <= 0)
                 throw new BusinessException("Invalid net-amount in Cart");
 
             var salt = tokens[1];
+
+            cart.Id = "ciererewgrsmjn";
+            CurrentUser = new UserInfo
+            {
+                FullName = "Girish Mahajan",
+                MobileNumber = "8871384762",
+                Email = "meetgirish.mjn@gmail.com",
+            };
 
             var vm = new InitPayUViewModel()
             {
@@ -67,7 +77,7 @@ namespace WebApi.Controllers
                 Phone = CurrentUser.MobileNumber,
                 firstName = CurrentUser.FullName,
                 TxnId = cart.Id,
-                ProductName = "Purchase at " + cart.StoreName,
+                ProductName = "Purchase at " + "cart.StoreName",
                 udf1 = "u1",
                 udf2 = "u2",
                 udf3 = "u3",
@@ -88,21 +98,32 @@ namespace WebApi.Controllers
                 vm.HashCode = getHashString(hash);
             }
 
-            return Ok(vm);
+            return vm;
         }
 
         [HttpPost("pay/callback/success")]
         [AllowAnonymous]
-        public ActionResult<InitPaymentViewModel> OnPaymentSuccess()
+        public ContentResult OnPaymentSuccess()
         {
-            return Ok();
+            return new ContentResult
+            {
+                ContentType = "text/html",
+                StatusCode = (int)System.Net.HttpStatusCode.OK,
+                Content = "<b>pay/callback/success</b>"
+            };
         }
 
         [HttpPost("pay/callback/failure")]
         [AllowAnonymous]
-        public ActionResult<InitPaymentViewModel> OnPaymentFailure()
+        public ContentResult OnPaymentFailure()
         {
-            return Ok();
+            return new ContentResult
+            {
+                ContentType = "text/html",
+                StatusCode = (int)System.Net.HttpStatusCode.OK,
+                Content = "<b>pay/callback/failure</b>"
+            };
+            // return Ok();
         }
 
 
@@ -179,6 +200,40 @@ namespace WebApi.Controllers
                 ContentType = "text/html",
                 StatusCode = (int)System.Net.HttpStatusCode.OK,
                 Content = sbHtml.ToString()
+            };
+        }
+
+
+        [HttpGet("pay/checkout-launch/v3")]
+        [AllowAnonymous]
+        public ContentResult GetPayUHtmlV3()
+        {
+           // var html = System.IO.File.ReadAllText(@"C:\Users\gmaha\OneDrive - Monsanto\pau_Index.html");
+            var html= "<!DOCTYPE html><html lang=\"en\"><head><title>Portal-Shun#Q</title><meta name=\"viewport\" content=\"width = device - width, initial - scale = 1, maximum - scale = 1, user - scalable = no\"><script id=\"bolt\" src=\"https://sboxcheckout-static.citruspay.com/bolt/run/bolt.min.js\" bolt-color=\"#0173CF\" bolt-logo=\"https://cdn0storage0shunq0dev.blob.core.windows.net/images/app/logo_light_sm.png\"></script></head><body class=\"menubar-hoverable header-fixed\"><form action=\"https://sandboxsecure.payu.in/_payment\" method=\"post\" id=\"testform\" name=\"testform\"><input type=\"hidden\" name=\"key\" value=\"__key__\"><input type=\"hidden\" name=\"firstname\" value=\"__firstname__\"><input type=\"hidden\" name=\"email\" value=\"__email__\"><input type=\"hidden\" name=\"phone\" value=\"__phone__\"><input type=\"hidden\" name=\"productinfo\" value=\"__productinfo__\"><input type=\"hidden\" name=\"udf1\" value=\"__udf1__\"><input type=\"hidden\" name=\"udf2\" value=\"__udf2__\"><input type=\"hidden\" name=\"udf3\" value=\"__udf3__\"><input type=\"hidden\" name=\"udf4\" value=\"__udf4__\"><input type=\"hidden\" name=\"udf5\" value=\"__udf5__\"><input type=\"hidden\" name=\"surl\" value=\"__surl__\"><input type=\"hidden\" name=\"furl\" value=\"__furl__\"><input type=\"hidden\" name=\"txnid\" value=\"__txnid__\"><input type=\"hidden\" name=\"hash\" value=\"__hash__\"><input type=\"hidden\" name=\"service_provider\" value=\"payu_paisa\"> <input type=\"hidden\" name=\"amount\" value=\"__amount__\"></form></body></html>";
+
+            var vm = InitPayU();
+
+            html = html.Replace("__key__", vm.Key);
+            html = html.Replace("__firstname__", vm.firstName);
+            html = html.Replace("__email__", vm.Email);
+            html = html.Replace("__phone__", vm.Phone);
+            html = html.Replace("__productinfo__", vm.ProductName);
+            html = html.Replace("__udf1__", vm.udf1);
+            html = html.Replace("__udf2__", vm.udf2);
+            html = html.Replace("__udf3__", vm.udf3);
+            html = html.Replace("__udf4__", vm.udf4);
+            html = html.Replace("__udf5__", vm.udf5);
+            html = html.Replace("__surl__", vm.surl);
+            html = html.Replace("__furl__", vm.furl);
+            html = html.Replace("__txnid__", vm.TxnId);
+            html = html.Replace("__hash__", vm.HashCode);
+            html = html.Replace("__amount__", vm.Amount+"");
+
+            return new ContentResult
+            {
+                ContentType = "text/html",
+                StatusCode = (int)System.Net.HttpStatusCode.OK,
+                Content = html
             };
         }
     }
