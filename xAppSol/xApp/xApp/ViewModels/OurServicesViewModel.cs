@@ -40,39 +40,33 @@ namespace xApp.ViewModels
             {
                 new ServiceItem
                 {
-                    Name = "Alice",
-                    ImageUrl = App.BaseImageUrl + "ProfileImage15.png",
-                    Description = "Project Manager"
+                    Name = "History",
+                    Icon = "\uf1da"
                 },
                 new ServiceItem
                 {
-                    Name = "Jessica Park",
-                    ImageUrl = App.BaseImageUrl + "ProfileImage10.png",
-                    Description = "Senior Manager"
+                    Name = "Notification",
+                    Icon = "\uf0f3"
                 },
                 new ServiceItem
                 {
-                    Name = "Lisa",
-                    ImageUrl = App.BaseImageUrl + "ProfileImage11.png",
-                    Description = "Senior Developer"
+                    Name = "Categories",
+                    Icon = "\uf5fd"
                 },
                 new ServiceItem
                 {
-                    Name = "Rebecca",
-                    ImageUrl = App.BaseImageUrl + "ProfileImage12.png",
-                    Description = "Senior Designer"
+                    Name = "Reward",
+                    Icon = "\uf091"
                 },
                 new ServiceItem
                 {
-                    Name = "Alexander",
-                    ImageUrl = App.BaseImageUrl + "ProfileImage3.png",
-                    Description = "Senior Manager"
+                    Name = "Review Expenses",
+                    Icon = "\uf3d1"
                 },
-                new ServiceItem
+                 new ServiceItem
                 {
-                    Name = "Anthony",
-                    ImageUrl = App.BaseImageUrl + "ProfileImage1.png",
-                    Description = "Senior Developer"
+                    Name = "Offers",
+                    Icon = "\uf79c"
                 }
             };
 

@@ -23,12 +23,12 @@
 
 
     <ContentPage.Content>
-        <StackLayout >
+        <StackLayout   >
             <!--  Album images  -->
             <listView:SfListView
                 x:Name="ListView"
                 ItemsSource="{Binding CategoryList}"
-               Padding="15,0,15,15"
+               Padding="15,15,15,15"
                 AutoFitMode="Height"
                 IsScrollBarVisible="False"
                 ItemSpacing="{core:OnPlatformOrientationThickness Default='0,0,32,32',

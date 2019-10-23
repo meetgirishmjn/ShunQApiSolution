@@ -36,9 +36,18 @@ namespace xApp.Droid.Custom
             return id;
         }
 
+        public void ShowWarning(string message)
+        {
+            var toast= Android.Widget.Toast.MakeText(Application.Context, message, ToastLength.Short);
+            toast.View?.SetBackgroundColor(Android.Graphics.Color.Rgb(74, 202, 255));
+            toast.Show();
+        }
+
         public void ShowError(string message)
         {
-            Android.Widget.Toast.MakeText(Android.App.Application.Context,message, ToastLength.Short);
+            var toast = Android.Widget.Toast.MakeText(Application.Context, message, ToastLength.Short);
+            toast.View?.SetBackgroundColor(Android.Graphics.Color.Rgb(128, 0, 0));
+            toast.Show();
         }
     }
 }

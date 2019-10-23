@@ -7,7 +7,6 @@
                xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms"
     xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
     xmlns:helper="clr-namespace:xApp.Rederers"
-       xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
               xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
     xmlns:viewModel="clr-namespace:xApp.ViewModels"
              xmlns:busyindicator="clr-namespace:Syncfusion.SfBusyIndicator.XForms;assembly=Syncfusion.SfBusyIndicator.XForms"
@@ -17,7 +16,7 @@
     <NavigationPage.TitleView>
         <StackLayout Orientation="Horizontal" VerticalOptions="Center">
             <Label Text="Store Shop-Cart" TextColor="White" VerticalTextAlignment="Center" FontSize="Subtitle" ></Label>
-            <Button HorizontalOptions="EndAndExpand" Text="&#xf015;" BackgroundColor="Transparent" TextColor="White">
+            <Button Clicked="OnHome_Clicked" HorizontalOptions="EndAndExpand" Text="&#xf015;" BackgroundColor="Transparent" TextColor="White">
                 <Button.FontFamily>
                     <OnPlatform x:TypeArguments="x:String">
                         <On Platform="Android" Value="{StaticResource FontAwesomeSolid}" />
@@ -34,22 +33,14 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <!--  Binding context for Chat Profile Page  -->
-    <ContentPage.BindingContext>
-        <viewModel:ContactProfileViewModel />
-    </ContentPage.BindingContext>
-
     <ContentPage.Content>
 
 
             <ScrollView >
-
                 <StackLayout   BackgroundColor="{DynamicResource Gray-White}" Spacing="0">
+               
 
-                <busyindicator:SfBusyIndicator IsVisible="{Binding IsLoading}" IsBusy="{Binding IsLoading}" Title="wait...." VerticalOptions="FillAndExpand" Grid.Row="0" x:Name="sfbusyindicator"  BackgroundColor="White"/>
-
-
-                <Grid IsVisible="{Binding IsNotLoading}">
+                <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
@@ -64,7 +55,7 @@
                         HeightRequest="250" />
 
 
-
+                    
 
                     <buttons:SfButton
                         Grid.Row="0"
@@ -165,7 +156,9 @@
                                     Style="{StaticResource CommonProfileLabelStyle}"
                                     Text="Coffee Board Layout" />
 
-                            <Label IsVisible="False"
+                                <ActivityIndicator  Grid.RowSpan="2"  Grid.Column="2" IsRunning="{Binding IsLoading}" BackgroundColor="Transparent" />
+
+                                <Label IsVisible="False"
                                     Grid.RowSpan="2"
                                     Grid.Column="2"
                                     HorizontalOptions="End"
@@ -181,7 +174,7 @@
                 </border:SfBorder>
             </Grid>
 
-                <Grid IsVisible="{Binding IsNotLoading}" VerticalOptions="FillAndExpand">
+                <Grid VerticalOptions="FillAndExpand">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
@@ -189,13 +182,12 @@
                   
                     <Grid Grid.Row="0" x:Name="ScannerContainer" HorizontalOptions = "FillAndExpand"
     VerticalOptions = "FillAndExpand" >
-                       
                     </Grid>
                 
                     <StackLayout  Grid.Row="1"  VerticalOptions="FillAndExpand" HorizontalOptions="Fill">
 
                     <!--  Grid for mail id label and icon  -->
-                    <Grid Padding="0" ColumnSpacing="0" >
+                        <Grid Padding="0" ColumnSpacing="0" >
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition  Width="*" />
@@ -207,17 +199,17 @@
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition  Height="Auto" />
                                 </Grid.RowDefinitions>
-                                <Button IsVisible="{Binding IsScannerOff}" Clicked="OnScanReturn_Clicked"  Grid.Row="0" Text="&#xf2ea;" FontFamily="{StaticResource FontAwesomeSolid}" HeightRequest="40"  WidthRequest="40" HorizontalOptions="Center"   BackgroundColor="{StaticResource Red}" 
+                                <Button x:Name="btnReturn" IsVisible="{Binding IsScannerOff}" Clicked="OnScanReturn_Clicked"  Grid.Row="0" Text="&#xf2ea;" FontFamily="{StaticResource FontAwesomeSolid}" HeightRequest="40"  WidthRequest="40" HorizontalOptions="Center"   BackgroundColor="{StaticResource Red}" 
 TextColor="{StaticResource Gray-White}" Margin="5,0,0,0"  />
                                 <Label IsVisible="{Binding IsScannerOff}" Grid.Row="1" Margin="5,0,0,0" Text="Return"  Style="{StaticResource CommonProfileLabelStyle}" FontSize="Micro"></Label>
                             </Grid>
 
 
-                            <Button IsVisible="{Binding IsScannerOff}" Clicked="OnScanAdd_Clicked"  Grid.Column="1" Text="&#xf217;" FontFamily="{StaticResource FontAwesomeSolid}" HeightRequest="60"  WidthRequest="60" HorizontalOptions="Center"  VerticalOptions="FillAndExpand" BackgroundColor="{StaticResource Blue}" 
+                            <Button x:Name="btnAdd" IsEnabled="False" IsVisible="{Binding IsScannerOff}" Clicked="OnScanAdd_Clicked"  Grid.Column="1" Text="&#xf217;" FontFamily="{StaticResource FontAwesomeSolid}" HeightRequest="60"  WidthRequest="60" HorizontalOptions="Center"  VerticalOptions="FillAndExpand" BackgroundColor="{StaticResource Blue}" 
  BorderRadius="30" TextColor="{StaticResource Gray-White}"  />
                             <Button IsVisible="{Binding IsScannerOn}" Clicked="OnScanCancel_Clicked"  Grid.Column="1" Text="Cancel &#xf02a;" FontFamily="{StaticResource FontAwesomeSolid}" HeightRequest="60"   HorizontalOptions="Center"  VerticalOptions="FillAndExpand" BackgroundColor="{StaticResource Gray-500}" 
  TextColor="{StaticResource Gray-White}"  />
-
+                           
                         </Grid>
 
                     <BoxView Style="{StaticResource SeparatorStyle}" />

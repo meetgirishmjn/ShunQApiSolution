@@ -8,5 +8,6 @@ namespace xApp.Services
     {
         string GetDeviceId();
         void ShowError(string message);
+        void ShowWarning(string message);
     }
 }

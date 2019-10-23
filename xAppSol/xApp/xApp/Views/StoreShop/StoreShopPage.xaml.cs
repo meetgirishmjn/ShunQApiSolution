@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using xApp.Services;
 using xApp.ViewModels;
 using ZXing;
 using ZXing.Net.Mobile.Forms;
@@ -15,20 +18,36 @@ namespace xApp.Views.StoreShop
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class StoreShopPage : ContentPage
     {
+
+        public viewModel vm { get; set; }
+        bool isAnalysing = false;
+        IToastr toastr;
         public StoreShopPage()
         {
             try
             {
                 InitializeComponent();
-                renderScannerImage();
+                var zxingView = new ZXingScannerView
+                {
+                    HorizontalOptions = LayoutOptions.FillAndExpand,
+                    VerticalOptions = LayoutOptions.FillAndExpand,
+                    AutomationId = "zxingScannerView",
+                    IsScanning = true,
+                    IsAnalyzing = true
+                };
+                zxingView.OnScanResult += OnScanResult;
+                ScannerContainer.Children.Insert(0,zxingView);
+
                 //this.ProfileImage.Source = App.BaseImageUrl + "ContactProfileImage.png";
                 this.ProfileImage.Source = "store_1001.jpg";
-                Task.Run(async () =>
-                {
-                    await Task.Delay(2000);
-                    var context = this.BindingContext as ContactProfileViewModel;
-                    context.IsLoading = false;
-                });
+                vm = new viewModel(); 
+                this.BindingContext = vm;
+
+                toastr = DependencyService.Get<IToastr>();
+                vm.IsLoading = true;
+                btnAdd.IsEnabled = false;
+                btnReturn.IsEnabled = false;
+                btnReturn.BackgroundColor= btnReturn.BackgroundColor  = (Color)App.Current.Resources["Gray-100"];
             }
             catch(Exception ex)
             {
@@ -44,61 +63,8 @@ namespace xApp.Views.StoreShop
             });
         }
 
-        protected override bool OnBackButtonPressed()
-        {
-            App.Current.MainPage = new AppShell();
-            return true;
-        }
-
-
-        ZXingScannerView zxingView;
-        ZXingDefaultOverlay zxingOverlay;
-
-        private void OnScanAdd_Clicked(object sender, EventArgs e)
-        {
-            var context = this.BindingContext as ContactProfileViewModel;
-
-            if (context.IsScannerOn)
-                return;
-
-            context.IsScannerOn = true;
-            context.IsScannerOff = false;
-
-            zxingView = new ZXingScannerView
-            {
-                HorizontalOptions = LayoutOptions.FillAndExpand,
-                VerticalOptions = LayoutOptions.FillAndExpand,
-                AutomationId = "zxingScannerView",
-                IsScanning=true,
-                IsAnalyzing=true
-            };
-
-            zxingView.OnScanResult += OnScanResult;
-
-            zxingOverlay = new ZXingDefaultOverlay
-            {
-                TopText = "Hold your phone up to the barcode",
-                BottomText = "",
-                ShowFlashButton = false,
-                AutomationId = "zxingDefaultOverlay",
-            };
-
-            zxingOverlay.FlashButtonClicked += (sender2, e2) => {
-                zxingView.IsTorchOn = !zxingView.IsTorchOn;
-            };
-
-            var grid = new Grid
-            {
-                VerticalOptions = LayoutOptions.FillAndExpand,
-                HorizontalOptions = LayoutOptions.FillAndExpand,
-            };
-
-            ScannerContainer.Children.Add(zxingView);
-            ScannerContainer.Children.Add(zxingOverlay);
-        }
-
-        bool isAnalysing = false;
-       public void OnScanResult(Result result)
+        
+        public void OnScanResult(Result result)
         {
             if (isAnalysing)
                 return;
@@ -118,6 +84,23 @@ namespace xApp.Views.StoreShop
             });
         }
 
+        //  ZXingScannerView zxingView;
+        ZXingDefaultOverlay zxingOverlay;
+
+        private void OnScanAdd_Clicked(object sender, EventArgs e)
+        {
+            
+            if (vm.IsLoading)
+                return;
+            if (vm.IsScannerOn)
+                return;
+
+            vm.IsScannerOn = true;
+            ensureScannerOverlay();
+        }
+
+       
+
         private void OnScanReturn_Clicked(object sender, EventArgs e)
         {
             OnScanCancel_Clicked(sender, e);
@@ -125,35 +108,101 @@ namespace xApp.Views.StoreShop
 
         private void OnScanCancel_Clicked(object sender, EventArgs e)
         {
-            var context = this.BindingContext as ContactProfileViewModel;
-            if (context.IsScannerOff)
+            if (vm.IsLoading)
                 return;
 
-
-            context.IsScannerOn = false;
-            context.IsScannerOff = true;
-            zxingView = null;
-            zxingOverlay = null;
-            renderScannerImage();
-        }
-        
-        private void renderScannerImage()
-        {
-            ScannerContainer.Children.Clear();
-            var img = new Image()
-            {
-                Margin = 0,
-                Aspect = Aspect.AspectFill,
-                VerticalOptions = LayoutOptions.FillAndExpand,
-                HorizontalOptions = LayoutOptions.FillAndExpand,
-                Source = "scan2.jpg"
-            };
-            ScannerContainer.Children.Add(img);
+            vm.IsScannerOn = false;
+            ensureScannerOverlay();
         }
 
         private void OnCheckout_Clicked(object sender, EventArgs e)
         {
             ( App.Current as App).GoToCheckoutPage();
         }
+
+        private void ensureScannerOverlay()
+        {
+            if (vm.IsScannerOff)
+            {
+                if(ScannerContainer.Children.Count>1)
+                    ScannerContainer.Children.RemoveAt(1);
+
+                zxingOverlay = null;
+            }
+            else
+            {
+                zxingOverlay = new ZXingDefaultOverlay
+                {
+                    TopText = "Hold your phone up to the barcode",
+                    BottomText = "",
+                    ShowFlashButton = false,
+                    AutomationId = "zxingDefaultOverlay",
+                };
+                ScannerContainer.Children.Add(zxingOverlay);
+                //zxingOverlay.FlashButtonClicked += (sender2, e2) => {
+                //   // zxingView.IsTorchOn = !zxingView.IsTorchOn;
+                //};
+
+
+            }
+        }
+
+        private void OnHome_Clicked(object sender, EventArgs e)
+        {
+            App.Current.MainPage = new AppShell();
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            App.Current.MainPage = new AppShell();
+            return true;
+        }
+
+        public class viewModel : INotifyPropertyChanged
+        {
+            bool _IsLoading = false;
+            public bool IsLoading {
+                get
+                {
+                    return this._IsLoading;
+                }
+                set
+                {
+                    this._IsLoading = value;
+                    this.NotifyPropertyChanged();
+                    this.NotifyPropertyChanged("IsNotLoading");
+                }
+            }
+            public bool IsNotLoading { get { return !IsLoading; } }
+
+            bool _IsScannerOn = false;
+            public bool IsScannerOn
+            {
+                get
+                {
+                    return this._IsScannerOn;
+                }
+                set
+                {
+                    this._IsScannerOn = value;
+                    this.NotifyPropertyChanged();
+                    this.NotifyPropertyChanged("IsScannerOff");
+                }
+            }
+            public bool IsScannerOff { get { return !IsScannerOn; } }
+
+            public event PropertyChangedEventHandler PropertyChanged;
+            /// <summary>
+            /// The PropertyChanged event occurs when changing the value of property.
+            /// </summary>
+            /// <param name="propertyName">Property name</param>
+            public void NotifyPropertyChanged([CallerMemberName]string propertyName = null)
+            {
+                this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            }
+
+        }
+
+      
     }
 }

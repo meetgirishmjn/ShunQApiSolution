@@ -162,21 +162,12 @@
                                 <DataTemplate>
 
                                     <!--  Details of each employee  -->
-                                    <StackLayout Margin="15,15,15,24" Spacing="0">
+                                    <StackLayout Margin="15,15,15,15" Spacing="0">
 
+                                    <Label Text="{Binding Icon}"  VerticalTextAlignment="Center"  FontSize="Medium" HorizontalTextAlignment="Center"  FontFamily="{StaticResource FontAwesomeSolid}" TextColor="White"  HeightRequest="64" WidthRequest="64"  />
                                         <!--  Profile image  -->
-                                        <border:SfBorder
-                                Margin="0,0,0,8"
-                                BorderWidth="0"
-                                CornerRadius="32"
-                                HorizontalOptions="Center"
-                                VerticalOptions="Center">
-                                        <ffimageloading:CachedImage Source="{Binding ImageUrl}"
-                                    BackgroundColor="{DynamicResource Gray-200}"
-                                     HeightRequest="64" WidthRequest="64"  />
-                                    </border:SfBorder>
 
-                                        <!--  Employee name  -->
+                                    <!--  Employee name  -->
                                         <Label
                                 FontFamily="{StaticResource Montserrat-SemiBold}"
                                 HorizontalTextAlignment="Center"
@@ -185,11 +176,11 @@
                                 TextColor="White" />
 
                                         <!--  Designation  -->
-                                        <Label
+                                        <!--<Label
                                 HorizontalTextAlignment="Center"
                                 Style="{StaticResource VersionLabelStyle}"
-                                Text="{Binding Description}"
-                                TextColor="White" />
+                                Text="{Binding Name}"
+                                TextColor="White" />-->
 
                                     </StackLayout>
                                 </DataTemplate>

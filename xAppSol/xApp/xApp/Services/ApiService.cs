@@ -71,7 +71,6 @@ namespace xApp.Services
             return string.Empty;
         }
 
-        public async 
         public async Task<string> GetHomeView()
         {
             var response = await client.GetAsync(new Uri(mobileUrl + "views/home"));

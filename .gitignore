@@ -18,3 +18,5 @@
 /xAppSol/xApp/xApp/obj
 /xAppSol/xApp/xApp.Android/bin/Debug
 /xAppSol/xApp/xApp.Android/obj
+/xAppSol/xApp/xApp/bin/Release/netstandard2.0
+/xAppSol/xApp/xApp.Android/bin/Release
