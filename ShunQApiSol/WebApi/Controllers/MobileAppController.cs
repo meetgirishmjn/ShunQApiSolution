@@ -325,6 +325,16 @@ namespace WebApi.Controllers
             viewModel.OrderTotal = cart.NetAmount;
             viewModel.AmountBeforeVoucherDiscount = cart.AmountBeforeVoucherDiscount;
 
+
+            //cart validation
+            var validationResult = cartService.ValidateCart(cart.Id);
+            viewModel.IsCartValid = validationResult.IsValid;
+            if (!viewModel.IsCartValid)
+            {
+                viewModel.ValidationCaption = "Cart is not valid. Please verify Cart Items with App Items";
+                viewModel.ValidationMessages = validationResult.Messages;
+            }
+
             return viewModel;
         }
 

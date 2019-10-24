@@ -90,6 +90,32 @@ namespace TelementryApi.Controllers
             return results;
         }
 
+        [HttpDelete("item/logs/clear/{cartDeviceId}")]
+        public async Task<int> ClearItemLogs(string cartDeviceId)
+        {
+            var appId = ReadAppId();
+            var deviceId = ReadDeviceId();
+
+            var service = CreateStoreService();
+
+            var result = await service.RemoveAllCartDeviceLogsAsync(cartDeviceId);
+
+            return result;
+        }
+
+        [HttpGet("item/cart/validate/{cartDeviceId}")]
+        public CartValidationResult ValidateCart(string cartDeviceId)
+        {
+            var appId = ReadAppId();
+            var deviceId = ReadDeviceId();
+
+            var service = CreateStoreService();
+
+            var result = service.ValidateCart(cartDeviceId);
+
+            return result;
+        }
+
         [HttpGet("Ver")]
         [AllowAnonymous]
         public VersionViewModel Ver()

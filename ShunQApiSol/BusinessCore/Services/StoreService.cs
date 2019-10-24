@@ -27,20 +27,15 @@ namespace BusinessCore.Services
                 return new ShoppingCartManager(CurrentUser.Id, this.ContextManager);
             }
         }
-        private static readonly Random rand = new Random((int)DateTime.Now.Ticks);
+        //private static readonly Random rand = new Random((int)DateTime.Now.Ticks);
 
         private string getProductId(string productBarcode)
         {
             var code = productBarcode.TrimAll();
             var context = ContextManager.GetContext();
-            //  var productId =context.ProductBarcodes.Where(o => o.Code == code).Select(o=>o.ProductMasterId).FirstOrDefault();
+            var productId =context.ProductBarcodes.Where(o => o.Code == code).Select(o=>o.ProductMasterId).FirstOrDefault();
 
-            //temp
-            var ids = context.ProductMasters.Select(o => o.Id).ToArray();
-            var productId = rand.Next(1, ids.Length);
-            //temp
-
-            return productId + "";
+            return productId;
         }
 
         #endregion "Private Methods"
@@ -157,6 +152,10 @@ namespace BusinessCore.Services
         public ShoppingCart AddItemToCart(string productbarcode)
         {
             var productId = getProductId(productbarcode);
+
+            if (string.IsNullOrEmpty(productId))
+                throw new BusinessException("Invalid Product Id:" + productId);
+
             var cart = shoppingCart.AddItemToCart(productId);
             return cart;
         }
@@ -194,8 +193,7 @@ namespace BusinessCore.Services
         public Store GetStore(string qrCode)
         {
             var ids = ReadStores().Select(o => o.Id).ToArray();
-            var index =rand.Next(0, ids.Length);
-            var result = GetStore(ids[index]);
+            var result = GetStore(ids.First());
             return result;
         }
 
@@ -345,6 +343,37 @@ namespace BusinessCore.Services
             });
 
             return results;
+        }
+
+        public async Task<int> RemoveAllCartDeviceLogsAsync(string cartDeviceId)
+        {
+            var context = ContextManager.GetContext();
+            var lst = await context.CartDeviceLogs.Where(o => o.DeviceId == cartDeviceId).ToListAsync();
+
+            var count = lst.Count;
+            context.RemoveRange(lst);
+             
+            return count;
+        }
+
+        public CartValidationResult ValidateCart(string cartId)
+        {
+            var result = shoppingCart.ValidateCart(cartId);
+            return result;
+        }
+
+        public CartValidationResult ValidateCart()
+        {
+            var status = (int)ShoppingCartStatus.InProgress;
+
+            var context = ContextManager.GetContext();
+            var objDb = context.ShoppingCarts.Where(o => o.UserId == CurrentUser.Id && o.Status == status).FirstOrDefault();
+            if (objDb == null)
+                throw new BusinessException("No active cart for user.");
+
+                var cart = shoppingCart.GetCart();
+            var result = shoppingCart.ValidateCart(cartId: objDb.Id);
+            return result;
         }
 
     }

@@ -34,21 +34,6 @@ namespace BusinessCore.Services
             return priceDbs;
         }
 
-        #region "temp"
-        //temp
-        private string[] prodDescList = new string[]
-        {
-                "200 gram",
-                "1 kg",
-                "500 gram",
-                "1 pc - 200 g - 1 kg",
-                "1 box (12 pieces)",
-                "1 dozen (12 qty)"
-        };
-        static Random rand = new Random((int)DateTime.Now.Ticks);
-        #endregion "temp"
-
-
         public ShoppingCart CreateCart(string cartDeviceId)
         {
 
@@ -142,8 +127,7 @@ namespace BusinessCore.Services
                     var p = products.Contains(dbItem.ProductId) ? products[dbItem.ProductId].FirstOrDefault() : null;
                     var price = prices.FirstOrDefault(o => o.ProductId == dbItem.ProductId);
 
-                    var pDescIndex = rand.Next(0, prodDescList.Length);
-                    var pDesc = prodDescList[pDescIndex];
+                    var pDesc = "Test Product Description";
 
                     var item = new CartItemVM
                     {
@@ -224,19 +208,13 @@ namespace BusinessCore.Services
         {
             var status = (int)ShoppingCartStatus.InProgress;
             var context = ContextManager.GetContext();
-            var objDb = context.ShoppingCarts.Include(o => o.Items).Where(o => o.UserId == userId && o.Status == status).FirstOrDefault();
-            if (objDb == null)
-                throw new BusinessException("Shopping-cart does not exist");
 
-            if (objDb.Items == null || objDb.Items.Count == 0)
-                throw new BusinessException("Shopping-cart is empty");
+            var itemDb = context.ShoppingCartItems.Where(o => o.ProductId == productId && o.ShoppingCart.UserId == userId && o.ShoppingCart.Status == status).FirstOrDefault();
 
-            //temp
-            var index = rand.Next(0, objDb.Items.Count);
-            var itemDb = objDb.Items.ToList()[index];
-            //temp
+            if (itemDb == null)
+                throw new BusinessException("Item not found in Shopping-cart.");
 
-            objDb.Items.Remove(itemDb);
+            context.ShoppingCartItems.Remove(itemDb);
             context.SaveChanges();
 
             return GetCart();
@@ -304,7 +282,7 @@ namespace BusinessCore.Services
         public CartValidationResult ValidateCart(string cartId)
         {
             var result = new CartValidationResult();
-
+            
             var context = ContextManager.GetContext();
 
             var cartDb = context.ShoppingCarts.Include(o => o.Items).Where(o => o.Id== cartId).Select(o=>new
@@ -347,11 +325,22 @@ namespace BusinessCore.Services
                 totalCartItemWeight += productLookup[itemDb.ProductId].FirstOrDefault().Weight;
             }
 
+
+            var isValid = true;
+
             if (cartDb.items.Length != cartLogSummary.NetItemCount)
+            {
                 result.Messages.Add($"MisMatchedItemCount: {cartDb.items.Length} Item(s) added in App and {cartLogSummary.NetItemCount} Item(s) found in cart.");
+                isValid = false;
+            }
 
             if (totalCartItemWeight != cartLogSummary.CartWeight)
+            {
                 result.Messages.Add($"MisMatchedItemWeight: Item(s) weight in App: {totalCartItemWeight} {cartLogSummary.WeightUnit} and Item(s) found in cart:{cartLogSummary.CartWeight} {cartLogSummary.WeightUnit}");
+                isValid = false;
+            }
+
+            result.IsValid = isValid;
 
             result.CartSummary = cartLogSummary;
 

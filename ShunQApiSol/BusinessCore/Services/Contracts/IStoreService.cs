@@ -30,5 +30,9 @@ namespace BusinessCore.Services.Contracts
         Task<CartDeviceEventArg> CartDeviceProductRemovedAsync(CartDeviceEventArg arg);
         Task<List<string>> ReadCartDeviceLogsAsync();
         Task<List<string>> ReadCartDeviceLogsAsync(string cartDeviceId);
+        Task<int> RemoveAllCartDeviceLogsAsync(string cartDeviceId);
+        CartValidationResult ValidateCart(string cartId);
+        CartValidationResult ValidateCart();
+
     }
 }
