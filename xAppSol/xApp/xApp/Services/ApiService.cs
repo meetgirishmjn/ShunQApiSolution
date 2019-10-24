@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 using xApp.Models;
+using xApp.ViewModels;
 
 namespace xApp.Services
 {
@@ -16,10 +17,11 @@ namespace xApp.Services
         string membershipUrl = string.Empty;
         string mobileUrl = string.Empty;
         public static string __deviceId = string.Empty;
+        public IToastr Toastr { get; set; }
 
         public string AppId = "appGrs123";
+        public string AuthToken { get; set; }
 
-        
         public static string DeviceId
         {
             get
@@ -35,10 +37,27 @@ namespace xApp.Services
         public ApiService()
         {
             client = new HttpClient();
-            membershipUrl = apiEndpoint + "/api/v1/membership/app/";
-            mobileUrl = apiEndpoint + "/api/v1/mobile/";
+            membershipUrl = apiEndpoint + "api/v1/membership/app/";
+            mobileUrl = apiEndpoint + "api/v1/mobile/";
+            Toastr = DependencyService.Get<IToastr>();
         }
-        
+        private HttpClient getHttp()
+        {
+            this.client.DefaultRequestHeaders.Clear();
+            client.DefaultRequestHeaders.Add("Authorization", "bearer " + AuthToken);
+            client.DefaultRequestHeaders.Add("app-id", this.AppId);
+            client.DefaultRequestHeaders.Add("device-id", ApiService.DeviceId);
+            return client;
+        }
+        private async void handleError(HttpResponseMessage response)
+        {
+            if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var error = JsonConvert.DeserializeObject<ErrorResponse>(content);
+                this.Toastr.ShowError(error.Message);
+            }
+        }
         private async Task<string>  getAuthToken()
         {
             var token = "";
@@ -71,30 +90,28 @@ namespace xApp.Services
             return string.Empty;
         }
 
-        public async Task<string> GetHomeView()
+        public async Task<HomeViewResult> GetHomeView()
         {
-            var response = await client.GetAsync(new Uri(mobileUrl + "views/home"));
+             
+            var response = await getHttp().GetAsync(new Uri(mobileUrl + "views/home"));
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
-                var result = JsonConvert.DeserializeObject<LogInResult>(content);
-                return result.IsValid ? result.AuthToken : string.Empty;
+                var result = JsonConvert.DeserializeObject<HomeViewResult>(content);
+                AppViewModel.Instance.HasActiveCart = result.HasActiveCart;
+                AppViewModel.Instance.CurrentUser = new User
+                {
+                    UserName = result.User.Name,
+                    FullName = result.User.FullName
+                };
+                AppViewModel.Instance.CartItemCount =(result.Cart != null ? result.Cart.ItemCount : 0);
+                return result;
             }
-            return string.Empty;
+            else
+                handleError(response);
+
+            return null;
         }
     }
 
-    public class LogInResult
-    {
-        public bool IsValid { get; set; }
-        public string UserName { get; set; }
-        public string FullName { get; set; }
-        public string AuthToken { get; set; }
-    }
-
-    public class HomeViewResult
-    {
-        public string[] BannerUrls { get; set; }
-        public bool HasActiveCart { get; set; }
-    }
 }

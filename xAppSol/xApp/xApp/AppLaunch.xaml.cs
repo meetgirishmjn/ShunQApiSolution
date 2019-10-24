@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using xApp.Services;
 using xApp.Views.LogIn;
 
 namespace xApp
@@ -22,24 +23,35 @@ namespace xApp
         public async void LoadPageAsync()
         {
             var isLoggedIn = false;
+            var oAuthToken = "";
             try
             {
-                var token = await SecureStorage.GetAsync("oAuthToken");
-                if (!string.IsNullOrEmpty(token))
+                oAuthToken = await SecureStorage.GetAsync("oAuthToken");
+                if (!string.IsNullOrEmpty(oAuthToken))
                     isLoggedIn = true;
             }
             catch (Exception ex)
             {
                 // Possible that device doesn't support secure storage on device.
             }
-            await Task.Delay(1000);
-            Device.BeginInvokeOnMainThread(() =>
+            
+            Device.BeginInvokeOnMainThread(async () =>
             {
-                
+
                 if (!isLoggedIn)
                     App.Current.MainPage = new LoginPage();
                 else
-                    App.Current.MainPage = new AppShell();
+                {
+                    var api = new ApiService();
+                    api.AuthToken = oAuthToken;
+                    var homeViewModel = await api.GetHomeView();
+
+                    if (homeViewModel == null)
+                        (App.Current as App).GoToLogIn();
+                    else
+                        ViewModels.AppViewModel.Instance.Cache["HomeViewModel"] = homeViewModel;
+                        App.Current.MainPage = new AppShell();
+                }
             });
             
         }

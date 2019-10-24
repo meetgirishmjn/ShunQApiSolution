@@ -6,6 +6,7 @@ using xApp.Services;
 using xApp.Views;
 using xApp.Views.CheckoutPages;
 using Xamarin.Essentials;
+using xApp.Views.LogIn;
 
 namespace xApp
 {
@@ -21,7 +22,6 @@ namespace xApp
 
             //Application.Current.Resources["Gray-200"] = "#ebecef";
             //Application.Current.Resources["Gray-900"] = "#333942";
-             DependencyService.Register<MockDataStore>();
 
 
             MainPage = new AppLaunch();
@@ -59,6 +59,11 @@ namespace xApp
         public void GoToPayULaunch()
         {
              MainPage.Navigation.PushAsync( new WebViewPage());
+        }
+
+        public void GoToLogIn()
+        {
+            MainPage = new LoginPage();
         }
     }
 

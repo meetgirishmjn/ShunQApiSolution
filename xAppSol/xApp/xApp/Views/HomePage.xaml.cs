@@ -18,12 +18,10 @@ namespace xApp.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class HomePage : ContentPage
     {
-        public Uri TImg { get; set; }
         public HomePage()
         {
             try
             {
-                this.TImg = new Uri("http://i0.wp.com/vanillicon.com/b41c9603fd56030185e177f2c0e43981_200.png");
                 InitializeComponent();
 
                 var vm = new DetailPageViewModel();
