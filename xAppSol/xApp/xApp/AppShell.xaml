@@ -29,7 +29,7 @@
         </ResourceDictionary>
     </Shell.Resources>
     <Shell.FlyoutHeaderTemplate>
-        <DataTemplate>
+        <DataTemplate >
             <Grid BackgroundColor="Black"
               HeightRequest="200">
                 <Image Aspect="AspectFill"
@@ -37,12 +37,12 @@
                    Opacity="0.6" />
                 <StackLayout  HorizontalOptions="CenterAndExpand"
                    VerticalOptions="CenterAndExpand">
-                    <Label Text="Animals"
+                    <Label Text="{Binding FullName}"
                    TextColor="White"
                    FontAttributes="Bold"
                    HorizontalTextAlignment="Center"
                    VerticalTextAlignment="Center" />
-                    <Label Text="Test Animals, Administrator"
+                    <Label Text="{Binding UserName}"
                    TextColor="White"
                    HorizontalTextAlignment="Center"
                    VerticalTextAlignment="Center" />

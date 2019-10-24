@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Xamarin.Forms;
+using xApp.ViewModels;
 
 namespace xApp
 {
@@ -10,6 +11,7 @@ namespace xApp
         public AppShell()
         {
             InitializeComponent();
+            this.BindingContext = AppViewModel.Instance.CurrentUser;
         }
 
         protected override bool OnBackButtonPressed()
