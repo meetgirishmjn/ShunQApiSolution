@@ -118,10 +118,6 @@
 
 
                     <Grid RowSpacing="0" VerticalOptions="Center">
-                        <Grid.BindingContext>
-                            <local:OurServicesViewModel />
-                        </Grid.BindingContext>
-
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
@@ -143,7 +139,6 @@
                 AutoFitMode="Height"
                 ItemsSource="{Binding AllServices}"
                 SelectionMode="None"
-                TapCommand="{Binding ItemSelectedCommand}"
                 VerticalOptions="Start">
 
                             <listView:SfListView.HeaderTemplate>
@@ -205,9 +200,9 @@
                     </Grid.RowDefinitions>
 
                     <!--  Title View  -->
-                    <controls:TitleView Title="Categories" Grid.Row="0">
-                        <controls:TitleView.TrailingView>
-                            <StackLayout HorizontalOptions="End" Orientation="Horizontal">
+                    <controls:TitleView Title="{Binding TileSections[0].Title}" Grid.Row="0" >
+                        <controls:TitleView.TrailingView >
+                            <StackLayout HorizontalOptions="Center" Orientation="Horizontal">
                                 <buttons:SfButton
                             IsVisible="False"
                             CornerRadius="4"
@@ -226,7 +221,7 @@
                 AutoFitMode="Height"
                 HorizontalOptions="FillAndExpand"
                 ItemSpacing="8"
-                ItemsSource="{Binding Categories}"
+                ItemsSource="{Binding TileSections[0].Tiles}"
                 Style="{StaticResource SfListViewStyle}">
 
                         <!--<listView:SfListView.Behaviors>
@@ -250,7 +245,7 @@
                                 HeightRequest="150"                              
                                 WidthRequest="160"
 			DownsampleToViewSize="true"
-			Source = "{Binding Icon}">
+			Source = "{Binding ImageUrl}">
                                     </ffimageloading:CachedImage>
                                     
                                     

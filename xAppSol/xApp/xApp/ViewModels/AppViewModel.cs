@@ -7,6 +7,7 @@ using xApp.Models;
 
 namespace xApp.ViewModels
 {
+
   public  class AppViewModel : INotifyPropertyChanged
     {
         static AppViewModel _apv=new AppViewModel();
@@ -23,7 +24,6 @@ namespace xApp.ViewModels
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public Dictionary<string, object> Cache = new Dictionary<string, object>();
 
         #region "HasActiveCart"
         private bool _hasActiveCart = false;
@@ -72,5 +72,25 @@ namespace xApp.ViewModels
             }
         }
         #endregion "CurrentUser"
+
+        private Dictionary<string, object> _cache = new Dictionary<string, object>();
+
+        public T GetViewModel<T>() where T : class
+        {
+            var tname = typeof(T).Name;
+            if (_cache.ContainsKey(tname))
+                return (T)_cache[tname];
+            else
+                return null;
+        }
+
+        public void SetViewModel<T>(T vm)
+        {
+            var tname = typeof(T).Name;
+            if (_cache.ContainsKey(tname))
+                _cache[tname] = vm;
+            else
+                _cache.Add(tname, vm);
+        }
     }
 }

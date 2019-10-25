@@ -44,7 +44,7 @@
                  NavigationDelay="3000" 
                     HorizontalOptions="Center"
                     ItemTemplate="{StaticResource PortraitTemplate}"
-                    ItemsSource="{Binding ProductDetail.PreviewImages}"
+                    ItemsSource="{Binding BannerUrls}"
                     NavigationStripMode="Dots"
                     SelectedDotColor="{StaticResource Blue}"
                     UnselectedDotColor="{StaticResource Gray-200}"

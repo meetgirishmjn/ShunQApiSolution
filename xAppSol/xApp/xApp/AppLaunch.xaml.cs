@@ -49,7 +49,7 @@ namespace xApp
                     if (homeViewModel == null)
                         (App.Current as App).GoToLogIn();
                     else
-                        ViewModels.AppViewModel.Instance.Cache["HomeViewModel"] = homeViewModel;
+                        ViewModels.AppViewModel.Instance.SetViewModel(homeViewModel);
                         App.Current.MainPage = new AppShell();
                 }
             });

@@ -17,9 +17,8 @@ namespace xApp.Services
         public string AuthToken { get; set; }
     }
 
-    public class HomeViewResult
+    public partial class HomeViewResult
     {
-        public AppViewModel App { get { return AppViewModel.Instance; } }
         public string[] BannerUrls { get; set; }
         public TileSection[] TileSections { get; set; }
         public bool HasActiveCart { get; set; }
