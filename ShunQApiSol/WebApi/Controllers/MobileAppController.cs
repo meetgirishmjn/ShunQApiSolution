@@ -224,7 +224,7 @@ namespace WebApi.Controllers
         public HomeViewModel GetHomeViewModel()
         {
             var viewModel = new HomeViewModel();
-            const string URL = "https://cdn0storage0shunq0dev.blob.core.windows.net/images/Promos/";
+            const string URL = "https://cdn0storage0shunq0dev.blob.core.windows.net/images/app/";
             var cartService = CreateStoreService();
             viewModel.BannerUrls = new string[]
             {
@@ -243,22 +243,22 @@ namespace WebApi.Controllers
                       new HomeViewModel.Tile
                       {
                           Title="",
-                          ImageUrl = URL+"Cat1.jpg",
+                          ImageUrl = URL + "category/" + "vegetables.jpg",
                       },
                         new HomeViewModel.Tile
                       {
                           Title="",
-                          ImageUrl = URL+"Cat2.jpg",
+                          ImageUrl = URL + "category/" + "Biscuits.jpg",
                       },
                           new HomeViewModel.Tile
                       {
                           Title="",
-                          ImageUrl = URL+"Cat3.jpg",
+                          ImageUrl = URL + "category/" + "Crockery.jpg",
                       },
                             new HomeViewModel.Tile
                       {
                           Title="",
-                          ImageUrl = URL+"Cat4.jpg",
+                          ImageUrl = URL + "category/" + "Fruits.jpg",
                       }
                   }
                 }
