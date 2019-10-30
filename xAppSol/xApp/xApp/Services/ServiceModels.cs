@@ -40,18 +40,11 @@ namespace xApp.Services
         }
     }
 
-    public class HomeViewResult2
+    public partial class HomeViewResult2
     {
         public string[] BannerUrls { get; set; }
         public HomeViewResult.TileSection[] TileSections { get; set; }
-        public bool HasActiveCart { get; set; }
         public AppViewModel AppView { get; set; }
-
-        public HomeViewResult2()
-        {
-            this.BannerUrls = new string[] { };
-            this.TileSections = new HomeViewResult.TileSection[] { };
-        }
     }
 
     public class UserInfo

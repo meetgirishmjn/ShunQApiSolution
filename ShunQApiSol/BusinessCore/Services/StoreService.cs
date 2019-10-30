@@ -149,10 +149,11 @@ namespace BusinessCore.Services
 
             var context = ContextManager.GetContext();
 
-            var objDb = context.ShoppingCarts.Where(o => o.UserId == CurrentUser.Id && o.Status == status)
+            var objDb = context.ShoppingCarts.Include(o=>o.Items).Where(o => o.UserId == CurrentUser.Id && o.Status == status)
                 .Select(o => new
                 {
-                    ItemCount = o.Items.Count
+                    ItemCount = o.Items.Count,
+                    o.StoreId
                 }).SingleOrDefault();
 
             if (objDb == null)
@@ -161,7 +162,8 @@ namespace BusinessCore.Services
             return new CartView
             {
                 HasActiveCart = true,
-                CartItemCount = objDb.ItemCount
+                CartItemCount = objDb.ItemCount,
+                StoreId = objDb.StoreId
             };
         }
         public ShoppingCart GetCart()

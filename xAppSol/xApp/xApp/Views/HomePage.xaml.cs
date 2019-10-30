@@ -19,13 +19,14 @@ namespace xApp.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class HomePage : ContentPage
     {
-        HomeViewResult viewModel = null;
+        HomeViewResult2 viewModel = null;
         public HomePage()
         {
             try
             {
                 InitializeComponent();
-                this.viewModel= AppViewModel.Instance.GetViewModel<HomeViewResult>();
+                this.viewModel= AppViewModel.Instance.GetViewModel<HomeViewResult2>();
+                this.viewModel.AppView = AppViewModel.Instance;
                 this.viewModel.IsQRCodeAnalysing = false;
                 this.BindingContext = this.viewModel;
                 //   this.ZXingScannerView1.OnScanResult+=

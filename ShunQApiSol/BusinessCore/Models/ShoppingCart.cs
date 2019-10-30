@@ -42,6 +42,7 @@ namespace BusinessCore.Models
     {
         public bool HasActiveCart { get; set; }
         public int CartItemCount { get; set; }
+        public int StoreId { get; set; }
     }
         public class CartItemVM
     {

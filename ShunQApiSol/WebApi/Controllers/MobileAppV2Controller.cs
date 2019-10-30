@@ -140,23 +140,51 @@ namespace WebApi.Controllers
             return storeVm;
         }
 
+        [HttpGet("active/store")]
+        public StoreInfoViewModel GetActiveStore()
+        {
+            var service = CreateStoreService();
+
+
+            var cart = service.GetCartView();
+            var storeVm = getStoreById(cart.StoreId);
+
+            storeVm.HasActiveCart = storeVm.HasActiveCart;
+
+            storeVm.AppView = new AppViewModel
+            {
+                UserName = CurrentUser.Name,
+                FullName = CurrentUser.FullName,
+                CartItemCount = cart.CartItemCount,
+                HasActiveCart = storeVm.HasActiveCart
+            };
+
+            return storeVm;
+        }
+
         [HttpGet("store/{code}")]
         public StoreInfoViewModel GetStoreByCode(string code)
         {
             if (string.IsNullOrEmpty(code))
                 throw new BusinessException("Invalid code");
 
-            var storeId = 0;
-            int.TryParse(code, out storeId);
+            int.TryParse(code, out int storeId);
 
+            var result = getStoreById(storeId);
+
+            return result;
+        }
+
+        private StoreInfoViewModel getStoreById(int storeId)
+        {
             var service = CreateStoreService();
-            var store = service.GetStore(code);
+            var store = service.GetStore(storeId);
 
             if (store == null)
-                throw new BusinessException("Store not found for " + code);
+                throw new BusinessException("Store not found for " + storeId);
 
             var imageUrl = this.AppConfig.ImageSrcEndpoint;
-           // var storeReview = service.StoreReview(store.Id);
+            // var storeReview = service.StoreReview(store.Id);
 
             var hasActiveCart = false;
             var cart = service.GetCart();

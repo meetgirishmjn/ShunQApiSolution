@@ -21,7 +21,8 @@ namespace xApp.Services
         public IToastr Toastr { get; set; }
 
         public string AppId = "appGrs123";
-        public string AuthToken { get; set; }
+        public static string _AuthToken { get; set; }
+        public string AuthToken { get { return _AuthToken; } }
 
         public static string DeviceId
         {
@@ -54,10 +55,15 @@ namespace xApp.Services
 
         private HttpContent toPostBody(object postBody)
         {
-            string data = JsonConvert.SerializeObject(postBody);
+            string data = null;
+
+            if (postBody == null)
+                data = "{}";
+            else
+                data = JsonConvert.SerializeObject(postBody);
+
             HttpContent reqContent = new StringContent(data, Encoding.UTF8, "application/json");
             return reqContent;
-
         }
         private void updatAppViewModel(AppViewModel model)
         {
@@ -67,7 +73,10 @@ namespace xApp.Services
             AppViewModel.Instance.HasActiveCart = model.HasActiveCart;
             AppViewModel.Instance.CartItemCount = model.CartItemCount;
         }
-
+        private string encode(string text)
+        {
+            return text.Replace("/", "").Replace("\\", "").Replace("&", "");
+        }
         private async void handleError(HttpResponseMessage response)
         {
             if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
@@ -117,7 +126,6 @@ namespace xApp.Services
             {
                 var content = await response.Content.ReadAsStringAsync();
                 var result = JsonConvert.DeserializeObject<HomeViewResult2>(content);
-                AppViewModel.Instance.HasActiveCart = result.HasActiveCart;
                 updatAppViewModel(result.AppView);
                 return result;
             }
@@ -145,7 +153,8 @@ namespace xApp.Services
 
         public async Task<StoreInfoViewModel> StartShopping(string code)
         {
-            var response = await getHttp().PostAsync(new Uri(mobileV2Url + "store/startShopping/"+ code),null);
+            code = encode(code);
+            var response = await getHttp().PostAsync(new Uri(mobileV2Url + "store/startShopping/"+ code), toPostBody(null));
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();

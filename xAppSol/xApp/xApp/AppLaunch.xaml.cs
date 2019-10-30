@@ -43,7 +43,7 @@ namespace xApp
                 else
                 {
                     var api = new ApiService();
-                    api.AuthToken = oAuthToken;
+                    ApiService._AuthToken = oAuthToken;
                     var homeViewModel = await api.GetHomeView();
 
                     if (homeViewModel == null)
