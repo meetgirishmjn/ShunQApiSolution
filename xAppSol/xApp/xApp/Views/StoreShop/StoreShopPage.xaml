@@ -9,7 +9,7 @@
     xmlns:helper="clr-namespace:xApp.Rederers"
               xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
     xmlns:viewModel="clr-namespace:xApp.ViewModels"
-             xmlns:busyindicator="clr-namespace:Syncfusion.SfBusyIndicator.XForms;assembly=Syncfusion.SfBusyIndicator.XForms"
+               xmlns:badge="clr-namespace:Syncfusion.XForms.BadgeView;assembly=Syncfusion.SfBadgeView.XForms"
              xmlns:zxing="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
              BackgroundColor="{DynamicResource Gray-White}"
              x:Class="xApp.Views.StoreShop.StoreShopPage">
@@ -56,9 +56,14 @@
                         HeightRequest="250" />
 
 
-                    
-
-                    <buttons:SfButton
+                    <badge:SfBadgeView BadgeText="{Binding BadgeText}"   Grid.Row="0"
+                        Grid.Column="0"   Margin="10" HorizontalOptions="End"   VerticalOptions="Start"
+                        Padding="0">
+                        <badge:SfBadgeView.BadgeSettings>
+                            <badge:BadgeSetting   BadgePosition="TopRight"/>
+                        </badge:SfBadgeView.BadgeSettings>
+                        <badge:SfBadgeView.Content >
+                            <buttons:SfButton
                         Grid.Row="0"
                         Grid.Column="0"
                         Margin="10"
@@ -73,12 +78,16 @@
                         TextColor="{DynamicResource Blue}"
                         VerticalOptions="Start"
                         WidthRequest="40" />
+                        </badge:SfBadgeView.Content>
+                    </badge:SfBadgeView>
+
+                   
                 
                     <!--  Edit  -->
                 <buttons:SfButton
                         Grid.Row="0"
                         Grid.Column="2"
-                        Margin="10"
+                        Margin="10,25,10,10"
                         Padding="0"
                         BackgroundColor="{StaticResource Blue}"
                        Clicked="OnCheckout_Clicked"
@@ -141,7 +150,7 @@
                                     HorizontalTextAlignment="Start"
                                     LineHeight="{OnPlatform Android=1.5,
                                                             Default=-1}"
-                                    Text="My Awesome Store"
+                                    Text="{Binding StoreName}"
                                     TextColor="{DynamicResource Gray-900}"
                                     VerticalOptions="Center"
                                     VerticalTextAlignment="Center" />
@@ -155,7 +164,7 @@
                                     FontSize="12"
                                     HorizontalTextAlignment="Start"
                                     Style="{StaticResource CommonProfileLabelStyle}"
-                                    Text="Coffee Board Layout" />
+                                    Text="{Binding Address.Locality}" />
 
                                 <ActivityIndicator  Grid.RowSpan="2"  Grid.Column="2" IsRunning="{Binding IsLoading}" BackgroundColor="Transparent" />
 
@@ -184,12 +193,14 @@
                     <Grid Grid.Row="0" x:Name="ScannerContainer" HorizontalOptions = "FillAndExpand"
     VerticalOptions = "FillAndExpand" >
 
-                        <zxing:ZXingDefaultOverlay                                
+
+                        <Grid  IsVisible="{Binding IsScannerOn}"  >
+                            <zxing:ZXingDefaultOverlay   IsVisible="{Binding IsScannerOn}"                              
                 x:Name="scannerOverlay"                                                       
                 BottomText="Place the red line over the barcode to scan.">
-
-
-                        </zxing:ZXingDefaultOverlay>
+                            </zxing:ZXingDefaultOverlay>
+                        </Grid>
+                       
                     </Grid>
                 
                     <StackLayout  Grid.Row="1"  VerticalOptions="FillAndExpand" HorizontalOptions="Fill">

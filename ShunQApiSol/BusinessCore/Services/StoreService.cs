@@ -177,7 +177,7 @@ namespace BusinessCore.Services
             var productId = getProductId(productbarcode);
 
             if (string.IsNullOrEmpty(productId))
-                throw new BusinessException("Invalid Product Id:" + productId);
+                throw new BusinessException("Invalid Product Bar-Code: " + productbarcode);
 
             var cart = shoppingCart.AddItemToCart(productId);
             return cart;

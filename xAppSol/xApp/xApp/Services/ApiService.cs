@@ -82,8 +82,17 @@ namespace xApp.Services
             if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
             {
                 var content = await response.Content.ReadAsStringAsync();
-                var error = JsonConvert.DeserializeObject<ErrorResponse>(content);
-                this.Toastr.ShowError(error.Message);
+                var index = content.IndexOf("message =", StringComparison.OrdinalIgnoreCase);
+                if (index <= 0)
+                    return;
+                index += "message =".Length;
+                //var error = JsonConvert.DeserializeObject<ErrorResponse>(content);
+                var temp = content.Replace("}","").Substring(index).Trim();
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    //this.Toastr.ShowError(error.Message);
+                    this.Toastr.ShowError(temp);
+                });
             }
         }
         private async Task<string>  getAuthToken()
@@ -168,8 +177,25 @@ namespace xApp.Services
             return null;
         }
 
+        public async Task<StoreInfoViewModel> GetActiveStore()
+        {
+            var response = await getHttp().GetAsync(new Uri(mobileV2Url + "active/store"));
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<StoreInfoViewModel>(content);
+                updatAppViewModel(result.AppView);
+                return result;
+            }
+            else
+                handleError(response);
+
+            return null;
+        }
+
         public async Task<AppViewModel> AddToCart(string code)
         {
+            code = encode(code);
             var response = await getHttp().PostAsync(new Uri(mobileV2Url + "cart/add/" + code), null);
             if (response.IsSuccessStatusCode)
             {
@@ -186,6 +212,7 @@ namespace xApp.Services
 
         public async Task<AppViewModel> RemoveFromCart(string code)
         {
+            code = encode(code);
             var response = await getHttp().PostAsync(new Uri(mobileV2Url + "cart/remove/" + code), null);
             if (response.IsSuccessStatusCode)
             {

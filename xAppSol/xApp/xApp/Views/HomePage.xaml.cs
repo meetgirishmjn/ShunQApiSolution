@@ -38,7 +38,7 @@ namespace xApp.Views
             }
         }
 
-        private void OnStartShoppingClicked(object sender, EventArgs e)
+        private async void OnStartShoppingClicked(object sender, EventArgs e)
         {
             var hasActiveCart = AppViewModel.Instance.HasActiveCart;
             if (!hasActiveCart)
@@ -47,13 +47,21 @@ namespace xApp.Views
             }
             else
             {
-                var app = new ApiService().RefreshAppViewModel();
+                var api = new ApiService();
+                var app = api.RefreshAppViewModel();
                 if (app == null)
                 {
-                    DisplayAlert("Server not available", "Internal error occured. Try again.", "Ok");
+                    await DisplayAlert("Server not available", "Internal error occured. Try again.", "Ok");
                 }
                 else
                 {
+                    var vm = ViewModels.AppViewModel.Instance.GetViewModel<StoreInfoViewModel>();
+                    if (vm == null)
+                    {
+                        vm = await api.GetActiveStore();
+                        ViewModels.AppViewModel.Instance.SetViewModel(vm);
+                    }
+
                     App.Current.MainPage = new NavigationPage(new StoreShopPage());
                 }
             }
