@@ -36,6 +36,7 @@ namespace BusinessCore.Services
 
         public ShoppingCart CreateCart(string cartDeviceId)
         {
+            var throwErrorOnActiveCart = false;
 
             var context = ContextManager.GetContext();
             var status = (int)ShoppingCartStatus.InProgress;
@@ -65,7 +66,23 @@ namespace BusinessCore.Services
 
             var objDb = context.ShoppingCarts.Include(o => o.Items).Where(o => o.UserId == userId && o.Status == status).FirstOrDefault();
             if (objDb != null)
-                throw new BusinessException("Finish Shopping or Clear Current Cart.");
+            {
+                if(throwErrorOnActiveCart)
+                    throw new BusinessException("Finish Shopping or Clear Current Cart.");
+
+                this.Cart = new ShoppingCart
+                {
+                    Id = objDb.Id,
+                    StoreId = storeDb.Id,
+                    StoreCode = storeDb.Code,
+                    CartDeviceId = cartDeviceDb.CartDeviceId,
+                    StoreName = storeDb.Name,
+                    StoreImage = storeDb.Image,
+                    StoreBannerImage = storeDb.BannerImage,
+                };
+
+                return this.Cart;
+            }
 
             objDb = new DataAccess.DbModels.ShoppingCart()
             {
@@ -204,6 +221,7 @@ namespace BusinessCore.Services
 
             return GetCart();
         }
+
         public ShoppingCart RemoveItemFromCart(string productId)
         {
             var status = (int)ShoppingCartStatus.InProgress;

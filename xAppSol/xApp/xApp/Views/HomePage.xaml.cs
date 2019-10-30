@@ -19,16 +19,45 @@ namespace xApp.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class HomePage : ContentPage
     {
+        HomeViewResult viewModel = null;
         public HomePage()
         {
-            InitializeComponent();
-            this.BindingContext = AppViewModel.Instance.GetViewModel<HomeViewResult>();
+            try
+            {
+                InitializeComponent();
+                this.viewModel= AppViewModel.Instance.GetViewModel<HomeViewResult>();
+                this.viewModel.IsQRCodeAnalysing = false;
+                this.BindingContext = this.viewModel;
+                //   this.ZXingScannerView1.OnScanResult+=
+                this.viewModel.CartQRCodePopup = CartQRCodePopup;
+            }
+            catch(Exception ex)
+            {
+
+            }
         }
 
         private void OnStartShoppingClicked(object sender, EventArgs e)
         {
-            App.Current.MainPage =  new NavigationPage(new StoreShopPage());
+            var hasActiveCart = AppViewModel.Instance.HasActiveCart;
+            if (!hasActiveCart)
+            {
+                CartQRCodePopup.Show();
+            }
+            else
+            {
+                var app = new ApiService().RefreshAppViewModel();
+                if (app == null)
+                {
+                    DisplayAlert("Server not available", "Internal error occured. Try again.", "Ok");
+                }
+                else
+                {
+                    App.Current.MainPage = new NavigationPage(new StoreShopPage());
+                }
+            }
         }
+
     }
 
 

@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:local="clr-namespace:xApp.ViewModels"
+             xmlns:local="clr-namespace:xApp.Services"
               xmlns:controls="clr-namespace:xApp.Controls"
               xmlns:behavior="clr-namespace:xApp.Behaviors"
               xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
@@ -13,16 +13,22 @@
              xmlns:badge="clr-namespace:Syncfusion.XForms.BadgeView;assembly=Syncfusion.SfBadgeView.XForms"
              xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms"
              xmlns:behaviour="clr-namespace:xApp.Behaviors.Feedback"
+             xmlns:sfPopup="clr-namespace:Syncfusion.XForms.PopupLayout;assembly=Syncfusion.SfPopupLayout.XForms"
+             xmlns:forms="clr-namespace:ZXing.Net.Mobile.Forms;assembly=ZXing.Net.Mobile.Forms"
              mc:Ignorable="d"
              x:Class="xApp.Views.HomePage"
-             Title="ShunQ - Home2"
+             Title="ShunQ - Home"
              x:Name="BrowseItemsPage">
     <!--<NavigationPage.TitleView>
         <Image Source="tab_feed.png"
                VerticalOptions="CenterAndExpand"
                HorizontalOptions="CenterAndExpand" />
     </NavigationPage.TitleView>-->
-   
+
+    <!--<ContentPage.BindingContext>
+        <local:HomeViewResult />
+    </ContentPage.BindingContext>-->
+
     <ContentPage.Resources>
         <ResourceDictionary>
             <Color x:Key="Primary">#2196F3</Color>
@@ -115,9 +121,38 @@
             <StackLayout>
 
                 <views:HomePage_Slider></views:HomePage_Slider>
+                <sfPopup:SfPopupLayout x:Name="CartQRCodePopup" StaysOpen="True">
+                    <sfPopup:SfPopupLayout.PopupView>
+                        <sfPopup:PopupView HeaderTitle="Cart QR Code"    ShowFooter="False" ShowCloseButton="{Binding IsQRCodeNotAnalysing}" >
+                            <sfPopup:PopupView.ContentTemplate>
+                                <DataTemplate>
+                                    <StackLayout>
+                                    
+                                    <Grid IsVisible="{Binding IsQRCodeNotAnalysing}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
 
+                                        <forms:ZXingScannerView ScanResultCommand="{Binding QrScannedCommand}" IsScanning="True" x:Name="ZXingScannerView1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" HeightRequest="100">
+                                            
+                                        </forms:ZXingScannerView>
 
-                    <Grid RowSpacing="0" VerticalOptions="Center">
+                                        <forms:ZXingDefaultOverlay      x:Name="scannerOverlay"                                                       
+                BottomText="Scan QR code attached to Store's cart">
+
+                                        </forms:ZXingDefaultOverlay>
+                                    </Grid>
+                                    <Grid IsVisible="{Binding IsQRCodeAnalysing}" HorizontalOptions="CenterAndExpand" VerticalOptions="Center">
+                                            <Grid.RowDefinitions >
+                                                <RowDefinition Height="70"  />
+                                                <RowDefinition Height="*"  />
+                                            </Grid.RowDefinitions>
+                                        <ActivityIndicator  IsRunning="True" />
+                                        </Grid>
+                                    </StackLayout>
+                                </DataTemplate>
+                            </sfPopup:PopupView.ContentTemplate>
+                        </sfPopup:PopupView>
+                    </sfPopup:SfPopupLayout.PopupView>
+                </sfPopup:SfPopupLayout>
+                <Grid RowSpacing="0" VerticalOptions="Center">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
@@ -294,7 +329,7 @@
                         </badge:SfBadgeView.Content>
                     </badge:SfBadgeView>
                 </StackLayout>
-                <Button Clicked="OnStartShoppingClicked" Text="Start Shopping" WidthRequest="50" HeightRequest="50" ContentLayout="Right,0" Image="arrow_32.ico"  Grid.Column="1" TextColor="White" BackgroundColor="{StaticResource Accent}"   HorizontalOptions="FillAndExpand" />
+                <Button Clicked="OnStartShoppingClicked" Text="{Binding StartShoppingText}" WidthRequest="50" HeightRequest="50" ContentLayout="Right,0" Image="arrow_32.ico"  Grid.Column="1" TextColor="White" BackgroundColor="{StaticResource Accent}"   HorizontalOptions="FillAndExpand" />
             </Grid>
         </StackLayout>
     </Grid>

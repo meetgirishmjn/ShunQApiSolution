@@ -58,16 +58,25 @@ namespace xApp.ViewModels
         #endregion "CartItemCount"
 
         #region "CurrentUser"
-        private User _currentUser = null;
-        public User CurrentUser
+
+        string _userName;
+        string _fullName;
+        public string UserName
         {
-            get
-            {
-                return this._currentUser;
-            }
+            get { return _userName; }
             set
             {
-                this._currentUser = value;
+                _userName = value;
+                this.NotifyPropertyChanged();
+            }
+        }
+
+        public string FullName
+        {
+            get { return _fullName; }
+            set
+            {
+                _fullName = value;
                 this.NotifyPropertyChanged();
             }
         }

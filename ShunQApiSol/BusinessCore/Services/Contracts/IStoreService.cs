@@ -33,6 +33,7 @@ namespace BusinessCore.Services.Contracts
         Task<int> RemoveAllCartDeviceLogsAsync(string cartDeviceId);
         CartValidationResult ValidateCart(string cartId);
         CartValidationResult ValidateCart();
+        CartView GetCartView();
 
     }
 }

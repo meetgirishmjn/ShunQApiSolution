@@ -25,12 +25,7 @@ namespace xApp.Services
         public ShoppingCart Cart { get; set; }
         public UserInfo User { get; set; }
 
-        public HomeViewResult()
-        {
-            this.BannerUrls = new string[] { };
-            this.TileSections = new TileSection[] { };
-        }
-
+   
         public class TileSection
         {
             public string Title { get; set; }
@@ -42,6 +37,20 @@ namespace xApp.Services
             public string ImageUrl { get; set; }
             public string Title { get; set; }
             public string DetailUrl { get; set; }
+        }
+    }
+
+    public class HomeViewResult2
+    {
+        public string[] BannerUrls { get; set; }
+        public HomeViewResult.TileSection[] TileSections { get; set; }
+        public bool HasActiveCart { get; set; }
+        public AppViewModel AppView { get; set; }
+
+        public HomeViewResult2()
+        {
+            this.BannerUrls = new string[] { };
+            this.TileSections = new HomeViewResult.TileSection[] { };
         }
     }
 
@@ -139,4 +148,37 @@ namespace xApp.Services
         public float Amount { get; set; }
     }
 
+    public partial class StoreInfoViewModel
+    {
+        public int StoreId { get; set; }
+        public string StoreCode { get; set; }
+        public string StoreName { get; set; }
+        public string ShortName { get; set; }
+        public string Description { get; set; }
+        public string ImageUrl { get; set; }
+        public string BannerImageUrl { get; set; }
+        public StoreReview ReviewRating { get; set; }
+        public bool HasActiveCart { get; set; }
+        public Address Address { get; set; }
+        public int CartItemCount { get; set; }
+        public AppViewModel AppView { get; set; }
+    }
+
+    public class StoreReview
+    {
+        public int StoreId { get; set; }
+        public float Value { get; set; }
+        public float VoteCount { get; set; }
+    }
+    public class Address
+    {
+        public int Id { get; set; }
+        public string AddressLine { get; set; }
+        public string AddressLine2 { get; set; }
+        public string Locality { get; set; }
+        public string City { get; set; }
+        public string Zip { get; set; }
+        public string Latitude { get; set; }
+        public string Longitude { get; set; }
+    }
 }

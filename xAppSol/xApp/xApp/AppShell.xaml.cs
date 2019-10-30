@@ -11,7 +11,7 @@ namespace xApp
         public AppShell()
         {
             InitializeComponent();
-            this.BindingContext = AppViewModel.Instance.CurrentUser;
+            this.BindingContext = AppViewModel.Instance;
         }
 
         protected override bool OnBackButtonPressed()

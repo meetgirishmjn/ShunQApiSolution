@@ -18,5 +18,8 @@ namespace WebApi.ViewModels
         public StoreReview ReviewRating { get; set; }
         public bool HasActiveCart { get; set; }
         public Address Address { get; set; }
+        public int CartItemCount { get; set; }
+
+        public AppViewModel AppView { get; set; }
     }
 }

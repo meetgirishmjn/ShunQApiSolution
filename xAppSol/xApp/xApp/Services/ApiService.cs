@@ -15,7 +15,8 @@ namespace xApp.Services
         HttpClient client;
         string apiEndpoint = "https://shunq-api-dev.azurewebsites.net/";
         string membershipUrl = string.Empty;
-        string mobileUrl = string.Empty;
+       // string mobileUrl = string.Empty;
+        string mobileV2Url = string.Empty;
         public static string __deviceId = string.Empty;
         public IToastr Toastr { get; set; }
 
@@ -38,7 +39,8 @@ namespace xApp.Services
         {
             client = new HttpClient();
             membershipUrl = apiEndpoint + "api/v1/membership/app/";
-            mobileUrl = apiEndpoint + "api/v1/mobile/";
+          //  mobileUrl = apiEndpoint + "api/v1/mobile/";
+            mobileV2Url = apiEndpoint + "api/v2/mobile/";
             Toastr = DependencyService.Get<IToastr>();
         }
         private HttpClient getHttp()
@@ -49,6 +51,23 @@ namespace xApp.Services
             client.DefaultRequestHeaders.Add("device-id", ApiService.DeviceId);
             return client;
         }
+
+        private HttpContent toPostBody(object postBody)
+        {
+            string data = JsonConvert.SerializeObject(postBody);
+            HttpContent reqContent = new StringContent(data, Encoding.UTF8, "application/json");
+            return reqContent;
+
+        }
+        private void updatAppViewModel(AppViewModel model)
+        {
+            AppViewModel.Instance.HasActiveCart = model.HasActiveCart;
+            AppViewModel.Instance.UserName = model.UserName;
+            AppViewModel.Instance.FullName = model.FullName;
+            AppViewModel.Instance.HasActiveCart = model.HasActiveCart;
+            AppViewModel.Instance.CartItemCount = model.CartItemCount;
+        }
+
         private async void handleError(HttpResponseMessage response)
         {
             if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
@@ -90,21 +109,80 @@ namespace xApp.Services
             return string.Empty;
         }
 
-        public async Task<HomeViewResult> GetHomeView()
+        public async Task<HomeViewResult2> GetHomeView()
         {
              
-            var response = await getHttp().GetAsync(new Uri(mobileUrl + "views/home"));
+            var response = await getHttp().GetAsync(new Uri(mobileV2Url + "views/home"));
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
-                var result = JsonConvert.DeserializeObject<HomeViewResult>(content);
+                var result = JsonConvert.DeserializeObject<HomeViewResult2>(content);
                 AppViewModel.Instance.HasActiveCart = result.HasActiveCart;
-                AppViewModel.Instance.CurrentUser = new User
-                {
-                    UserName = result.User.Name,
-                    FullName = result.User.FullName
-                };
-                AppViewModel.Instance.CartItemCount =(result.Cart != null ? result.Cart.ItemCount : 0);
+                updatAppViewModel(result.AppView);
+                return result;
+            }
+            else
+                handleError(response);
+
+            return null;
+        }
+
+        public async Task<AppViewModel> RefreshAppViewModel()
+        {
+            var response = await getHttp().GetAsync(new Uri(mobileV2Url + "app/view"));
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<AppViewModel>(content);
+                updatAppViewModel(result);
+                return AppViewModel.Instance;
+            }
+            else
+                handleError(response);
+
+            return null;
+        }
+
+        public async Task<StoreInfoViewModel> StartShopping(string code)
+        {
+            var response = await getHttp().PostAsync(new Uri(mobileV2Url + "store/startShopping/"+ code),null);
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<StoreInfoViewModel>(content);
+                updatAppViewModel(result.AppView);
+                return result;
+            }
+            else
+                handleError(response);
+
+            return null;
+        }
+
+        public async Task<AppViewModel> AddToCart(string code)
+        {
+            var response = await getHttp().PostAsync(new Uri(mobileV2Url + "cart/add/" + code), null);
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<AppViewModel>(content);
+                updatAppViewModel(result);
+                return result;
+            }
+            else
+                handleError(response);
+
+            return null;
+        }
+
+        public async Task<AppViewModel> RemoveFromCart(string code)
+        {
+            var response = await getHttp().PostAsync(new Uri(mobileV2Url + "cart/remove/" + code), null);
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<AppViewModel>(content);
+                updatAppViewModel(result);
                 return result;
             }
             else

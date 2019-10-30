@@ -38,16 +38,20 @@ namespace xApp.Views.StoreShop
                 zxingView.OnScanResult += OnScanResult;
                 ScannerContainer.Children.Insert(0,zxingView);
 
-                //this.ProfileImage.Source = App.BaseImageUrl + "ContactProfileImage.png";
-                this.ProfileImage.Source = "store_1001.jpg";
-                vm = new viewModel(); 
-                this.BindingContext = vm;
-
                 toastr = DependencyService.Get<IToastr>();
-                vm.IsLoading = true;
-                btnAdd.IsEnabled = false;
-                btnReturn.IsEnabled = false;
-                btnReturn.BackgroundColor= btnReturn.BackgroundColor  = (Color)App.Current.Resources["Gray-100"];
+
+                var vm = ViewModels.AppViewModel.Instance.GetViewModel<StoreInfoViewModel>();
+                if (vm == null)
+                {
+                    toastr.ShowError("Store Info not available. Try again.");
+                    (App.Current as App).GoToHome();
+                }
+                else
+                {
+                    this.ProfileImage.Source = vm.BannerImageUrl;
+                    this.BindingContext = vm;
+                }
+
             }
             catch(Exception ex)
             {

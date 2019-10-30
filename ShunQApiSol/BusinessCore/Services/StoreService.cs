@@ -143,6 +143,27 @@ namespace BusinessCore.Services
             return cart;
         }
 
+        public CartView GetCartView()
+        {
+            var status = (int)ShoppingCartStatus.InProgress;
+
+            var context = ContextManager.GetContext();
+
+            var objDb = context.ShoppingCarts.Where(o => o.UserId == CurrentUser.Id && o.Status == status)
+                .Select(o => new
+                {
+                    ItemCount = o.Items.Count
+                }).SingleOrDefault();
+
+            if (objDb == null)
+                return new CartView();
+
+            return new CartView
+            {
+                HasActiveCart = true,
+                CartItemCount = objDb.ItemCount
+            };
+        }
         public ShoppingCart GetCart()
         {
             var cart = shoppingCart.GetCart();

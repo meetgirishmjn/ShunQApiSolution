@@ -37,7 +37,13 @@ namespace BusinessCore.Models
             this.Vouchers = new List<CartVoucherItem>();
         }
     }
-    public class CartItemVM
+
+    public class CartView
+    {
+        public bool HasActiveCart { get; set; }
+        public int CartItemCount { get; set; }
+    }
+        public class CartItemVM
     {
         public string ProductId { get; set; }
         public string ProductName { get; set; }

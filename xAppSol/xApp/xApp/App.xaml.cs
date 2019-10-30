@@ -47,6 +47,11 @@ namespace xApp
 
         }
 
+        public void GoToHome()
+        {
+            Device.BeginInvokeOnMainThread(() => MainPage = new AppShell());
+        }
+
         public void GoToCheckoutPage()
         {
 
