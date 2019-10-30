@@ -207,15 +207,15 @@
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition  Height="Auto" />
                                 </Grid.RowDefinitions>
-                                <Button x:Name="btnReturn" IsVisible="{Binding IsScannerOff}" Clicked="OnScanReturn_Clicked"  Grid.Row="0" Text="&#xf2ea;" FontFamily="{StaticResource FontAwesomeSolid}" HeightRequest="40"  WidthRequest="40" HorizontalOptions="Center"   BackgroundColor="{Binding ReturnBtnBgColor}" 
+                                <Button x:Name="btnReturn" IsVisible="{Binding IsScannerOff}" Command="{Binding OnRemoveScanBeginCommand}"  Grid.Row="0" Text="&#xf2ea;" FontFamily="{StaticResource FontAwesomeSolid}" HeightRequest="40"  WidthRequest="40" HorizontalOptions="Center"   BackgroundColor="{Binding ReturnBtnBgColor}" 
 TextColor="{StaticResource Gray-White}" Margin="5,0,0,0"  />
                                 <Label IsVisible="{Binding IsScannerOff}" Grid.Row="1" Margin="5,0,0,0" Text="Return"  Style="{StaticResource CommonProfileLabelStyle}" FontSize="Micro"></Label>
                             </Grid>
 
 
-                            <Button x:Name="btnAdd"  IsVisible="{Binding IsScannerOff}" Clicked="OnScanAdd_Clicked"  Grid.Column="1" Text="&#xf217;" FontFamily="{StaticResource FontAwesomeSolid}" HeightRequest="60"  WidthRequest="60" HorizontalOptions="Center"  VerticalOptions="FillAndExpand" BackgroundColor="{Binding AddBtnBgColor}" 
+                            <Button x:Name="btnAdd"  IsVisible="{Binding IsScannerOff}" Command="{Binding OnAddScanBeginCommand}"  Grid.Column="1" Text="&#xf217;" FontFamily="{StaticResource FontAwesomeSolid}" HeightRequest="60"  WidthRequest="60" HorizontalOptions="Center"  VerticalOptions="FillAndExpand" BackgroundColor="{Binding AddBtnBgColor}" 
  BorderRadius="30" TextColor="{StaticResource Gray-White}"  />
-                            <Button IsVisible="{Binding IsScannerOn}" Clicked="OnScanCancel_Clicked"  Grid.Column="1" Text="Cancel &#xf02a;" FontFamily="{StaticResource FontAwesomeSolid}" HeightRequest="60"   HorizontalOptions="Center"  VerticalOptions="FillAndExpand" BackgroundColor="{StaticResource Gray-500}" 
+                            <Button IsVisible="{Binding IsScannerOn}" Command="{Binding OnCancelScanBeginCommand}"  Grid.Column="1" Text="Cancel &#xf02a;" FontFamily="{StaticResource FontAwesomeSolid}" HeightRequest="60"   HorizontalOptions="Center"  VerticalOptions="FillAndExpand" BackgroundColor="{StaticResource Gray-500}" 
  TextColor="{StaticResource Gray-White}"  />
                            
                         </Grid>

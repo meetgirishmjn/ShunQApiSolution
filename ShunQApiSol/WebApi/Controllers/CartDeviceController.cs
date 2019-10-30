@@ -115,49 +115,5 @@ namespace TelementryApi.Controllers
 
             return result;
         }
-
-        [HttpGet("Ver")]
-        [AllowAnonymous]
-        public VersionViewModel Ver()
-        {
-            var service = base.CreateStoreService();
-
-            var dbStatus = "ok";
-            try
-            {
-               var flag = service.ReadStores().Any();
-            }
-            catch (Exception ex)
-            {
-                dbStatus = ex.Message + ex.InnerException?.Message;
-            }
-
-            var cacheStatus = "";
-            try
-            {
-                Cache.Test();
-                cacheStatus = "ok";
-            }
-            catch (Exception ex)
-            {
-                cacheStatus = ex.Message + ex.InnerException?.Message;
-            }
-
-            return new VersionViewModel
-            {
-                DbStatus = dbStatus,
-                CacheStatus = cacheStatus,
-                Status = "ok",
-                Version = "1.0.0",
-                VersionDesc = "tele init",
-                AppConfig = this.AppConfig,
-                OS = new
-                {
-                    OSArchitecture = System.Runtime.InteropServices.RuntimeInformation.OSArchitecture.ToString(),
-                    System.Runtime.InteropServices.RuntimeInformation.OSDescription,
-                    System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription,
-                }
-            };
-        }
     }
 }

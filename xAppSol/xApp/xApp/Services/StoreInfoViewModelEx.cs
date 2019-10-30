@@ -11,6 +11,7 @@ namespace xApp.Services
     public partial class StoreInfoViewModel : INotifyPropertyChanged
     {
         ApiService api;
+        IToastr toastr;
         #region "PropertyChanged"
         public event PropertyChangedEventHandler PropertyChanged;
         /// <summary>
@@ -28,7 +29,10 @@ namespace xApp.Services
             this.api = new ApiService();
             this.AddScannedCommand = new Command<ZXing.Result>(AddScannedResult);
             this.RemoveScannedCommand = new Command<ZXing.Result>(RemoveScannedResult);
-
+            this.OnAddScanBeginCommand = new Command(onAddScanBegin);
+            this.OnCancelScanBeginCommand = new Command(onCancelScanBegin);
+            this.OnRemoveScanBeginCommand = new Command(onRemoveScanBegin);
+            toastr = DependencyService.Get<IToastr>();
         }
 
         bool _isLoading = false;
@@ -94,9 +98,49 @@ namespace xApp.Services
 
 
         #region "Commands"
+        public ICommand OnAddScanBeginCommand { get; set; }
         public ICommand AddScannedCommand { get; set; }
+        public ICommand OnRemoveScanBeginCommand { get; set; }
         public ICommand RemoveScannedCommand { get; set; }
+        public ICommand OnCancelScanBeginCommand { get; set; }
+        
+        private void onCancelScanBegin()
+        {
+            if (this.IsQrAnalysing)
+                return;
 
+            this.IsScannerOn = false;
+        }
+
+        private void onAddScanBegin()
+        {
+            try
+            {
+                this.IsScannerOn = true;
+            }
+            catch (Exception ex)
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    toastr.ShowError(ex.Message);
+                });
+            }
+        }
+
+        private void onRemoveScanBegin()
+        {
+            try
+            {
+                this.IsScannerOn = false;
+            }
+            catch (Exception ex)
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    toastr.ShowError(ex.Message);
+                });
+            }
+        }
         private async void AddScannedResult(ZXing.Result result)
         {
             if (this.IsQrAnalysing)
@@ -106,24 +150,8 @@ namespace xApp.Services
             {
                 this.IsQrAnalysing = true;
 
-                var storeInfoVM = await this.api.AddToCart(result.Text);
-
-                ViewModels.AppViewModel.Instance.SetViewModel(storeInfoVM);
-
-                if (storeInfoVM != null)
-                {
-                    Device.BeginInvokeOnMainThread(() =>
-                    {
-                        App.Current.MainPage = new NavigationPage(new Views.StoreShop.StoreShopPage());
-                    });
-                    return;
-                }
-                Device.BeginInvokeOnMainThread(() =>
-                {
-                    if (CartQRCodePopup != null)
-                        CartQRCodePopup.Dismiss();
-                    this.IsQRCodeAnalysing = false;
-                });
+                var appVm = await this.api.AddToCart(result.Text);
+                this.IsQrAnalysing = false;
             }
             catch (Exception ex)
             {
@@ -132,12 +160,18 @@ namespace xApp.Services
         }
         private async void RemoveScannedResult(ZXing.Result result)
         {
+            if (this.IsQrAnalysing)
+                return;
+
             try
             {
-
-            }catch(Exception ex)
+                this.IsQrAnalysing = true;
+                var appVm = await this.api.RemoveFromCart(result.Text);
+                this.IsQrAnalysing = false;
+            }
+            catch(Exception ex)
             {
-
+                this.IsQrAnalysing = false;
             }
         }
 
