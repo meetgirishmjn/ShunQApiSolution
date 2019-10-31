@@ -80,7 +80,7 @@
                 HorizontalOptions="FillAndExpand"
                 IsStickyHeader="False"
                 ItemSize="170"
-                ItemSpacing="8,8,0,8"
+                ItemSpacing="8,0,0,8"
                 ItemsSource="{Binding StoreItems}"
                 Style="{StaticResource SfListViewStyle}">
 
@@ -115,7 +115,7 @@
                                 Margin="8,0,16,0"
                                 Aspect="Fill"
                                 BackgroundColor="{DynamicResource Gray-F0}"
-                                HeightRequest="{OnIdiom Default=150,
+                                HeightRequest="{OnIdiom Default=120,
                                                         Desktop=120}"
                                 WidthRequest="{OnIdiom Default=140,
                                                        Desktop=200}"

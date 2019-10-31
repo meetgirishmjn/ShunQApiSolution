@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using xApp.Services;
 
 namespace xApp.Views.CheckoutPages
 {
@@ -17,7 +18,13 @@ namespace xApp.Views.CheckoutPages
             try
             {
                 InitializeComponent();
-            }catch(Exception ex)
+                this.BindingContext = new CheckoutViewModelEx();
+                Task.Run(() =>
+                {
+                    (this.BindingContext as CheckoutViewModelEx).OnLoad();
+                });
+            }
+            catch(Exception ex)
             {
 
             }

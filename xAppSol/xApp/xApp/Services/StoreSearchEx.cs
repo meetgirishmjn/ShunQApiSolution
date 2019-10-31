@@ -69,7 +69,11 @@ namespace xApp.Services
         public async void OnLoad()
         {
             var api = new ApiService();
-            var vm = await api.StoreSearch(new SearcStoreRequestModel());
+            var seachReq = new SearcStoreRequestModel()
+            {
+                PageSize = 50
+            };
+            var vm = await api.StoreSearch(seachReq);
 
             if (vm != null)
             {

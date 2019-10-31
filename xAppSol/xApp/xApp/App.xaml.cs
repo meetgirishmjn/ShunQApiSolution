@@ -56,11 +56,11 @@ namespace xApp
 
         public void GoToCheckoutPage()
         {
-
-            MainPage = new NavigationPage(new LoadingPage(async (Page sender) =>
-            {
-                await MainPage.Navigation.PushAsync(new CheckoutPage());
-            },"Checkout"));
+             MainPage.Navigation.PushAsync(new CheckoutPage());
+            //MainPage = new NavigationPage(new LoadingPage(async (Page sender) =>
+            //{
+            //    await MainPage.Navigation.PushAsync(new CheckoutPage());
+            //},"Checkout"));
         }
 
         public void GoToMyCartFromStore()

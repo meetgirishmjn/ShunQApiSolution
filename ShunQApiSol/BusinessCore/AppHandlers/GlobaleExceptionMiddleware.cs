@@ -52,11 +52,7 @@ namespace BusinessCore.AppHandlers
                 _logger.LogError("\"logType\":\"Exception\",\"Data\":" + msg);
             }
 
-            return context.Response.WriteAsync(new 
-            {
-                statusCode=context.Response.StatusCode,
-                message = exception.Message
-            }.ToString());
+            return context.Response.WriteAsync($"{{\"statusCode\":{context.Response.StatusCode},\"message\":\"{exception.Message}\"}}");
         }
 
     }

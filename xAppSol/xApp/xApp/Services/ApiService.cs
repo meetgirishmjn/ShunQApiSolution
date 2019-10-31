@@ -278,6 +278,21 @@ namespace xApp.Services
 
             return null;
         }
+
+        public async Task<CheckoutViewModel> GetCheckoutView()
+        {
+            var response = await getHttp().GetAsync(new Uri(mobileV2Url.Replace("v2","v1") + "views/checkout"));
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<CheckoutViewModel> (content);
+                return result;
+            }
+            else
+                handleError(response);
+
+            return null;
+        }
     }
 
 }

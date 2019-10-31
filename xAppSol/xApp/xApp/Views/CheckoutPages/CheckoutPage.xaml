@@ -7,6 +7,7 @@
              xmlns:checkoutpages="clr-namespace:xApp.Views.CheckoutPages"
              xmlns:expander="clr-namespace:Syncfusion.XForms.Expander;assembly=Syncfusion.Expander.XForms"
              xmlns:sflistview="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
+             xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
              mc:Ignorable="d"
              Title="Checkout"
     BackgroundColor="#EDF2F5"
@@ -26,207 +27,360 @@
 
     <ContentPage.Content>
         <ScrollView>
-            <StackLayout>
-                <Label Text="Invoice: #FRU037020142097" HeightRequest="40" FontSize="16" TextColor="#222222" Opacity="1.0" VerticalTextAlignment="Center" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="CenterAndExpand"/>
-                <expander:SfExpander HeaderIconPosition="End" BackgroundColor="#FFFFFF" HeaderBackgroundColor="#FFFFFF" AnimationDuration="200" IsExpanded="True">
-                    <expander:SfExpander.Header>
-                        <Grid Padding="3,0,0,0">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="50"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="35"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Label VerticalOptions="Center" Text="&#xf07a;" FontFamily="{StaticResource FontAwesomeSolid}" Margin="3" />
-                            <Label TextColor="#495F6E" Text="Invoice Date" FontSize="16" Grid.Column="1" VerticalOptions="CenterAndExpand"/>
-                        </Grid>
-                    </expander:SfExpander.Header>
-                    <expander:SfExpander.Content>
-                        <Grid BackgroundColor="#FFFFFF">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="1"/>
-                                <RowDefinition Height="50"/>
-                            </Grid.RowDefinitions>
-                            <BoxView Color="#D1DBE1"/>
-                            <Grid Padding="15,0,0,0" Grid.Row="1">
-                                <Label TextColor="#303030" Text="11.03 AM, 15 January 2019" FontSize="16" VerticalOptions="CenterAndExpand"/>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <ActivityIndicator HeightRequest="50" Margin="10,100,10,10" IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}" BackgroundColor="Transparent" />
+                <StackLayout Grid.Row="1"  IsVisible="{Binding IsNotLoading}">
+
+                    <!--<Label Text="Invoice: #FRU037020142097" HeightRequest="40" FontSize="16" TextColor="#222222" Opacity="1.0" VerticalTextAlignment="Center" FontAttributes="Bold" VerticalOptions="Center" HorizontalOptions="CenterAndExpand"/>-->
+                    <expander:SfExpander HeaderIconPosition="End" BackgroundColor="#FFFFFF" HeaderBackgroundColor="{Binding CartHeaderBgColor}" AnimationDuration="200" IsExpanded="True">
+                        <expander:SfExpander.Header>
+                            <Grid Padding="3,0,0,0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="50"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="35"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label VerticalOptions="Center" Text="{Binding CartHeaderIcon}" TextColor="{Binding CartHeaderIconColor}" FontFamily="{StaticResource FontAwesomeSolid}" Margin="10,3,3,3" />
+                                <Label TextColor="#495F6E" Text="{Binding CartHeaderTitle}" FontSize="16" Grid.Column="1" VerticalOptions="CenterAndExpand"/>
                             </Grid>
-                        </Grid>
-                    </expander:SfExpander.Content>
-                </expander:SfExpander>
-                <expander:SfExpander BackgroundColor="#FFFFFF" HeaderBackgroundColor="#FFFFFF" AnimationDuration="200" HeaderIconPosition="End" IsExpanded="False">
-                    <expander:SfExpander.Header>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="50"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="35"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Label Text="&#xf778;" FontFamily="{StaticResource FontAwesomeSolid}" Margin="3" HeightRequest="30" />
-                            <Label TextColor="#495F6E" Text="Item (s)" FontSize="16" Grid.Column="1" VerticalOptions="CenterAndExpand"/>
-                        </Grid>
-                    </expander:SfExpander.Header>
-                    <expander:SfExpander.Content>
-                        <Grid BackgroundColor="#FFFFFF">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="1"/>
-                                <RowDefinition Height="232"/>
-                            </Grid.RowDefinitions>
-                            <BoxView Color="#D1DBE1"/>
-                            <sflistview:SfListView ItemSize="25" BackgroundColor="#FFFFFF" Grid.Row="1" HeightRequest="232" ItemSpacing="3" SelectionMode="None" ItemsSource="{Binding ItemInfo}">
-                                <sflistview:SfListView.ItemTemplate>
-                                    <DataTemplate>
-                                        <ViewCell>
-                                            <ViewCell.View>
-                                                <Grid>
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition Height="25"/>
-                                                    </Grid.RowDefinitions>
+                        </expander:SfExpander.Header>
+                        <expander:SfExpander.Content>
+                            <Grid BackgroundColor="#FFFFFF">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="1"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <BoxView Color="#D1DBE1"/>
+                                <Grid Padding="0" Grid.Row="1">
+                                    <Label  Text="{Binding ValidationCaption}" HorizontalOptions="Start" FontFamily="{DynamicResource Montserrat-Medium}" FontSize="12" VerticalOptions="CenterAndExpand" Style="{StaticResource PriceLabelStyle}" />
+                                </Grid>
+                                <StackLayout Padding="15,0,0,0" Grid.Row="2" BindableLayout.ItemsSource="{Binding ValidationMessages}" VerticalOptions="Start">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate>
+                                            <Label Text="{Binding ., StringFormat='&#x2022; {0}'}" TextColor="Red" FontSize="12"/>
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </StackLayout>
+                            </Grid>
+                        </expander:SfExpander.Content>
+                    </expander:SfExpander>
+                    <expander:SfExpander BackgroundColor="#FFFFFF" HeaderBackgroundColor="#FFFFFF" AnimationDuration="200" HeaderIconPosition="End" IsExpanded="False">
+                        <expander:SfExpander.Header>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="50"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="35"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Text="&#xf46d;" FontFamily="{StaticResource FontAwesomeSolid}"  VerticalOptions="Center" Margin="10,3,3,3" />
+                                <Label TextColor="#495F6E" Text="Item (s)" FontSize="16" Grid.Column="1" VerticalOptions="CenterAndExpand"/>
+                            </Grid>
+                        </expander:SfExpander.Header>
+                        <expander:SfExpander.Content>
+                            <Grid BackgroundColor="#FFFFFF">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="1"/>
+                                    <RowDefinition Height="232"/>
+                                </Grid.RowDefinitions>
+                                <BoxView Color="#D1DBE1"/>
+                                <sflistview:SfListView ItemSize="25" BackgroundColor="#FFFFFF" Grid.Row="1" HeightRequest="232" ItemSpacing="3" SelectionMode="None" ItemsSource="{Binding ItemInfo}">
+                                    <sflistview:SfListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <ViewCell>
+                                                <ViewCell.View>
+                                                    <Grid>
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="25"/>
+                                                        </Grid.RowDefinitions>
+                                                        <Grid Padding="15,0,10,0">
+                                                            <Grid.RowDefinitions>
+                                                                <RowDefinition Height="Auto"/>
+                                                            </Grid.RowDefinitions>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="*"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <Label Text="{Binding ItemName}" VerticalTextAlignment="End" TextColor="#303030" FontSize="16"/>
+                                                            <Label Text="{Binding ItemPrice}" VerticalTextAlignment="End" HorizontalTextAlignment="End" FontSize="16" Grid.Column="1" TextColor="#303030"/>
+                                                        </Grid>
+                                                    </Grid>
+                                                </ViewCell.View>
+                                            </ViewCell>
+                                        </DataTemplate>
+                                    </sflistview:SfListView.ItemTemplate>
+                                    <sflistview:SfListView.FooterTemplate>
+                                        <DataTemplate>
+                                            <ViewCell>
+                                                <ViewCell.View>
                                                     <Grid Padding="15,0,10,0">
                                                         <Grid.RowDefinitions>
-                                                            <RowDefinition Height="Auto"/>
+                                                            <RowDefinition Height="25"/>
                                                         </Grid.RowDefinitions>
                                                         <Grid.ColumnDefinitions>
                                                             <ColumnDefinition Width="*"/>
                                                             <ColumnDefinition Width="*"/>
                                                         </Grid.ColumnDefinitions>
-                                                        <Label Text="{Binding ItemName}" VerticalTextAlignment="End" TextColor="#303030" FontSize="16"/>
-                                                        <Label Text="{Binding ItemPrice}" VerticalTextAlignment="End" HorizontalTextAlignment="End" FontSize="16" Grid.Column="1" TextColor="#303030"/>
+                                                        <Label Text="Total Amount" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="#303030" FontSize="16"/>
+                                                        <Label Text="$36,220.00" HorizontalTextAlignment="End" FontAttributes="Bold" VerticalTextAlignment="Center" FontSize="16" Grid.Column="1" TextColor="#303030"/>
                                                     </Grid>
-                                                </Grid>
-                                            </ViewCell.View>
-                                        </ViewCell>
-                                    </DataTemplate>
-                                </sflistview:SfListView.ItemTemplate>
-                                <sflistview:SfListView.FooterTemplate>
-                                    <DataTemplate>
-                                        <ViewCell>
-                                            <ViewCell.View>
-                                                <Grid Padding="15,0,10,0">
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition Height="25"/>
-                                                    </Grid.RowDefinitions>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*"/>
-                                                        <ColumnDefinition Width="*"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <Label Text="Total Amount" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="#303030" FontSize="16"/>
-                                                    <Label Text="$36,220.00" HorizontalTextAlignment="End" FontAttributes="Bold" VerticalTextAlignment="Center" FontSize="16" Grid.Column="1" TextColor="#303030"/>
-                                                </Grid>
-                                            </ViewCell.View>
-                                        </ViewCell>
-                                    </DataTemplate>
-                                </sflistview:SfListView.FooterTemplate>
-                            </sflistview:SfListView>
-                        </Grid>
-                    </expander:SfExpander.Content>
-                </expander:SfExpander>
-                <expander:SfExpander HeaderIconPosition="End" AnimationDuration="200" BackgroundColor="#FFFFFF" HeaderBackgroundColor="#FFFFFF" IsExpanded="False">
-                    <expander:SfExpander.Header>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="50"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="35"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Label Text="&#xf778;" FontFamily="{StaticResource FontAwesomeSolid}" Margin="3" HeightRequest="30"  />
-                            <Label Text="Payment Details" FontSize="16" TextColor="#495F6E" Grid.Column="1" VerticalOptions="CenterAndExpand"/>
-                        </Grid>
-                    </expander:SfExpander.Header>
-                    <expander:SfExpander.Content>
-                        <Grid BackgroundColor="#FFFFFF">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="1"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <BoxView Color="#D1DBE1"/>
-                            <Grid Padding="15,0,10,10" Grid.Row="1">
+                                                </ViewCell.View>
+                                            </ViewCell>
+                                        </DataTemplate>
+                                    </sflistview:SfListView.FooterTemplate>
+                                </sflistview:SfListView>
+                            </Grid>
+                        </expander:SfExpander.Content>
+                    </expander:SfExpander>
+                    <expander:SfExpander HeaderIconPosition="End" AnimationDuration="200" BackgroundColor="#FFFFFF" HeaderBackgroundColor="#FFFFFF" IsExpanded="False">
+                        <expander:SfExpander.Header>
+                            <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="50"/>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="35"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
-                                <Label TextColor="#303030" FontSize="16" Text="Card Payment"/>
-                                <Label TextColor="#303030" FontSize="16" Text="Third-Party coupons" Grid.Row="1"/>
-                                <Label TextColor="#303030" FontSize="16" Text="Total Amount Paid" FontAttributes="Bold" Grid.Row="2"/>
-                                <Label TextColor="#303030" FontSize="16" HorizontalOptions="End" Text="$31,200.00" Grid.Column="1"/>
-                                <Label TextColor="#303030" FontSize="16" HorizontalOptions="End" Text="$5,000.00" Grid.Row="1" Grid.Column="1"/>
-                                <Label TextColor="#303030" FontSize="16" HorizontalOptions="End" Text="$36,200.00" FontAttributes="Bold" Grid.Row="2" Grid.Column="1"/>
+                                <Label Text="&#xf53a;" FontFamily="{StaticResource FontAwesomeSolid}"  VerticalOptions="Center" Margin="10,3,3,3" />
+                                <Label Text="Voucher Details" FontSize="16" TextColor="#495F6E" Grid.Column="1" VerticalOptions="CenterAndExpand"/>
                             </Grid>
-                        </Grid>
-                    </expander:SfExpander.Content>
-                </expander:SfExpander>
-                <expander:SfExpander HeaderIconPosition="End" AnimationDuration="200" BackgroundColor="#FFFFFF" HeaderBackgroundColor="#FFFFFF" IsExpanded="True">
-                    <expander:SfExpander.Header>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="50"/>
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="35"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Label Text="&#xf778;" FontFamily="{StaticResource FontAwesomeSolid}" Margin="3" HeightRequest="30" TextColor="#495F6E"/>
-                            <Label TextColor="#495F6E" FontSize="16" Text="Address" Grid.Column="1" VerticalOptions="CenterAndExpand"/>
-                        </Grid>
-                    </expander:SfExpander.Header>
-                    <expander:SfExpander.Content>
-                        <Grid BackgroundColor="#FFFFFF">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="1"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <BoxView Color="#D1DBE1"/>
-                            <Grid Padding="15,0,10,10" Grid.Row="1">
+                        </expander:SfExpander.Header>
+                        <expander:SfExpander.Content>
+                            <Grid BackgroundColor="#FFFFFF">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="1"/>
+                                    <RowDefinition Height="50"/>
+                                    <RowDefinition Height="1"/>
+                                    <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
-                                <Label TextColor="#303030" FontSize="16" Text="Alex" FontAttributes="Bold"/>
-                                <Label TextColor="#303030" FontSize="16" Text="No.8 Blossom St, Washington, DC 20019" Grid.Row="1"/>
-                                <Label TextColor="#303030" FontSize="16" Text="(202) 547-3555" Grid.Row="2"/>
+                                <BoxView Color="#D1DBE1"/>
+                                <StackLayout  Orientation="Horizontal" Margin="15,3,3,10" HorizontalOptions="FillAndExpand"  Grid.Row="1">
+                                    <Entry Placeholder="Enter voucher code" WidthRequest="200" PlaceholderColor="Gray" FontSize="12" />
+                                    <Button Text="Apply" WidthRequest="50" BorderRadius="10" BorderColor="Gray" BorderWidth="1" Padding="0" BackgroundColor="#FFFFFF" FontSize="Micro"/>
+                                </StackLayout>
+                                <BoxView Color="#CEB180" Grid.Row="2"/>
+                                <Label IsVisible="{Binding IsNoVoucherApplied}" Text="No voucher applied" Margin="15,0,0,5" Grid.Row="3" FontSize="Micro" TextColor="Gray"/>
+                                <StackLayout IsVisible="{Binding IsVoucherApplied}"  Padding="15,0,0,10" Grid.Row="3" BindableLayout.ItemsSource="{Binding ValidationMessages}" VerticalOptions="Start">
+                                    <BindableLayout.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Padding="5,0,5,5" Grid.Row="1">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="100"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Label TextColor="#CEB180" FontSize="14" Text="Third-Party coupons"/>
+                                                <buttons:SfButton Grid.Column="1" Margin="4,0"   BackgroundColor="Transparent"
+                                                    Command="{Binding ApplyCouponCommand}"  CornerRadius="4"  HorizontalOptions="End"    WidthRequest="100">
+                                                    <buttons:SfButton.Content>
+                                                        <Label   Margin="0"   FontFamily="{StaticResource Montserrat-SemiBold}"
+                                                                FontSize="12"    HorizontalOptions="Fill"  HorizontalTextAlignment="Center"  Style="{StaticResource PriceLabelStyle}"
+                                                                Text="Remove"  TextColor="{DynamicResource HyperLink}" /> 
+                                                    </buttons:SfButton.Content>
+                                                </buttons:SfButton>
+                                               
+                                            </Grid>
+                                        </DataTemplate>
+                                    </BindableLayout.ItemTemplate>
+                                </StackLayout>
                             </Grid>
-                        </Grid>
-                    </expander:SfExpander.Content>
-                </expander:SfExpander>
-
-
-                <Grid
+                        </expander:SfExpander.Content>
+                    </expander:SfExpander>
+                    <Grid
                 Padding="{OnIdiom Default='0',
                                   Desktop='16,16,16,0'}"
                 ColumnSpacing="0"
-                RowSpacing="16">
+                RowSpacing="5">
 
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                        
+                        </Grid.RowDefinitions>
 
-                    <!--  ListView for Delivery  -->
-                    <!--
-                <local:DeliveryView Margin="{OnIdiom Phone='0,16,0,0', Tablet='0,24,0,0', Desktop=0}" />
+                        <StackLayout>
 
-                -->
-                    <!--  ListView for Payment  -->
-                    <!--
-                <local:PaymentView Grid.Row="1" Margin="{OnIdiom Default=0, Tablet='0,24,0,0'}" />-->
+                            <Grid
+            BackgroundColor="{DynamicResource Gray-White}"
+            RowSpacing="4"
+            VerticalOptions="Start">
 
-                    <!--  Price Details  -->
-                    <checkoutpages:PaymentDetailView Grid.Row="2" ActionText="PAY NOW" />
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="1" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="1" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
 
-                </Grid>
-            </StackLayout>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <!--  Header  -->
+                                <Label
+                Grid.Row="0"
+                Grid.ColumnSpan="2"
+                Margin="16,16,16,12"
+                FontFamily="{StaticResource Montserrat-SemiBold}"
+                FontSize="16"
+                LineHeight="{OnPlatform Android=1.25,
+                                        Default=-1}"
+                Text="Price Details"
+                TextColor="{DynamicResource Gray-900}" />
+                                <!--  Separator  -->
+                                <BoxView
+                Grid.Row="1"
+                Grid.ColumnSpan="2"
+                HeightRequest="1"
+                Style="{StaticResource BoxViewStyle}" />
+                                <!--  Total MRP  -->
+                                <Label
+                Grid.Row="2"
+                Margin="16,4,16,0"
+                FontFamily="{StaticResource Montserrat-Medium}"
+                Style="{StaticResource PriceLabelStyle}"
+                Text="Total MRP" />
+                                <Label
+                Grid.Row="2"
+                Grid.Column="1"
+                Margin="16,4,16,0"
+                FontFamily="{StaticResource Montserrat-Medium}"
+                HorizontalOptions="EndAndExpand"
+                HorizontalTextAlignment="End"
+                Style="{StaticResource PriceLabelStyle}"
+                Text="{Binding TotalPrice, StringFormat='${0}'}" />
+                                <!--  Discount Percent  -->
+                                <Label
+                Grid.Row="3"
+                FontFamily="{DynamicResource Montserrat-Medium}"
+                FontSize="12"
+                Style="{StaticResource PriceLabelStyle}"
+                Text="Discount" />
+                                <Label
+                Grid.Row="3"
+                Grid.Column="1"
+                FontFamily="{DynamicResource Montserrat-Medium}"
+                FontSize="12"
+                HorizontalOptions="EndAndExpand"
+                HorizontalTextAlignment="End"
+                Style="{StaticResource PriceLabelStyle}"
+                Text="{Binding DiscountPercent, StringFormat='{}{0}%'}" />
+                                <!--  Coupon Discount  -->
+                                <Label
+                Grid.Row="4"
+                FontFamily="{DynamicResource Montserrat-Medium}"
+                FontSize="12"
+                HorizontalOptions="StartAndExpand"
+                Style="{StaticResource PriceLabelStyle}"
+                Text="Coupon Discount" />
+                                <buttons:SfButton
+                Grid.Row="4"
+                Grid.Column="1"
+                Margin="4,0"
+                BackgroundColor="Transparent"
+                Command="{Binding ApplyCouponCommand}"
+                CornerRadius="4"
+                HorizontalOptions="End"
+                WidthRequest="110">
+                                    <buttons:SfButton.Content>
+                                        <Label
+                        Margin="0"
+                        FontFamily="{StaticResource Montserrat-SemiBold}"
+                        FontSize="12"
+                        HorizontalOptions="Fill"
+                        HorizontalTextAlignment="Center"
+                        Style="{StaticResource PriceLabelStyle}"
+                        Text="Apply Coupon"
+                        TextColor="{DynamicResource HyperLink}" />
+                                    </buttons:SfButton.Content>
+                                </buttons:SfButton>
+                                <!--  Delivery Charges  -->
+                                <Label
+                Grid.Row="5"
+                Margin="16,0,16,4"
+                FontFamily="{StaticResource Montserrat-Medium}"
+                Style="{StaticResource PriceLabelStyle}"
+                Text="Delivery Charges" />
+                                <Label
+                Grid.Row="5"
+                Grid.Column="1"
+                Margin="16,0,16,4"
+                FontFamily="{DynamicResource Montserrat-Medium}"
+                FontSize="12"
+                HorizontalOptions="EndAndExpand"
+                HorizontalTextAlignment="End"
+                Style="{StaticResource PriceLabelStyle}"
+                Text="Free"
+                TextColor="{DynamicResource Green}" />
+                                <!--  Separator  -->
+                                <BoxView
+                Grid.Row="6"
+                Grid.ColumnSpan="2"
+                HeightRequest="1"
+                Style="{StaticResource BoxViewStyle}" />
+                                <!--  Total price  -->
+                                <Label
+                Grid.Row="7"
+                Margin="16,12,16,16"
+                FontFamily="{StaticResource Montserrat-SemiBold}"
+                FontSize="16"
+                LineHeight="{OnPlatform Android=1.25,
+                                        Default=-1}"
+                Style="{StaticResource PriceLabelStyle}"
+                Text="Total"
+                TextColor="{DynamicResource Gray-900}" />
+                                <Label
+                Grid.Row="7"
+                Grid.Column="1"
+                Margin="16,12,16,16"
+                FontFamily="{StaticResource Montserrat-SemiBold}"
+                FontSize="16"
+                HorizontalOptions="EndAndExpand"
+                HorizontalTextAlignment="End"
+                LineHeight="{OnPlatform Android=1.25,
+                                        Default=-1}"
+                Style="{StaticResource PriceLabelStyle}"
+                Text="{Binding DiscountPrice, StringFormat='${0}'}"
+                TextColor="{DynamicResource Gray-900}" />
+
+                            </Grid>
+
+                            <!--  Place order button  -->
+                            <buttons:SfButton IsVisible="{Binding IsCartValid}"
+            Margin="10"
+            BorderWidth="0"
+            CornerRadius="20"
+            FontFamily="{StaticResource Montserrat-SemiBold}"
+            HeightRequest="40"
+            HorizontalOptions="{OnIdiom Default=FillAndExpand,
+                                        Phone=CenterAndExpand,
+                                        Tablet=End}"
+            Style="{StaticResource MagentaButtonStyle}"
+            Text="Pay Now"
+            WidthRequest="{OnIdiom Tablet=240,
+                                   Phone=240,
+                                   Default=-1}" />
+                            <Label IsVisible="{Binding IsCartNotValid}" Margin="15,5,15,5"  HorizontalOptions="Center" BackgroundColor="DarkRed" Text="   Cart is not valid.  " TextColor="White" FontSize="12"/>
+                        </StackLayout>
+
+                    </Grid>
+                </StackLayout>
+            </Grid>
 
             
         </ScrollView>
