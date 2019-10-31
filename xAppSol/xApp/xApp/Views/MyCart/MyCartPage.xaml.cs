@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using xApp.Services;
 using ZXing;
 using ZXing.Mobile;
 using ZXing.Net.Mobile.Forms;
@@ -15,32 +16,23 @@ namespace xApp.Views.MyCart
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MyCartPage : ContentPage
     {
+        public string PrevPage { get; set; }
         public MyCartPage()
         {
             try
             {
                 InitializeComponent();
-                this.BindingContext = new MyCartViewModel()
-                {
-                    Items = new List<CartItem>
-                {
-     //               new CartItem
-     //               {
-     //                   ImageUrl=App.BaseImageUrl +"CoffeeCup.png",
-     //                    Name = "Coffee Cup",
-     //  Description = "Be bold in red with this fashionable, yet comfortable dress. Three-quarter-length sleeves are perfect for the in-between weather of autumn.",
-     //  ActualPrice =  220 ,
-     //DiscountPercent=15,
-     //DiscountAmount=12,
-     //TotalPrice=200
-     //               }
-           }
-                };
-
-            }catch(Exception ex)
+                this.BindingContext = new MyCartViewModelEx();
+            }
+            catch (Exception ex)
             {
 
             }
+        }
+
+        public MyCartPage(string prevPage) : this()
+        {
+            this.PrevPage = prevPage;
         }
         /// <summary>
         /// Invoked when view size is changed.
@@ -55,38 +47,35 @@ namespace xApp.Views.MyCart
             {
                 if (Device.Idiom == TargetIdiom.Phone)
                 {
-                    ErrorImage.IsVisible = false;
+                   // ErrorImage.IsVisible = false;
                 }
             }
             else
             {
-                ErrorImage.IsVisible = true;
+               // ErrorImage.IsVisible = true;
             }
         }
-
-
-        
     }
 
-    public class MyCartViewModel
-    {
-        public bool IsCartEmpty
-        {
-            get { return Items.Count == 0; }
-        }
-        public bool IsCartNotEmpty { get {   return Items.Count>0; } }
+    //public class MyCartViewModel
+    //{
+    //    public bool IsCartEmpty
+    //    {
+    //        get { return Items.Count == 0; }
+    //    }
+    //    public bool IsCartNotEmpty { get {   return Items.Count>0; } }
 
-        public List<CartItem> Items { get; set; } = new List<CartItem>();
-    }
-    public class CartItem
-    {
-       public float TotalPrice { get; set; }
-        public string ImageUrl { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
+    //    public List<CartItem> Items { get; set; } = new List<CartItem>();
+    //}
+    //public class CartItem
+    //{
+    //   public float TotalPrice { get; set; }
+    //    public string ImageUrl { get; set; }
+    //    public string Name { get; set; }
+    //    public string Description { get; set; }
 
-        public float ActualPrice { get; set; }
-        public float DiscountAmount { get; set; }
-        public float DiscountPercent { get; set; }
-    }
+    //    public float ActualPrice { get; set; }
+    //    public float DiscountAmount { get; set; }
+    //    public float DiscountPercent { get; set; }
+    //}
 }

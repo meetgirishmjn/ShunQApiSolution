@@ -226,6 +226,29 @@ namespace xApp.Services
 
             return null;
         }
+
+        public async Task<ShoppingCart> GetCurrentCart()
+        {
+            var response = await getHttp().GetAsync(new Uri(mobileV2Url.Replace("v2","v1") + "getCart"));
+            //var response = await getHttp().GetAsync(new Uri(mobileV2Url + "current/cart"));
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<ShoppingCart>(content);
+                updatAppViewModel(new AppViewModel
+                {
+                    CartItemCount = result.ItemCount,
+                    HasActiveCart = true,
+                    FullName = result.FullName,
+                    UserName = result.UserName
+                });
+                return result;
+            }
+            else
+                handleError(response);
+
+            return null;
+        }
     }
 
 }

@@ -11,14 +11,9 @@
              xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              mc:Ignorable="d"
-             Title="My Cart"
+             Title="{Binding Title}"
                BackgroundColor="{DynamicResource Gray-100}"
              x:Class="xApp.Views.MyCart.MyCartPage">
-
-    <ContentPage.BindingContext>
-        <mycart:MyCartViewModel />
-    </ContentPage.BindingContext>
-    
     <ContentPage.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -28,11 +23,13 @@
     </ContentPage.Resources>
 
     <ContentPage.Content>
-        <StackLayout>
-            <ScrollView IsVisible="{Binding IsCartNotEmpty}" VerticalScrollBarVisibility="Never">
+        <StackLayout VerticalOptions="FillAndExpand" >
+            <ActivityIndicator HeightRequest="50" Margin="10,100,10,10" IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}" BackgroundColor="Transparent" />
+
+            <ScrollView VerticalScrollBarVisibility="Never" VerticalOptions="FillAndExpand" >
 
             <!--  Cart Details  -->
-            <Grid
+                <Grid IsVisible="{Binding IsCartNotEmpty}"
                 Margin="{OnIdiom Default='0,16,0,0',
                                  Desktop='16'}"
                 BackgroundColor="{OnIdiom Default={StaticResource Transparent},
@@ -74,7 +71,7 @@
                         HorizontalOptions="EndAndExpand"
                         HorizontalTextAlignment="End"
                         Style="{StaticResource LabelStyle2}"
-                        Text="{Binding TotalPrice, StringFormat='Total: ${0}'}"
+                        Text="{Binding TotalPrice, StringFormat='Total: ₹{0}'}"
                         TextColor="{DynamicResource Dray-56}" />
                 </StackLayout>
 
@@ -90,7 +87,7 @@
                     BackgroundColor="{OnIdiom Default={StaticResource Transparent},
                                               Desktop={StaticResource Gray-White},
                                               Converter={StaticResource DynamicResourceToColorConverter}}"
-                    BindableLayout.ItemsSource="{Binding Items}"
+                    BindableLayout.ItemsSource="{Binding Cart.Items}"
                     Spacing="16"
                     VerticalOptions="Start">
 
@@ -116,14 +113,14 @@
 
                                 <!--  Product image  -->
                                     <ffimageloading:CachedImage
-                                       Source="{Binding ImageUrl}"
+                                       Source="{Binding ThumbImage}"
                                     Grid.Row="0"
                                     Grid.RowSpan="4"
                                     Grid.Column="0"
                                     Margin="16"
                                     Aspect="Fill"
                                     BackgroundColor="{DynamicResource Gray-200}"
-                                    HeightRequest="140"
+                                    HeightRequest="100"
                                     WidthRequest="120" />
                                     <!--  Product name  -->
                                 <Label
@@ -136,7 +133,7 @@
                                     LineBreakMode="TailTruncation"
                                     MaxLines="1"
                                     Style="{StaticResource LabelStyle2}"
-                                    Text="{Binding Name}"
+                                    Text="{Binding ProductName}"
                                     TextColor="{DynamicResource Gray-900}" />
 
                                 <!--  Product summary  -->
@@ -156,7 +153,7 @@
                                 <StackLayout
                                     Grid.Row="2"
                                     Grid.Column="1"
-                                    Margin="0,0,0,16"
+                                    Margin="0,0,0,0"
                                     Padding="0"
                                     Orientation="Horizontal"
                                     Spacing="4">
@@ -167,7 +164,7 @@
                                         FontSize="20"
                                         HorizontalOptions="Start"
                                         Style="{StaticResource LabelStyle2}"
-                                        Text="{Binding DiscountAmount, StringFormat='${0:0 }'}"
+                                        Text="{Binding Price, StringFormat='₹{0:0 }'}"
                                         TextColor="{DynamicResource PrimaryColor}" />
 
                                     <Label
@@ -175,22 +172,44 @@
                                         FontSize="12"
                                         HorizontalOptions="Start"
                                         Style="{StaticResource LabelStyle2}"
-                                        Text="{Binding ActualPrice, StringFormat='${0:0.00}'}"
+                                        Text="{Binding MRP, StringFormat='₹{0:0.00}'}"
                                         TextDecorations="Strikethrough"
                                         VerticalTextAlignment="Center" />
 
-                                    <Label
+                                    <!--<Label
                                         FontFamily="{DynamicResource Montserrat-Medium}"
                                         FontSize="12"
                                         HorizontalOptions="Start"
+                                          LineBreakMode="WordWrap"
                                         Style="{StaticResource LabelStyle2}"
-                                        Text="{Binding DiscountPercent, StringFormat=' ({0}% OFF)'}"
+                                        Text="{Binding DiscountText}"
                                         TextColor="{DynamicResource PrimaryColor}"
-                                        VerticalTextAlignment="Center" />
+                                        VerticalTextAlignment="Center" />-->
 
                                 </StackLayout>
 
-                                <StackLayout
+                                    <StackLayout
+                                    Grid.Row="3"
+                                        Grid.Column="1"
+                                    Margin="0"
+                                    Padding="0"
+                                    HorizontalOptions="Start"
+                                    Orientation="Horizontal"
+                                    Spacing="0"
+                                    VerticalOptions="Start">
+
+                                        <Label
+                                        FontFamily="{DynamicResource Montserrat-Medium}"
+                                        FontSize="12"
+                                        HorizontalOptions="Start"
+                                          LineBreakMode="WordWrap"
+                                        Style="{StaticResource LabelStyle2}"
+                                        Text="{Binding DiscountText}"
+                                        TextColor="{DynamicResource Green}"
+                                        VerticalTextAlignment="Center" />
+
+                                    </StackLayout>
+                                    <!--<StackLayout
                                     Grid.Row="3"
                                     Grid.Column="1"
                                     Margin="0"
@@ -212,7 +231,7 @@
                                         <Label Text="QTY" TextColor="Black"></Label>
                                     </border:SfBorder>
 
-                                    <!--  Remove button  -->
+                                    --><!--  Remove button  --><!--
                                     <button:SfButton
                                         Margin="24,0,0,0"
                                         CommandParameter="{Binding .}"
@@ -233,7 +252,7 @@
                                                 TextColor="{DynamicResource HyperLink}" />
                                         </button:SfButton.Content>
                                     </button:SfButton>
-                                </StackLayout>
+                                </StackLayout>-->
 
                             </Grid>
                         </DataTemplate>
@@ -272,7 +291,7 @@
         </ScrollView>
         
         <!--EMPTY CART TEMPLATE-->
-        <Grid IsVisible="{Binding IsCartEmpty}">
+            <Grid IsVisible="{Binding IsCartEmpty}" VerticalOptions="FillAndExpand">
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
@@ -297,7 +316,7 @@
                                                                           AndroidPhoneLandscape=140,
                                                                           iOSPhonePortrait=200,
                                                                           iOSPhoneLandscape=140}"
-                    Source = "EmptyCart.svg "
+                    Source = "EmptyCart.svg"
                     VerticalOptions="Center"
                     WidthRequest="{x:OnIdiom Phone=200,
                                              Desktop=300,
@@ -324,10 +343,10 @@
             </StackLayout>
 
             <!--  Try again button  -->
-            <button:SfButton IsVisible="False"
+            <!--<button:SfButton IsVisible="True"
                 Grid.Row="1"
                 Style="{StaticResource SfGradientButtonStyle}"
-                Text="GO BACK" />
+                Text="GO BACK" />-->
 
         </Grid>
 

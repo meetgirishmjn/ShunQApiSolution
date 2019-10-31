@@ -56,7 +56,7 @@ namespace xApp.Views.StoreShop
 
             }
         }
-
+       
         public void Handle_OnScanResult(Result result)
         {
             Device.BeginInvokeOnMainThread(async () =>
@@ -79,6 +79,18 @@ namespace xApp.Views.StoreShop
         private void OnCheckout_Clicked(object sender, EventArgs e)
         {
             (App.Current as App).GoToCheckoutPage();
+        }
+
+        private void btnMyCart_Clicked(object sender, EventArgs e)
+        {
+            try
+            {
+                (App.Current as App).GoToMyCartFromStore();
+            }
+            catch (Exception ex)
+            {
+                toastr.ShowError(ex.Message);
+            }
         }
 
         //public void OnScanResult(Result result)

@@ -63,13 +63,13 @@
                             <badge:BadgeSetting   BadgePosition="TopRight"/>
                         </badge:SfBadgeView.BadgeSettings>
                         <badge:SfBadgeView.Content >
-                            <buttons:SfButton
+                            <buttons:SfButton x:Name="btnMyCart"
                         Grid.Row="0"
                         Grid.Column="0"
                         Margin="10"
                         Padding="0"
                         BackgroundColor="{StaticResource Gray-White}"
-                        Command="{Binding EditCommand}"
+                        Clicked="btnMyCart_Clicked"
                         CornerRadius="4"
                         FontFamily="{StaticResource FontIcons}"
                         FontSize="18"

@@ -61,6 +61,11 @@ namespace xApp
             },"Checkout"));
         }
 
+        public void GoToMyCartFromStore()
+        {
+            MainPage.Navigation.PushAsync(new Views.MyCart.MyCartPage("StoreShopPage"));
+        }
+
         public void GoToPayULaunch()
         {
              MainPage.Navigation.PushAsync( new WebViewPage());

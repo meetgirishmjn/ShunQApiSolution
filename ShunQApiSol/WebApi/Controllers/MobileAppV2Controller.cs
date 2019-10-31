@@ -240,5 +240,18 @@ namespace WebApi.Controllers
 
             return result;
         }
+
+        [HttpGet("current/cart")]
+        public ShoppingCart GetCurrentCart()
+        {
+            var cartService = CreateStoreService();
+            var cart = cartService.GetCart();
+            cart = setCartImageUrl(cart);
+
+            cart.UserName = CurrentUser.Name;
+            cart.FullName = CurrentUser.FullName;
+
+            return cart;
+        }
     }
 }
