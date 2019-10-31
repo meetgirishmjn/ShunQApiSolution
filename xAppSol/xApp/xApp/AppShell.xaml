@@ -66,7 +66,7 @@
             </Tab.Icon>
             <ShellContent ContentTemplate="{DataTemplate local:HomePage}" />
         </Tab>
-        <Tab Title="Store" >
+        <Tab Title="Stores" Route="Stores" >
             <Tab.Icon>
                 <FontImageSource FontFamily="{StaticResource FontAwesomeSolid}" Glyph="&#xf54f;" />
             </Tab.Icon>

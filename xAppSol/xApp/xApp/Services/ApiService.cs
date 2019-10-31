@@ -248,6 +248,21 @@ namespace xApp.Services
 
             return null;
         }
+
+        public async Task<List<StoreCategoryItem>> GetStoreCategories()
+        {
+            var response = await getHttp().GetAsync(new Uri(mobileV2Url + "store/category"));
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var results = JsonConvert.DeserializeObject<List<StoreCategoryItem>>(content);
+                return results;
+            }
+            else
+                handleError(response);
+
+            return new List<StoreCategoryItem>();
+        }
     }
 
 }

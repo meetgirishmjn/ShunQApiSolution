@@ -24,10 +24,11 @@
 
     <ContentPage.Content>
         <StackLayout   >
+            <ActivityIndicator HeightRequest="50" Margin="10,100,10,10" IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}" BackgroundColor="Transparent" />
             <!--  Album images  -->
             <listView:SfListView
                 x:Name="ListView"
-                ItemsSource="{Binding CategoryList}"
+                ItemsSource="{Binding CategoryItems}"
                Padding="15,15,15,15"
                 AutoFitMode="Height"
                 IsScrollBarVisible="False"
@@ -36,7 +37,7 @@
                                                                   PhoneLandscape='0,0,16,16',
                                                                   Desktop='0,0,24,24'}"
                 SelectionBackgroundColor="Transparent"
-                TapCommand="{Binding ImageTapCommand}"
+                TapCommand="{Binding ItemTapCommand}"
                 VerticalOptions="FillAndExpand">
 
                 <!--  Layout to customize number of columns in SfListView  -->
@@ -79,7 +80,7 @@
                                         <Label
                                         FontFamily="{StaticResource Montserrat-Medium}"
                                         FontSize="12"
-                                        Text="{Binding ItemCount}"
+                                        Text="{Binding StoreCount}"
                                         TextColor="{DynamicResource Gray-White}" />
 
                                     </StackLayout>

@@ -14,12 +14,13 @@ namespace xApp.Views.Store
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class StoreSearchPage : ContentPage
     {
+        
         public StoreSearchPage()
         {
             try
             {
-                this.BindingContext = new CatalogPageViewModel();
                 InitializeComponent();
+                this.BindingContext = new CatalogPageViewModel();
             }
             catch(Exception ex)
             {

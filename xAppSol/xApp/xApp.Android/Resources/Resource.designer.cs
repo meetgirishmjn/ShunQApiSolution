@@ -8905,10 +8905,10 @@ namespace xApp.Droid
 			public const int abc_vector_test = 2131165273;
 			
 			// aapt resource value: 0x7F07005A
-			public const int Album1 = 2131165274;
+			public const int album1 = 2131165274;
 			
 			// aapt resource value: 0x7F07005B
-			public const int Album2 = 2131165275;
+			public const int album2 = 2131165275;
 			
 			// aapt resource value: 0x7F07005C
 			public const int arrow_32 = 2131165276;
@@ -9295,16 +9295,16 @@ namespace xApp.Droid
 			public const int popup_forms_light_theme_close_icon = 2131165403;
 			
 			// aapt resource value: 0x7F0700DC
-			public const int Promo1 = 2131165404;
+			public const int promo1 = 2131165404;
 			
 			// aapt resource value: 0x7F0700DD
-			public const int Promo2 = 2131165405;
+			public const int promo2 = 2131165405;
 			
 			// aapt resource value: 0x7F0700DE
-			public const int Promo3 = 2131165406;
+			public const int promo3 = 2131165406;
 			
 			// aapt resource value: 0x7F0700DF
-			public const int Promo4 = 2131165407;
+			public const int promo4 = 2131165407;
 			
 			// aapt resource value: 0x7F0700E0
 			public const int scan2 = 2131165408;
