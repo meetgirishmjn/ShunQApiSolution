@@ -20,6 +20,7 @@ namespace xApp.Views
     public partial class HomePage : ContentPage
     {
         HomeViewResult2 viewModel = null;
+        IToastr toastr;
         public HomePage()
         {
             try
@@ -31,6 +32,7 @@ namespace xApp.Views
                 this.BindingContext = this.viewModel;
                 //   this.ZXingScannerView1.OnScanResult+=
                 this.viewModel.CartQRCodePopup = CartQRCodePopup;
+                toastr = DependencyService.Get<IToastr>();
             }
             catch(Exception ex)
             {
@@ -38,32 +40,48 @@ namespace xApp.Views
             }
         }
 
+        bool isClickProcessing = false;
         private async void OnStartShoppingClicked(object sender, EventArgs e)
         {
-            var hasActiveCart = AppViewModel.Instance.HasActiveCart;
-            if (!hasActiveCart)
+            if (isClickProcessing)
+                return;
+            isClickProcessing = true;
+            try
             {
-                CartQRCodePopup.Show();
-            }
-            else
-            {
-                var api = new ApiService();
-                var app = api.RefreshAppViewModel();
-                if (app == null)
+
+                var hasActiveCart = AppViewModel.Instance.HasActiveCart;
+                if (!hasActiveCart)
                 {
-                    await DisplayAlert("Server not available", "Internal error occured. Try again.", "Ok");
+                    isClickProcessing = false;
+                    CartQRCodePopup.Show();
                 }
                 else
                 {
-                    var vm = ViewModels.AppViewModel.Instance.GetViewModel<StoreInfoViewModel>();
-                    if (vm == null)
+                    var api = new ApiService();
+                    var app = api.RefreshAppViewModel();
+                   
+                    if (app == null)
                     {
-                        vm = await api.GetActiveStore();
-                        ViewModels.AppViewModel.Instance.SetViewModel(vm);
+                        isClickProcessing = false;
+                        await DisplayAlert("Server not available", "Internal error occured. Try again.", "Ok");
                     }
-
-                    App.Current.MainPage = new NavigationPage(new StoreShopPage());
+                    else
+                    {
+                        var vm = ViewModels.AppViewModel.Instance.GetViewModel<StoreInfoViewModel>();
+                        if (vm == null)
+                        {
+                            vm = await api.GetActiveStore();
+                            ViewModels.AppViewModel.Instance.SetViewModel(vm);
+                        }
+                        isClickProcessing = false;
+                        App.Current.MainPage = new NavigationPage(new StoreShopPage());
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                isClickProcessing = false;
+                toastr.ShowError(ex.Message);
             }
         }
 

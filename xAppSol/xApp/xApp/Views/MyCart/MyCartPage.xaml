@@ -29,7 +29,7 @@
             <ScrollView VerticalScrollBarVisibility="Never" VerticalOptions="FillAndExpand" >
 
             <!--  Cart Details  -->
-                <Grid IsVisible="{Binding IsCartNotEmpty}"
+                <Grid 
                 Margin="{OnIdiom Default='0,16,0,0',
                                  Desktop='16'}"
                 BackgroundColor="{OnIdiom Default={StaticResource Transparent},
@@ -53,65 +53,43 @@
                     <ColumnDefinition Width="{OnIdiom Default=0, Desktop=1*}" />
                 </Grid.ColumnDefinitions>
 
-                <!--  Cart Header  -->
-                <StackLayout
-                    Padding="16"
-                    BackgroundColor="{DynamicResource Gray-White}"
-                    Orientation="Horizontal">
-                    <Label
-                        FontFamily="{StaticResource Montserrat-SemiBold}"
-                        Style="{StaticResource LabelStyle2}"
-                        Text="My Cart"
-                        TextColor="{DynamicResource Gray-900}" />
-
-                    <Label
-                        BackgroundColor="{DynamicResource Gray-White}"
-                        FontAttributes="Bold"
-                        FontFamily="{StaticResource Montserrat-SemiBold}"
-                        HorizontalOptions="EndAndExpand"
-                        HorizontalTextAlignment="End"
-                        Style="{StaticResource LabelStyle2}"
-                        Text="{Binding TotalPrice, StringFormat='Total: ₹{0}'}"
-                        TextColor="{DynamicResource Dray-56}" />
-                </StackLayout>
-
                 <BoxView
                     Grid.Row="1"
                     HeightRequest="1"
                     Style="{StaticResource BoxViewStyle}" />
 
                 <!--  Cart items  -->
-                <StackLayout
+                    <StackLayout
                     x:Name="CartLayout"
                     Grid.Row="2"
                     BackgroundColor="{OnIdiom Default={StaticResource Transparent},
                                               Desktop={StaticResource Gray-White},
                                               Converter={StaticResource DynamicResourceToColorConverter}}"
-                    BindableLayout.ItemsSource="{Binding Cart.Items}"
+                    BindableLayout.ItemsSource="{Binding CartItems}"
                     Spacing="16"
                     VerticalOptions="Start">
 
-                    <BindableLayout.ItemTemplate>
-                        <DataTemplate>
-                            <Grid
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate>
+                                <Grid
                                 BackgroundColor="{DynamicResource Gray-White}"
                                 ColumnSpacing="0"
                                 RowSpacing="0">
 
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="{OnIdiom Default=1, Phone=0}" />
-                                </Grid.RowDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="{OnIdiom Default=1, Phone=0}" />
+                                    </Grid.RowDefinitions>
 
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
 
-                                <!--  Product image  -->
+                                    <!--  Product image  -->
                                     <ffimageloading:CachedImage
                                        Source="{Binding ThumbImage}"
                                     Grid.Row="0"
@@ -123,7 +101,7 @@
                                     HeightRequest="100"
                                     WidthRequest="120" />
                                     <!--  Product name  -->
-                                <Label
+                                    <Label
                                     Grid.Row="0"
                                     Grid.Column="1"
                                     Margin="0,16,0,4"
@@ -136,8 +114,8 @@
                                     Text="{Binding ProductName}"
                                     TextColor="{DynamicResource Gray-900}" />
 
-                                <!--  Product summary  -->
-                                <Label
+                                    <!--  Product summary  -->
+                                    <Label
                                     Grid.Row="1"
                                     Grid.Column="1"
                                     Margin="0,0,0,8"
@@ -150,7 +128,7 @@
                                     Style="{StaticResource LabelStyle2}"
                                     Text="{Binding Description}" />
 
-                                <StackLayout
+                                    <StackLayout
                                     Grid.Row="2"
                                     Grid.Column="1"
                                     Margin="0,0,0,0"
@@ -158,8 +136,8 @@
                                     Orientation="Horizontal"
                                     Spacing="4">
 
-                                    <!--  Product price  -->
-                                    <Label
+                                        <!--  Product price  -->
+                                        <Label
                                         FontFamily="{StaticResource Montserrat-SemiBold}"
                                         FontSize="20"
                                         HorizontalOptions="Start"
@@ -167,7 +145,7 @@
                                         Text="{Binding Price, StringFormat='₹{0:0 }'}"
                                         TextColor="{DynamicResource PrimaryColor}" />
 
-                                    <Label
+                                        <Label
                                         FontFamily="{DynamicResource Montserrat-Medium}"
                                         FontSize="12"
                                         HorizontalOptions="Start"
@@ -176,7 +154,7 @@
                                         TextDecorations="Strikethrough"
                                         VerticalTextAlignment="Center" />
 
-                                    <!--<Label
+                                        <!--<Label
                                         FontFamily="{DynamicResource Montserrat-Medium}"
                                         FontSize="12"
                                         HorizontalOptions="Start"
@@ -186,7 +164,7 @@
                                         TextColor="{DynamicResource PrimaryColor}"
                                         VerticalTextAlignment="Center" />-->
 
-                                </StackLayout>
+                                    </StackLayout>
 
                                     <StackLayout
                                     Grid.Row="3"
@@ -231,7 +209,9 @@
                                         <Label Text="QTY" TextColor="Black"></Label>
                                     </border:SfBorder>
 
-                                    --><!--  Remove button  --><!--
+                                    -->
+                                    <!--  Remove button  -->
+                                    <!--
                                     <button:SfButton
                                         Margin="24,0,0,0"
                                         CommandParameter="{Binding .}"
@@ -254,12 +234,12 @@
                                     </button:SfButton>
                                 </StackLayout>-->
 
-                            </Grid>
-                        </DataTemplate>
-                    </BindableLayout.ItemTemplate>
-                </StackLayout>
-
-                <!--  Separator  -->
+                                </Grid>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </StackLayout>
+                    
+                    <!--  Separator  -->
                 <BoxView
                     Grid.Row="0"
                     Grid.RowSpan="4"
@@ -270,24 +250,10 @@
                                            Desktop=16}"
                     Color="{DynamicResource Gray-100}" />
 
-                <!--  Price Details  -->
-                <!--<local:PriceDetailView
-                    Grid.Row="{OnIdiom Default=3,
-                                       Desktop=0}"
-                    Grid.RowSpan="{OnIdiom Default=1,
-                                           Desktop=4}"
-                    Grid.Column="{OnIdiom Default=0,
-                                          Desktop=2}"
-                    Grid.ColumnSpan="{OnIdiom Default=3,
-                                              Desktop=1}"
-                    Margin="{OnIdiom Default='0,16,0,0',
-                                     Desktop=0}"
-                    ActionText="PLACE ORDER"
-                    BackgroundColor="{DynamicResource Gray-100}"
-                    HorizontalOptions="{OnIdiom Default=Fill,
-                                                Desktop=End}" />-->
+                
 
             </Grid>
+                
         </ScrollView>
         
         <!--EMPTY CART TEMPLATE-->

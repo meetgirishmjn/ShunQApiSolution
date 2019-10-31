@@ -22,7 +22,19 @@ namespace xApp.Views.MyCart
             try
             {
                 InitializeComponent();
+
                 this.BindingContext = new MyCartViewModelEx();
+                Task.Run(() =>
+                {
+                    try
+                    {
+                        (this.BindingContext as MyCartViewModelEx).OnLoad();
+                    }
+                    catch (Exception ex)
+                    {
+
+                    }
+                });
             }
             catch (Exception ex)
             {

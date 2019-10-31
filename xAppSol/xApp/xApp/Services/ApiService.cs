@@ -229,8 +229,7 @@ namespace xApp.Services
 
         public async Task<ShoppingCart> GetCurrentCart()
         {
-            var response = await getHttp().GetAsync(new Uri(mobileV2Url.Replace("v2","v1") + "getCart"));
-            //var response = await getHttp().GetAsync(new Uri(mobileV2Url + "current/cart"));
+            var response = await getHttp().GetAsync(new Uri(mobileV2Url + "current/cart"));
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
