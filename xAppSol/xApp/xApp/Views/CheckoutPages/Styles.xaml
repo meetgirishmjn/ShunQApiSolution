@@ -30,6 +30,17 @@
 
     <converter1:DynamicResourceToColorConverter x:Key="DynamicResourceToColorConverter" />
 
+    <Style x:Key="LabelStyle2" TargetType="Label">
+        <Setter Property="TextColor" Value="{DynamicResource Gray-700}" />
+        <Setter Property="FontFamily" Value="Montserrat-Regular" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="LineHeight" Value="{OnPlatform Android=1.5, Default=-1}" />
+        <Setter Property="HorizontalTextAlignment" Value="Start" />
+        <Setter Property="VerticalTextAlignment" Value="Center" />
+        <Setter Property="VerticalOptions" Value="Center" />
+        <Setter Property="HorizontalOptions" Value="Start" />
+    </Style>
+    
     <!--  Common style for BoxView  -->
     <Style x:Key="BoxViewStyle" TargetType="BoxView">
         <Setter Property="Color" Value="{DynamicResource Gray-200}" />

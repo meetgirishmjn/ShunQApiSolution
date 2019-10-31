@@ -8,6 +8,7 @@
              xmlns:expander="clr-namespace:Syncfusion.XForms.Expander;assembly=Syncfusion.Expander.XForms"
              xmlns:sflistview="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
              xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              mc:Ignorable="d"
              Title="Checkout"
     BackgroundColor="#EDF2F5"
@@ -82,61 +83,171 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <Label Text="&#xf46d;" FontFamily="{StaticResource FontAwesomeSolid}"  VerticalOptions="Center" Margin="10,3,3,3" />
-                                <Label TextColor="#495F6E" Text="Item (s)" FontSize="16" Grid.Column="1" VerticalOptions="CenterAndExpand"/>
+                                <Label TextColor="#495F6E" Text="{Binding ItemHeaderTitle}" FontSize="16" Grid.Column="1" VerticalOptions="CenterAndExpand"/>
                             </Grid>
                         </expander:SfExpander.Header>
                         <expander:SfExpander.Content>
                             <Grid BackgroundColor="#FFFFFF">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="1"/>
-                                    <RowDefinition Height="232"/>
+                                    <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
                                 <BoxView Color="#D1DBE1"/>
-                                <sflistview:SfListView ItemSize="25" BackgroundColor="#FFFFFF" Grid.Row="1" HeightRequest="232" ItemSpacing="3" SelectionMode="None" ItemsSource="{Binding ItemInfo}">
-                                    <sflistview:SfListView.ItemTemplate>
-                                        <DataTemplate>
-                                            <ViewCell>
-                                                <ViewCell.View>
-                                                    <Grid>
-                                                        <Grid.RowDefinitions>
-                                                            <RowDefinition Height="25"/>
-                                                        </Grid.RowDefinitions>
-                                                        <Grid Padding="15,0,10,0">
-                                                            <Grid.RowDefinitions>
-                                                                <RowDefinition Height="Auto"/>
-                                                            </Grid.RowDefinitions>
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="*"/>
-                                                                <ColumnDefinition Width="*"/>
-                                                            </Grid.ColumnDefinitions>
-                                                            <Label Text="{Binding ItemName}" VerticalTextAlignment="End" TextColor="#303030" FontSize="16"/>
-                                                            <Label Text="{Binding ItemPrice}" VerticalTextAlignment="End" HorizontalTextAlignment="End" FontSize="16" Grid.Column="1" TextColor="#303030"/>
-                                                        </Grid>
-                                                    </Grid>
-                                                </ViewCell.View>
-                                            </ViewCell>
-                                        </DataTemplate>
-                                    </sflistview:SfListView.ItemTemplate>
-                                    <sflistview:SfListView.FooterTemplate>
-                                        <DataTemplate>
-                                            <ViewCell>
-                                                <ViewCell.View>
-                                                    <Grid Padding="15,0,10,0">
-                                                        <Grid.RowDefinitions>
-                                                            <RowDefinition Height="25"/>
-                                                        </Grid.RowDefinitions>
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="*"/>
-                                                            <ColumnDefinition Width="*"/>
-                                                        </Grid.ColumnDefinitions>
-                                                        <Label Text="Total Amount" VerticalTextAlignment="Center" FontAttributes="Bold" TextColor="#303030" FontSize="16"/>
-                                                        <Label Text="$36,220.00" HorizontalTextAlignment="End" FontAttributes="Bold" VerticalTextAlignment="Center" FontSize="16" Grid.Column="1" TextColor="#303030"/>
-                                                    </Grid>
-                                                </ViewCell.View>
-                                            </ViewCell>
-                                        </DataTemplate>
-                                    </sflistview:SfListView.FooterTemplate>
-                                </sflistview:SfListView>
+                                <Grid Grid.Row="1" Margin="{OnIdiom Default='0,2,0,0',Desktop='16'}"  BackgroundColor="{OnIdiom Default={StaticResource Transparent},
+                                          Desktop={DynamicResource Gray-White},
+                                          Converter={StaticResource DynamicResourceToColorConverter}}" ColumnSpacing="0"  HorizontalOptions="{OnIdiom Default=Fill, Desktop=FillAndExpand}" RowSpacing="0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="{OnIdiom Default=Auto, Phone=0}" />
+                                        <RowDefinition Height="{OnIdiom Default=Auto, Phone=0}" />
+                                        <RowDefinition Height="{OnIdiom Default=Auto, Desktop=*}" />
+                                        <RowDefinition Height="{OnIdiom Default=*, Desktop=0}" />
+                                    </Grid.RowDefinitions>
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="{OnIdiom Default=*, Desktop=3*}" />
+                                        <ColumnDefinition Width="{OnIdiom Default=0, Desktop=Auto}" />
+                                        <ColumnDefinition Width="{OnIdiom Default=0, Desktop=1*}" />
+                                    </Grid.ColumnDefinitions>
+                                    <BoxView  Grid.Row="1" HeightRequest="1" Style="{StaticResource BoxViewStyle}" />
+                                    <!--  Cart items  -->
+                                    <StackLayout Grid.Row="2" BackgroundColor="{OnIdiom Default={StaticResource Transparent},
+                                              Desktop={StaticResource Gray-White},
+                                              Converter={StaticResource DynamicResourceToColorConverter}}"
+                                        BindableLayout.ItemsSource="{Binding LineItems}"  Spacing="5" VerticalOptions="Start">
+
+                                        <BindableLayout.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid  BackgroundColor="{DynamicResource Gray-White}" ColumnSpacing="0" RowSpacing="0">
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto" />
+                                                        <RowDefinition Height="Auto" />
+                                                        <RowDefinition Height="Auto" />
+                                                        <RowDefinition Height="Auto" />
+                                                        <RowDefinition Height="{OnIdiom Default=1, Phone=0}" />
+                                                    </Grid.RowDefinitions>
+
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <!--  Product image  -->
+                                                    <ffimageloading:CachedImage
+                                       Source="{Binding ImageUrl}"
+                                    Grid.Row="0"
+                                    Grid.RowSpan="4"
+                                    Grid.Column="0"
+                                    Margin="15,5,15,5"
+                                    Aspect="Fill"
+                                    BackgroundColor="{DynamicResource Gray-200}"
+                                    HeightRequest="90"
+                                    WidthRequest="120" />
+                                                    <!--  Product name  -->
+                                                    <Label
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="0,5,0,4"
+                                    FontFamily="{StaticResource Montserrat-SemiBold}"
+                                    FontSize="14"
+                                    HorizontalOptions="StartAndExpand"
+                                    LineBreakMode="TailTruncation"
+                                    MaxLines="1"
+                                    Style="{StaticResource LabelStyle2}"
+                                    Text="{Binding Title}"
+                                    TextColor="{DynamicResource Gray-900}" />
+
+                                                    <!--  Product summary  -->
+                                                    <Label
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="0,0,0,8"
+                                    FontFamily="{StaticResource Montserrat-Medium}"
+                                    FontSize="12"
+                                    LineBreakMode="TailTruncation"
+                                    LineHeight="{OnPlatform Android=1.25,
+                                                            Default=-1}"
+                                    MaxLines="2"
+                                    Style="{StaticResource LabelStyle2}"
+                                    Text="{Binding SubTitle}" />
+
+                                                    <StackLayout
+                                    Grid.Row="2"
+                                    Grid.Column="1"
+                                    Margin="0,0,0,0"
+                                    Padding="0"
+                                    Orientation="Horizontal"
+                                    Spacing="4">
+
+                                                        <!--  Product price  -->
+                                                        <Label
+                                        FontFamily="{StaticResource Montserrat-SemiBold}"
+                                        FontSize="20"
+                                        HorizontalOptions="Start"
+                                        Style="{StaticResource LabelStyle2}"
+                                        Text="{Binding Amount, StringFormat='₹{0:0 }'}"
+                                        TextColor="{DynamicResource PrimaryColor}" />
+
+                                                        <Label
+                                        FontFamily="{DynamicResource Montserrat-Medium}"
+                                        FontSize="12"
+                                        HorizontalOptions="Start"
+                                        Style="{StaticResource LabelStyle2}"
+                                        Text="{Binding MRP, StringFormat='₹{0:0.00}'}"
+                                        TextDecorations="Strikethrough"
+                                        VerticalTextAlignment="Center" />
+
+                                                        <!--<Label
+                                        FontFamily="{DynamicResource Montserrat-Medium}"
+                                        FontSize="12"
+                                        HorizontalOptions="Start"
+                                          LineBreakMode="WordWrap"
+                                        Style="{StaticResource LabelStyle2}"
+                                        Text="{Binding DiscountText}"
+                                        TextColor="{DynamicResource PrimaryColor}"
+                                        VerticalTextAlignment="Center" />-->
+
+                                                    </StackLayout>
+
+                                                    <StackLayout
+                                    Grid.Row="3"
+                                        Grid.Column="1"
+                                    Margin="0"
+                                    Padding="0"
+                                    HorizontalOptions="Start"
+                                    Orientation="Horizontal"
+                                    Spacing="0"
+                                    VerticalOptions="Start">
+
+                                                        <Label
+                                        FontFamily="{DynamicResource Montserrat-Medium}"
+                                        FontSize="12"
+                                        HorizontalOptions="Start"
+                                          LineBreakMode="WordWrap"
+                                        Style="{StaticResource LabelStyle2}"
+                                        Text="{Binding Quantity,StringFormat='QTY {0}'}"
+                                    TextColor="{DynamicResource Gray-900}" 
+                                        VerticalTextAlignment="Center" />
+
+                                                    </StackLayout>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </BindableLayout.ItemTemplate>
+                                    </StackLayout>
+
+                                    <!--  Separator  -->
+                                    <BoxView
+                    Grid.Row="0"
+                    Grid.RowSpan="4"
+                    Grid.Column="1"
+                    Style="{StaticResource BoxViewStyle}"
+                    VerticalOptions="Fill"
+                    WidthRequest="{OnIdiom Default=0,
+                                           Desktop=16}"
+                    Color="{DynamicResource Gray-100}" />
+
+
+
+                                </Grid>
                             </Grid>
                         </expander:SfExpander.Content>
                     </expander:SfExpander>
@@ -377,7 +488,7 @@
             WidthRequest="{OnIdiom Tablet=240,
                                    Phone=240,
                                    Default=-1}" />
-                            <Label IsVisible="{Binding IsCartNotValid}" Margin="15,5,15,5"  HorizontalOptions="Center" BackgroundColor="DarkRed" Text="   Cart is not valid.  " TextColor="White" FontSize="12"/>
+                            <Label IsVisible="{Binding IsCartNotValid}" Margin="15,5,15,5"  HorizontalOptions="Center" BackgroundColor="DarkRed" Text="   Cart verification failed.  " TextColor="White" FontSize="12"/>
                         </StackLayout>
 
                     </Grid>

@@ -203,7 +203,17 @@ namespace WebApi.Controllers
                 //ReviewRating = storeReview != null ? storeReview : new StoreReview { StoreId = store.Id },
                 ReviewRating = new StoreReview { StoreId = store.Id },
                 BannerImageUrl = imageUrl + "stores/" + store.BannerImage,
-                ImageUrl = imageUrl + "stores/" + store.Image
+                ImageUrl = imageUrl + "stores/" + store.Image,
+                Address =new Address
+                {
+                    AddressLine = "Survey No. 132(P) wide Thanisandra main road",
+                    AddressLine2 = " 5th Block, MS Ramaiah North City",
+                    City = "Bengaluru",
+                    Locality = "Thanisandra main road",
+                    Zip = "560077",
+                    Latitude = "13.046126",
+                    Longitude = "77.626621"
+                }
             };
 
             return result;

@@ -79,6 +79,7 @@ namespace xApp.Services
         public string CartHeaderIcon  { get; set; }
         public Color CartHeaderIconColor  { get; set; }
         public string CartHeaderTitle { get; set; }
+        public string ItemHeaderTitle { get { return this.VM==null?"Item(s)":("Item(s) - " + this.VM.TotalItem); } }
         public string ValidationCaption { get; set; }
         public Color CartHeaderBgColor { get; set; }
         public bool IsVoucherApplied { get; set; }
@@ -113,6 +114,7 @@ namespace xApp.Services
                 this.NotifyPropertyChanged(nameof(ValidationCaption));
                 this.NotifyPropertyChanged(nameof(IsVoucherApplied));
                 this.NotifyPropertyChanged(nameof(IsNoVoucherApplied));
+                this.NotifyPropertyChanged(nameof(ItemHeaderTitle));
             }
         }
 
