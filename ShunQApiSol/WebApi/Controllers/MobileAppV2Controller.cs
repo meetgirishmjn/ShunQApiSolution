@@ -253,5 +253,86 @@ namespace WebApi.Controllers
 
             return cart;
         }
+
+        [HttpPost("store/search")]
+        public StoreListViewModel SearchStores(StoreListModel model)
+        {
+            var result = new StoreListViewModel();
+
+            var categoryId = 0;
+
+            model.PageIndex = model.PageIndex <= 0 ? 1 : model.PageIndex;
+            model.PageSize = model.PageSize <= 0 ? 1 : model.PageSize;
+
+            //if (model.FilterBy != null)
+            //{
+            //    categoryId = model.FilterBy.CategoryId.HasValue ? model.FilterBy.CategoryId.Value : 0;
+            //}
+            var service = CreateStoreService();
+            var cart = service.GetCart();
+
+            var options = new StoreReadOption
+            {
+                CategoryId = categoryId,
+                Latitude = model.Latitude,
+                Longitude = model.Longitude
+            };
+            var query = service.ReadStores(options);
+
+            var searchKey = model.SearchKey.TrimAll().ToLower();
+
+            if (searchKey.Length != 0)
+            {
+                if (searchKey.Length == 1)
+                    query = query.Where(o => o.ShortName.ToLower().IndexOf(searchKey) == 0);
+                else
+                    query = query.Where(o => o.ShortName.ToLower().IndexOf(searchKey) != -1);
+            }
+
+            var totalCount = query.Count();
+
+            query = query.Skip((model.PageIndex - 1) * model.PageSize).Take(model.PageSize);
+
+            var stores = query.ToList();
+
+            result.PageSize = model.PageSize;
+            result.PageIndex = model.PageIndex;
+            result.PageCount = (int)Math.Ceiling((double)totalCount / model.PageSize);
+            result.TotalCount = totalCount;
+
+            if (cart != null)
+            {
+                result.HasActiveCart = true;
+                result.ActiveStoreId = cart.StoreId;
+            }
+
+            var imageUrl = this.AppConfig.ImageSrcEndpoint;
+            var storeReviews = service.StoreReviews(stores.Select(o => o.Id).ToArray()).ToLookup(o => o.StoreId);
+            result.StoreList = stores.Select(o => new StoreListViewModel.StoreListItem
+            {
+                StoreId = o.Id,
+                StoreCode = o.Code,
+                ShortName = o.ShortName,
+                Description = o.Description,
+                StoreName = o.Name,
+                HasActiveCart = o.Id == result.ActiveStoreId,
+                ReviewRating = storeReviews.Contains(o.Id) ? storeReviews[o.Id].FirstOrDefault() : new StoreReview { StoreId = o.Id },
+                BannerImageUrl = imageUrl + "stores/" + o.BannerImage,
+                ImageUrl = imageUrl + "stores/" + o.Image,
+                Address = new Address
+                {
+                    AddressLine = "Survey No. 132(P) wide Thanisandra main road",
+                    AddressLine2 = " 5th Block, MS Ramaiah North City",
+                    City = "Bengaluru",
+                    Locality = "Thanisandra main road",
+                    Zip = "560077",
+                    Latitude = "13.046126",
+                    Longitude = "77.626621"
+                }
+            }).ToList();
+
+            return result;
+        }
+
     }
 }

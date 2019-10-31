@@ -187,4 +187,46 @@ namespace xApp.Services
         public int StoreCount { get; set; }
         public string ImageUrl { get; set; }
     }
+
+    public class StoreListViewModel
+    {
+        public int PageIndex { get; set; }
+        public int PageSize { get; set; }
+        public int PageCount { get; set; }
+        public int TotalCount { get; set; }
+        public List<StoreListItem> StoreList { get; set; }
+        public bool HasActiveCart { get; set; }
+        public int? ActiveStoreId { get; set; }
+        public StoreListViewModel()
+        {
+            this.StoreList = new List<StoreListItem>();
+        }
+
+        public class StoreListItem
+        {
+            public int StoreId { get; set; }
+            public string StoreCode { get; set; }
+            public string StoreName { get; set; }
+            public string ShortName { get; set; }
+            public string Description { get; set; }
+            public string ImageUrl { get; set; }
+            public string BannerImageUrl { get; set; }
+            public StoreReview ReviewRating { get; set; }
+            public bool HasActiveCart { get; set; }
+            public Address Address { get; set; }
+        }
+    }
+
+    public class SearcStoreRequestModel
+    {
+        public int PageIndex { get; set; }
+        public int PageSize { get; set; }
+        public string SearchKey { get; set; }
+        public string Latitude { get; set; }
+        public string Longitude { get; set; }
+        public string SortBy { get; set; }
+        public string SortDir { get; set; }
+
+        public int[] FilterByCategoryIds { get; set; }
+    }
 }

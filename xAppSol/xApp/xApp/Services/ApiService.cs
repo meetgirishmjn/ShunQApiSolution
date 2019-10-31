@@ -263,6 +263,21 @@ namespace xApp.Services
 
             return new List<StoreCategoryItem>();
         }
+
+        public async Task<StoreListViewModel> StoreSearch(SearcStoreRequestModel req)
+        {
+            var response = await getHttp().PostAsync(new Uri(mobileV2Url + "store/search"),toPostBody(req));
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<StoreListViewModel>(content);
+                return result;
+            }
+            else
+                handleError(response);
+
+            return null;
+        }
     }
 
 }
