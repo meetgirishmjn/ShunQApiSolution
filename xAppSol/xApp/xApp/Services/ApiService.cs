@@ -82,16 +82,10 @@ namespace xApp.Services
             if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
             {
                 var content = await response.Content.ReadAsStringAsync();
-                var index = content.IndexOf("message =", StringComparison.OrdinalIgnoreCase);
-                if (index <= 0)
-                    return;
-                index += "message =".Length;
-                //var error = JsonConvert.DeserializeObject<ErrorResponse>(content);
-                var temp = content.Replace("}","").Substring(index).Trim();
+                var error = JsonConvert.DeserializeObject<ErrorResponse>(content);
                 Device.BeginInvokeOnMainThread(() =>
                 {
-                    //this.Toastr.ShowError(error.Message);
-                    this.Toastr.ShowError(temp);
+                    this.Toastr.ShowError(error.Message);
                 });
             }
         }
@@ -293,6 +287,39 @@ namespace xApp.Services
 
             return null;
         }
+
+        public async Task<CheckoutViewModel> ApplyVoucherCode(string code)
+        {
+            code = encode(code);
+            var response = await getHttp().PostAsync(new Uri(mobileV2Url.Replace("v2", "v1") + "checkout/add/voucher/" + code), null);
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<CheckoutViewModel>(content);
+                return result;
+            }
+            else
+                handleError(response);
+
+            return null;
+        }
+
+        public async Task<CheckoutViewModel> RemoveVoucherCode(string code)
+        {
+            code = encode(code);
+            var response = await getHttp().PostAsync(new Uri(mobileV2Url.Replace("v2", "v1") + "checkout/remove/voucher/" + code), null);
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<CheckoutViewModel>(content);
+                return result;
+            }
+            else
+                handleError(response);
+
+            return null;
+        }
+
     }
 
 }

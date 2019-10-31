@@ -49,5 +49,12 @@ namespace xApp.Droid.Custom
             toast.View?.SetBackgroundColor(Android.Graphics.Color.Rgb(128, 0, 0));
             toast.Show();
         }
+
+        public void ShowInfo(string message)
+        {
+            var toast = Android.Widget.Toast.MakeText(Application.Context, message, ToastLength.Short);
+            toast.View?.SetBackgroundColor(Android.Graphics.Color.Rgb(49, 112, 143));
+            toast.Show();
+        }
     }
 }

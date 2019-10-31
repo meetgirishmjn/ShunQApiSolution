@@ -164,12 +164,12 @@
                                 </Grid.RowDefinitions>
                                 <BoxView Color="#D1DBE1"/>
                                 <StackLayout  Orientation="Horizontal" Margin="15,3,3,10" HorizontalOptions="FillAndExpand"  Grid.Row="1">
-                                    <Entry Placeholder="Enter voucher code" WidthRequest="200" PlaceholderColor="Gray" FontSize="12" />
-                                    <Button Text="Apply" WidthRequest="50" BorderRadius="10" BorderColor="Gray" BorderWidth="1" Padding="0" BackgroundColor="#FFFFFF" FontSize="Micro"/>
+                                    <Entry Text="{Binding VoucherCodeEntry}" Placeholder="Enter voucher code" WidthRequest="200" PlaceholderColor="Gray" FontSize="12" />
+                                    <Button Text="Apply" Command="{Binding ApplyVoucherCommand}" WidthRequest="50" BorderRadius="10" BorderColor="Gray" BorderWidth="1" Padding="0" BackgroundColor="#FFFFFF" FontSize="Micro"/>
                                 </StackLayout>
                                 <BoxView Color="#CEB180" Grid.Row="2"/>
                                 <Label IsVisible="{Binding IsNoVoucherApplied}" Text="No voucher applied" Margin="15,0,0,5" Grid.Row="3" FontSize="Micro" TextColor="Gray"/>
-                                <StackLayout IsVisible="{Binding IsVoucherApplied}"  Padding="15,0,0,10" Grid.Row="3" BindableLayout.ItemsSource="{Binding ValidationMessages}" VerticalOptions="Start">
+                                <StackLayout IsVisible="{Binding IsVoucherApplied}"  Padding="15,0,0,10" Grid.Row="3" BindableLayout.ItemsSource="{Binding Vouchers}" VerticalOptions="Start">
                                     <BindableLayout.ItemTemplate>
                                         <DataTemplate>
                                             <Grid Padding="5,0,5,5" Grid.Row="1">
@@ -177,12 +177,14 @@
                                                     <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
                                                 <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"/>
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="100"/>
                                                 </Grid.ColumnDefinitions>
-                                                <Label TextColor="#CEB180" FontSize="14" Text="Third-Party coupons"/>
-                                                <buttons:SfButton Grid.Column="1" Margin="4,0"   BackgroundColor="Transparent"
-                                                    Command="{Binding ApplyCouponCommand}"  CornerRadius="4"  HorizontalOptions="End"    WidthRequest="100">
+                                                <Label TextColor="#b98f46" FontSize="14" Text="{Binding Code}"/>
+                                                <Label TextColor="#CEB180" FontSize="14" Text="{Binding CodeDescription}" Grid.Column="1" />
+                                                <buttons:SfButton Grid.Column="2" Margin="4,0"   BackgroundColor="Transparent"
+                                                   Clicked="btnRemoveCode_Clicked" CommandParameter="{Binding .}"  CornerRadius="4"  HorizontalOptions="End"    WidthRequest="100">
                                                     <buttons:SfButton.Content>
                                                         <Label   Margin="0"   FontFamily="{StaticResource Montserrat-SemiBold}"
                                                                 FontSize="12"    HorizontalOptions="Fill"  HorizontalTextAlignment="Center"  Style="{StaticResource PriceLabelStyle}"

@@ -11,6 +11,8 @@ namespace xApp.Services
 {
   public partial class CheckoutViewModelEx : INotifyPropertyChanged
     {
+        public IToastr toastr { get; set; }
+        public ApiService api { get; set; }
         private ObservableCollection<CheckoutViewModel.LineItem> _lineItems;
         public ObservableCollection<CheckoutViewModel.LineItem> LineItems
         {
@@ -50,16 +52,25 @@ namespace xApp.Services
             set
             {
                 this._vouchers = value;
+                this.IsVoucherApplied = _vouchers.Count > 0;
                 this.NotifyPropertyChanged();
+                this.NotifyPropertyChanged(nameof(IsVoucherApplied));
+                this.NotifyPropertyChanged(nameof(IsNoVoucherApplied));
             }
         }
 
-        public ICommand ItemTapCommand { get; set; }
+        public ICommand ApplyVoucherCommand { get; set; }
+        public ICommand RemoveVoucherCommand { get; set; }
 
         public CheckoutViewModelEx()
         {
-            this.LineItems = new ObservableCollection<CheckoutViewModel.LineItem>();
             this.IsLoading = true;
+            this.LineItems = new ObservableCollection<CheckoutViewModel.LineItem>();
+            toastr = DependencyService.Get<IToastr>();
+            ApplyVoucherCommand = new Command(onApplyVoucherCommand);
+           // RemoveVoucherCommand = new Command(onRemoveVoucherCommand);
+            api = new ApiService();
+
         }
 
         public CheckoutViewModel VM { get; set; }
@@ -140,14 +151,10 @@ namespace xApp.Services
             if (this.VM != null)
             {
                 //temp
-                this.VM.AppliedVouchers.Add(new CheckoutViewModel.VoucherItem()
-                {
-                    Code = "Codere wrw21 ",
-                    CodeDescription = "Code Description 12%"
-                });
+                
                 //--
                 this.IsCartValid = this.VM.IsCartValid;
-                this.IsVoucherApplied = this.VM.AppliedVouchers.Count>0;
+               
                 this.CartHeaderIcon = this.VM.IsCartValid ? "\uf560" : "\uf071";
                 this.CartHeaderIconColor = this.VM.IsCartValid ? Color.FromHex("#8ec63f") : Color.FromHex("#a31723");
                 this.CartHeaderTitle = this.VM.ValidationTitle;
@@ -168,6 +175,56 @@ namespace xApp.Services
             {
                 var item = (e.ItemData as StoreCategoryItem);
                 //await Shell.Current.GoToAsync($"//Stores");
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        public string _voucherCodeEntry=string.Empty;
+        public string VoucherCodeEntry
+        {
+            get { return _voucherCodeEntry; }
+            set { _voucherCodeEntry = value; NotifyPropertyChanged(); }
+        }
+        private async void onApplyVoucherCommand()
+        {
+            try
+            {
+                if (VoucherCodeEntry == null)
+                    return;
+
+                var code = VoucherCodeEntry.Trim();
+                if (code.Length == 0)
+                {
+                    toastr.ShowError("Please enter code");
+                    return;
+                }
+                var result = await api.ApplyVoucherCode(code);
+                if (result != null)
+                {
+                    VoucherCodeEntry = string.Empty;
+                    this.Vouchers = new ObservableCollection<CheckoutViewModel.VoucherItem>(result.AppliedVouchers);
+                    toastr.ShowInfo("Voucher applied successfully.");
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+        public async void onRemoveVoucherCommand(string code)
+        {
+            try
+            {
+                var result = await api.RemoveVoucherCode(code);
+                if (result != null)
+                {
+                    VoucherCodeEntry = string.Empty;
+                    this.Vouchers = new ObservableCollection<CheckoutViewModel.VoucherItem>(result.AppliedVouchers);
+                    toastr.ShowInfo("Voucher removed successfully.");
+                }
             }
             catch (Exception ex)
             {

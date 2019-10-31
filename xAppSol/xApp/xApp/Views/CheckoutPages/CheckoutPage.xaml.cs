@@ -34,5 +34,23 @@ namespace xApp.Views.CheckoutPages
         {
 
         }
+
+        private async void btnRemoveCode_Clicked(object sender, EventArgs e)
+        {
+            try
+            {
+                var btn = (Syncfusion.XForms.Buttons.SfButton)sender;
+                var code = (btn.CommandParameter as CheckoutViewModel.VoucherItem).Code;
+                var answer = await DisplayAlert("Remove", "Do you wan't to remove code?", "Yes", "No");
+                if (answer)
+                {
+                    (this.BindingContext as CheckoutViewModelEx).onRemoveVoucherCommand(code);
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
     }
 }
