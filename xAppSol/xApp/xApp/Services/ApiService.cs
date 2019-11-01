@@ -136,7 +136,7 @@ namespace xApp.Services
             return string.Empty;
         }
 
-        public async Task<bool> LogOut()
+        public async Task<bool> Logout()
         {
             var response = await getHttp().PostAsync(new Uri(membershipUrl + "app/logout"), null);
             if (response.IsSuccessStatusCode)

@@ -18,6 +18,12 @@ namespace xApp.Views.LogIn
         public ResetPwdPage()
         {
             InitializeComponent();
+            this.BindingContext = new LogInVewModelEx();
+        }
+
+        private void btnLogIn_Clicked(object sender, EventArgs e)
+        {
+            (App.Current as App).GoToLogIn();
         }
     }
 }

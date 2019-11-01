@@ -7,6 +7,8 @@
              xmlns:core="clr-namespace:Syncfusion.XForms.Core;assembly=Syncfusion.Core.XForms"
              xmlns:local="clr-namespace:xApp.Views.LogIn"
              xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+             xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms"
+             xmlns:control="clr-namespace:xApp.Controls"
              mc:Ignorable="d"
              x:Class="xApp.Views.LogIn.ForgotPwdPage" Title=""
     BackgroundImageSource="LoginBackground.png"
@@ -70,18 +72,24 @@
                             FontFamily="{StaticResource Montserrat-Medium}"
                             HorizontalTextAlignment="Center"
                             Style="{StaticResource LabelStyle}"
-                            Text="We'll send instructions on how to reset your password to the email address you have registered with us"
+                            Text="We'll send OTP on your mobile number and email registered with us"
                             VerticalTextAlignment="Start" />
 
                         <!--  Entry to get email ID from user  -->
-                        <local:EmailEntry Grid.Row="2" />
-
+                        <border:SfBorder Grid.Row="2" Style="{StaticResource SfBorderStyle}">
+                            <control:BorderlessEntry
+                                Placeholder="Email"
+                                Style="{StaticResource EntryStyle}"
+                                Keyboard="Email"
+                                Text="{Binding Email}" />
+                        </border:SfBorder>
+                        
                         <buttons:SfButton
                             Grid.Row="3"
-                            Clicked="SfButton_Clicked"
+                            Command="{Binding SendOtpCommand}"
                             CornerRadius="20"
                             Style="{StaticResource SfButtonStyle}"
-                            Text="SEND" />
+                            Text="{Binding BtnSendText}" />
 
                     </Grid>
 
@@ -100,7 +108,7 @@
                             VerticalTextAlignment="Center" />
 
                         <buttons:SfButton
-                            Command="{Binding SignUpCommand}"
+                           Clicked="SfButton_Clicked"
                             CornerRadius="4"
                             Style="{StaticResource SfFlatButtonStyle}"
                             Text="Sign Up" />

@@ -18,11 +18,12 @@ namespace xApp.Views.LogIn
         public ForgotPwdPage()
         {
             InitializeComponent();
+            this.BindingContext = new LogInVewModelEx();
         }
 
         private void SfButton_Clicked(object sender, EventArgs e)
         {
-            (App.Current as App).GoToResetPwd(); 
+            (App.Current as App).GoBack();
         }
     }
 }

@@ -41,7 +41,7 @@ namespace xApp
                 (App.Current as App).GoToLogIn();
                 Task.Run(async () =>
                 {
-                    var flag = await api.LogOut();
+                    var flag = await api.Logout();
                 });
             }
             catch (Exception ex)

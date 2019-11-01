@@ -87,7 +87,7 @@
                                 IsPassword="True"
                                 Placeholder="New Password"
                                 Style="{StaticResource EntryStyle}"
-                                Text="{Binding NewPassword}" />
+                                Text="{Binding Password}" />
                         </border:SfBorder>
 
                         <!--  Entry to get confirm password from user  -->
@@ -97,26 +97,26 @@
                             Style="{StaticResource SfBorderStyle}">
                             <control:BorderlessEntry
                                 x:Name="ConfirmNewPasswordEntry"
-                                IsPassword="True"
-                                Placeholder="Confirm New Password"
+                                Keyboard="Numeric"
+                                Placeholder="Enter OTP you received"
                                 Style="{StaticResource EntryStyle}"
-                                Text="{Binding ConfirmPassword}" />
+                                Text="{Binding OTP}" />
                         </border:SfBorder>
 
                         <!--  Submit button  -->
                         <buttons:SfButton
                             Grid.Row="4"
-                            Command="{Binding SubmitCommand}"
+                            Command="{Binding ResetPwdCommand}"
                             CornerRadius="20"
                             Style="{StaticResource SfButtonStyle}"
-                            Text="SUBMIT" />
+                            Text="{Binding BtnConfirmText}" />
 
                     </Grid>
 
                     <StackLayout
                         HorizontalOptions="Center"
                         Orientation="Horizontal"
-                        Spacing="1" Margin="0"
+                        Spacing="1" Padding="0"
                         VerticalOptions="End">
 
                         <Label
@@ -124,14 +124,14 @@
                             HorizontalOptions="CenterAndExpand"
                             HorizontalTextAlignment="Center"
                             Style="{StaticResource LabelStyle}"
-                            Text="Don't have an account?"
+                            Text="Already have an account?"
                             VerticalTextAlignment="Center" />
 
                         <buttons:SfButton
-                            Command="{Binding SignUpCommand}"
+                            Clicked="btnLogIn_Clicked"
                             CornerRadius="4"
                             Style="{StaticResource SfFlatButtonStyle}"
-                            Text="Sign Up" />
+                            Text="Log In" />
 
                     </StackLayout>
                 </StackLayout>
