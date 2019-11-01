@@ -68,6 +68,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
                         <!--  Label to display the title of this page  -->
@@ -183,7 +184,7 @@
                         <!--  Login through facebook account  -->
                         <buttons:SfButton
                             Grid.Row="7" IsEnabled="{Binding IsNotLoading}"
-                            Margin="0,16,0,16"
+                            Margin="0,16,0,10"
                             BackgroundColor="{DynamicResource FacebookBlue}"
                             Command="{Binding SocialMediaLoginCommand}"
                             CornerRadius="20"
@@ -203,6 +204,32 @@
                                         FontFamily="{StaticResource Montserrat-Medium}"
                                         FontSize="16"
                                         Text="Login with Facebook"
+                                        TextColor="{DynamicResource Gray-White}" />
+                                </StackLayout>
+                            </buttons:SfButton.Content>
+                        </buttons:SfButton>
+
+                        <buttons:SfButton
+                            Grid.Row="8" IsEnabled="{Binding IsNotLoading}"
+                            Margin="0,5,0,2"
+                            BackgroundColor="{DynamicResource GoogleRed}"
+                            Command="{Binding SocialMediaLoginCommand}"
+                            CornerRadius="20"
+                            HeightRequest="40">
+                            <buttons:SfButton.Content>
+                                <StackLayout
+                                    HorizontalOptions="CenterAndExpand"
+                                    Orientation="Horizontal"
+                                    VerticalOptions="Center">
+                                    <Label
+                                       Text="&#xf1a0;" FontFamily="{StaticResource FontAwesomeBrands}"
+                                        FontSize="18"
+                                        TextColor="{DynamicResource Gray-White}"
+                                        VerticalTextAlignment="Center" />
+                                    <Label
+                                        FontFamily="{StaticResource Montserrat-Medium}"
+                                        FontSize="16"
+                                        Text="Login with Google   "
                                         TextColor="{DynamicResource Gray-White}" />
                                 </StackLayout>
                             </buttons:SfButton.Content>
