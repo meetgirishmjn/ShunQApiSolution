@@ -138,12 +138,32 @@ namespace xApp.Services
             }
         }
 
+        public float TotalAmount { get; set; }
+        public float TotalDiscount { get; set; }
+        public float TotalVoucherDiscount { get; set; }
+        public float OrderTotal { get; set; }
+        
+        private void UpdateUIPriceInfo()
+        {
+            this.TotalAmount = VM.TotalAmount;
+            this.TotalDiscount = VM.TotalDiscount;
+            this.TotalVoucherDiscount = VM.TotalVoucherDiscount;
+            this.OrderTotal = VM.OrderTotal;
+            this.NotifyPropertyChanged(nameof(IsVoucherApplied));
+            this.NotifyPropertyChanged(nameof(IsNoVoucherApplied));
+            this.NotifyPropertyChanged(nameof(TotalAmount));
+            this.NotifyPropertyChanged(nameof(TotalDiscount));
+            this.NotifyPropertyChanged(nameof(TotalVoucherDiscount));
+            this.NotifyPropertyChanged(nameof(OrderTotal));
+        }
 
         public bool IsCartNotValid
         {
             get { return !_isCartValid; }
         }
         #endregion "IsCartValid"
+
+
         public async void OnLoad()
         {
             var api = new ApiService();
@@ -166,6 +186,7 @@ namespace xApp.Services
                 this.ValidationMessages =new ObservableCollection<string> (this.VM.ValidationMessages);
                 this.LineItems = new ObservableCollection<CheckoutViewModel.LineItem>(this.VM.LineItems);
                 this.Vouchers = new ObservableCollection<CheckoutViewModel.VoucherItem>(this.VM.AppliedVouchers);
+                UpdateUIPriceInfo();
             }
 
             this.IsLoading = false;
@@ -206,9 +227,12 @@ namespace xApp.Services
                 var result = await api.ApplyVoucherCode(code);
                 if (result != null)
                 {
+                    this.VM = result;
                     VoucherCodeEntry = string.Empty;
                     this.Vouchers = new ObservableCollection<CheckoutViewModel.VoucherItem>(result.AppliedVouchers);
+                    UpdateUIPriceInfo();
                     toastr.ShowInfo("Voucher applied successfully.");
+
                 }
             }
             catch (Exception ex)
@@ -223,8 +247,10 @@ namespace xApp.Services
                 var result = await api.RemoveVoucherCode(code);
                 if (result != null)
                 {
+                    this.VM = result;
                     VoucherCodeEntry = string.Empty;
                     this.Vouchers = new ObservableCollection<CheckoutViewModel.VoucherItem>(result.AppliedVouchers);
+                    UpdateUIPriceInfo();
                     toastr.ShowInfo("Voucher removed successfully.");
                 }
             }

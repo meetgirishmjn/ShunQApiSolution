@@ -479,7 +479,8 @@ namespace BusinessCore.Services
 
         public void EndSession(string token)
         {
-            if (token.TrimAll().Length == 0)
+            token = token.TrimAll();
+            if (token.Length == 0)
                 return;
 
             var context = ContextManager.GetContext();
@@ -490,7 +491,8 @@ namespace BusinessCore.Services
 
             if(modelDb != null)
             {
-                modelDb.ExpireOn = DateTime.Now.AddMinutes(-1);
+                modelDb.ExpireOn =new DateTime(1900,1,1);
+                modelDb.IsDeleted = true;
                 context.SaveChanges();
             }
         }

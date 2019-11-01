@@ -54,6 +54,29 @@ namespace xApp
             Device.BeginInvokeOnMainThread(() => MainPage = new AppShell());
         }
 
+        public void GoToLogIn()
+        {
+            Device.BeginInvokeOnMainThread(() => MainPage = new NavigationPage(new LoginPage()));
+        }
+        public void GoToSignUp()
+        {
+            Device.BeginInvokeOnMainThread(() => MainPage.Navigation.PushAsync(new SignUpPage()));
+        }
+
+        public void GoToForgotPwd()
+        {
+            Device.BeginInvokeOnMainThread(() => MainPage.Navigation.PushAsync(new ForgotPwdPage()));
+        }
+
+        public void GoToResetPwd()
+        {
+            Device.BeginInvokeOnMainThread(() => MainPage.Navigation.PushAsync(new ResetPwdPage()));
+        }
+        public void GoBack()
+        {
+            Device.BeginInvokeOnMainThread(() => MainPage.Navigation.PopAsync());
+        }
+
         public void GoToCheckoutPage()
         {
              MainPage.Navigation.PushAsync(new CheckoutPage());
@@ -73,10 +96,10 @@ namespace xApp
              MainPage.Navigation.PushAsync( new WebViewPage());
         }
 
-        public void GoToLogIn()
-        {
-            MainPage = new LoginPage();
-        }
+        //public void GoToLogIn()
+        //{
+        //    MainPage = new LoginPage();
+        //}
     }
 
     public class NavigationWorkGrs

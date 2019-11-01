@@ -43,7 +43,7 @@ namespace xApp.Views.LogIn
 
 
                 await SecureStorage.SetAsync("oAuthToken", token);
-                App.Current.MainPage = new AppShell();
+                App.Current.MainPage = new AppLaunch();
 
             }
             catch (Exception ex)
@@ -55,6 +55,16 @@ namespace xApp.Views.LogIn
                 IsLoading = false;
                 btnLogIn.Text = "LOG IN";
             }
+        }
+
+        private void btnSignUp_Clicked(object sender, EventArgs e)
+        {
+            (App.Current as App).GoToSignUp();
+        }
+
+        private void ForgotPasswordLabel_Tapped(object sender, EventArgs e)
+        {
+            (App.Current as App).GoToForgotPwd();
         }
     }
 }

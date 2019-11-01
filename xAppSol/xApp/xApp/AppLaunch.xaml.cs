@@ -39,7 +39,7 @@ namespace xApp
             {
 
                 if (!isLoggedIn)
-                    App.Current.MainPage = new LoginPage();
+                    (App.Current as App).GoToLogIn();
                 else
                 {
                     var api = new ApiService();

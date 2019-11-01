@@ -55,7 +55,7 @@
     <MenuItem Text="About Us" IconImageSource="tab_about.png"/>
     
      
-    <MenuItem Text="Logout" Clicked="MenuItem_Clicked" />
+    <MenuItem Text="Logout" Clicked="menuLogout_Clicked" />
 
    
     <!-- Your Pages -->

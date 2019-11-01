@@ -127,7 +127,13 @@ namespace BusinessCore.AppHandlers
         {
             var token = "";
             if (Request.Headers.ContainsKey("Authorization"))
-                token = Request.Headers["Authorization"].ToString();
+            {
+                token = Request.Headers["Authorization"].ToString().Trim();
+                if( token.StartsWith("bearer ", StringComparison.OrdinalIgnoreCase))
+                {
+                    token = token.Substring(6).Trim();
+                }
+            }
 
             return token;
         }

@@ -39,7 +39,7 @@ namespace xApp.Services
         public ApiService()
         {
             client = new HttpClient();
-            membershipUrl = apiEndpoint + "api/v1/membership/app/";
+            membershipUrl = apiEndpoint + "api/v1/membership/";
           //  mobileUrl = apiEndpoint + "api/v1/mobile/";
             mobileV2Url = apiEndpoint + "api/v2/mobile/";
             Toastr = DependencyService.Get<IToastr>();
@@ -88,6 +88,21 @@ namespace xApp.Services
                     this.Toastr.ShowError(error.Message);
                 });
             }
+            else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    this.Toastr.ShowError("Session expired");
+                    (App.Current as App).GoToLogIn();
+                });
+            }
+            else
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    this.Toastr.ShowError("Critical server error occurred");
+                });
+            }
         }
         private async Task<string>  getAuthToken()
         {
@@ -111,7 +126,7 @@ namespace xApp.Services
             client.DefaultRequestHeaders.Add("app-id", AppId);
             client.DefaultRequestHeaders.Add("device-id", DeviceId);
 
-            var response = await client.PostAsync(new Uri(membershipUrl + "login"), reqData);
+            var response = await client.PostAsync(new Uri(membershipUrl + "app/login"), reqData);
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
@@ -120,6 +135,61 @@ namespace xApp.Services
             }
             return string.Empty;
         }
+
+        public async Task<bool> LogOut()
+        {
+            var response = await getHttp().PostAsync(new Uri(membershipUrl + "app/logout"), null);
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+                handleError(response);
+
+            return false;
+        }
+
+        public async Task<RegisterUserViewModel> RegisterUser(RegisterUserModel userInfo)
+        {
+            var response = await getHttp().PostAsync(new Uri(membershipUrl + "app/register"), toPostBody(userInfo));
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<RegisterUserViewModel>(content);
+                return result;
+            }
+            else
+                handleError(response);
+
+            return null;
+        }
+
+        public async Task<bool> ChangePassword(string userName,string newPwd,string otp)
+        {
+            var response = await getHttp().PostAsync(new Uri(membershipUrl + "change/password"),toPostBody(new { UserName =userName, Password =newPwd, OTP=otp }));
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+                handleError(response);
+
+            return false;
+        }
+
+        public async Task<bool> CreatePasswordResetOTP(string userName)
+        {
+            var response = await getHttp().PostAsync(new Uri(membershipUrl + "password/otp/"+userName),null);
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+                handleError(response);
+
+            return false;
+        }
+
 
         public async Task<HomeViewResult2> GetHomeView()
         {

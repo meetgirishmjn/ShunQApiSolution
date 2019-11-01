@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Xamarin.Essentials;
 using Xamarin.Forms;
+using xApp.Services;
 using xApp.ViewModels;
 
 namespace xApp
@@ -28,9 +31,24 @@ namespace xApp
         }
 
 
-        private void MenuItem_Clicked(object sender, EventArgs e)
+        private  void menuLogout_Clicked(object sender, EventArgs e)
         {
-            App.Current.MainPage = new NavigationPage(new Views.LogIn.LoginPage());
+            try
+            {
+                var api = new ApiService();
+
+                SecureStorage.Remove("oAuthToken");
+                (App.Current as App).GoToLogIn();
+                Task.Run(async () =>
+                {
+                    var flag = await api.LogOut();
+                });
+            }
+            catch (Exception ex)
+            {
+                var toastr = DependencyService.Get<IToastr>();
+                toastr.ShowError(ex.Message);
+            }
         }
     }
 }

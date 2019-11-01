@@ -268,5 +268,38 @@ namespace xApp.Services
             public bool HasDiscount { get; set; }
         }
     }
-
+    public class LoginOauthModel
+    {
+        public string ProviderName { get; set; }
+        public string ProfileId { get; set; }
+        //public string UserId { get; set; }
+        public string Email { get; set; }
+        public string Mobile { get; set; }
+        public string FullName { get; set; }
+    }
+    public class LoginSuccessModel
+    {
+        public bool IsValid { get; set; }
+        public string UserName { get; set; }
+        public string FullName { get; set; }
+        public string AuthToken { get; set; }
+        public string[] Roles { get; set; }
+    }
+    public class RegisterUserModel
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string MobileNumber { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+        public string ReferralCode { get; set; }
+    }
+    public class RegisterUserViewModel
+    {
+        public string FullName { get; set; }
+        public string Email { get; set; }
+        public string Mobile { get; set; }
+        public string AuthToken { get; set; }
+        public string Message { get; set; }
+    }
 }
