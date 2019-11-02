@@ -16,7 +16,7 @@ namespace xApp.Views.LogIn
     {
         public bool IsLoading { get; set; }
         public bool IsNotLoading { get { return !IsLoading; } }
-
+        IToastr toastr;
         /// <summary>
         /// Initializes a new instance of the <see cref="LoginPage" /> class.
         /// </summary>
@@ -66,5 +66,36 @@ namespace xApp.Views.LogIn
         {
             (App.Current as App).GoToForgotPwd();
         }
+
+        private void onFbLoginCommand(object sender, EventArgs e)
+        {
+            try
+            {
+                if(toastr == null)
+                    toastr = DependencyService.Get<IToastr>();
+
+                toastr.ShowInfo("Feature not implemented");
+            }
+            catch (Exception ex)
+            {
+                 toastr.ShowError(ex.Message);
+            }
+        }
+
+        private void onGoogleLoginCommand(object sender, EventArgs e)
+        {
+            try
+            {
+                if (toastr == null)
+                    toastr = DependencyService.Get<IToastr>();
+
+                toastr.ShowInfo("Feature not implemented");
+            }
+            catch (Exception ex)
+            {
+                toastr.ShowError(ex.Message);
+            }
+        }
+
     }
 }

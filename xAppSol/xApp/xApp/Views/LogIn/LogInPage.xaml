@@ -186,7 +186,7 @@
                             Grid.Row="7" IsEnabled="{Binding IsNotLoading}"
                             Margin="0,16,0,10"
                             BackgroundColor="{DynamicResource FacebookBlue}"
-                            Command="{Binding SocialMediaLoginCommand}"
+                            Clicked="onFbLoginCommand"
                             CornerRadius="20"
                             HeightRequest="40">
                             <buttons:SfButton.Content>
@@ -213,7 +213,7 @@
                             Grid.Row="8" IsEnabled="{Binding IsNotLoading}"
                             Margin="0,5,0,2"
                             BackgroundColor="{DynamicResource GoogleRed}"
-                            Command="{Binding SocialMediaLoginCommand}"
+                            Clicked="onGoogleLoginCommand"
                             CornerRadius="20"
                             HeightRequest="40">
                             <buttons:SfButton.Content>

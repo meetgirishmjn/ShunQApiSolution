@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "824031498723",
+    "firebase_url": "https://shunq-254216.firebaseio.com",
+    "project_id": "shunq-254216",
+    "storage_bucket": "shunq-254216.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:824031498723:android:b4e79ab0fd36590ff690d6",
+        "android_client_info": {
+          "package_name": "com.shunqinvoicesg.xapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "824031498723-k9kd4andv3bmrnvuph7oke16rbhckhmi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shunqinvoicesg.xapp",
+            "certificate_hash": "2b4c14738810a6b96824098cc01b5b393ccc5278"
+          }
+        },
+        {
+          "client_id": "824031498723-1tjgc8nne1otrhrsj6mk4am7mojebk40.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAg3d58oeXRymYpl3Lpn_OD1eWqB0cU720"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "824031498723-1tjgc8nne1otrhrsj6mk4am7mojebk40.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

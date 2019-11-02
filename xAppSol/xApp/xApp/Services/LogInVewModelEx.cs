@@ -22,6 +22,8 @@ namespace xApp.Services
         public ICommand SignUpCommand { get; set; }
         public ICommand SendOtpCommand { get; set; }
         public ICommand ResetPwdCommand { get; set; }
+        public ICommand FacebookLoginCommand { get; set; }
+        public ICommand GoogleLoginCommand { get; set; }
         ApiService api { get; set; }
         IToastr toastr { get; set; }
         public LogInVewModelEx()
@@ -34,6 +36,9 @@ namespace xApp.Services
             SignUpCommand = new Command(onSignUpCommand);
             SendOtpCommand = new Command(onSendOtpCommand);
             ResetPwdCommand = new Command(onResetPwdCommand);
+          //  FacebookLoginCommand = new Command(onFbLoginCommand);
+          //  GoogleLoginCommand = new Command(onGoogleLoginCommand);
+
         }
 
         #region "PropertyChanged"
@@ -279,6 +284,8 @@ namespace xApp.Services
                 toastr.ShowError(ex.Message);
             }
         }
+
+       
         public  bool IsNumber(string str)
         {
             if (str == null)

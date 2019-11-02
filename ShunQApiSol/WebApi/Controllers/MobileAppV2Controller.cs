@@ -67,10 +67,10 @@ namespace WebApi.Controllers
             var cartService = CreateStoreService();
             viewModel.BannerUrls = new string[]
             {
-                URL+"Promo1.png",
+                URL+"Promo4.png",
                 URL+"Promo2.jpg",
                 URL+ "Promo3.jpg",
-                URL+"Promo4.jpg"
+                URL+"Promo1.jpg"
             };
             viewModel.TileSections = new HomeViewModel.TileSection[]
             {
