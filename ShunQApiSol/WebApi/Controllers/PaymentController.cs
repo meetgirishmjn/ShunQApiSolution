@@ -109,8 +109,26 @@ namespace WebApi.Controllers
             {
                 ContentType = "text/html",
                 StatusCode = (int)System.Net.HttpStatusCode.OK,
-                Content = "<b>pay/callback/success</b>"
+                Content = "<i>Please Wait...</i>"
             };
+        }
+
+        [HttpGet("app/pay/success/detail")]
+        [AllowAnonymous]
+        public PaySuccessInfoVM GetPaymentSuccessInfo()
+        {
+            var result = new PaySuccessInfoVM();
+            result.IsSuccess = true;
+            result.CheckoutCode = RandomString(6);
+            return result;
+        }
+
+        private static Random random = new Random();
+        public static string RandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
         }
 
         [HttpPost("pay/callback/failure")]

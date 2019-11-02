@@ -80,19 +80,33 @@
                     Style="{StaticResource PaymentDescriptionLabelStyle}"
                     Text="Thank you for your payment. Your Self-Checkout code is below:" />
 
-                <Grid     BackgroundColor="{DynamicResource Gray-White}"   VerticalOptions="Start">
+                <Grid IsVisible="{Binding IsLoading}" >
+                    <ActivityIndicator IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}" Margin="150"/>
+                </Grid>
+                <Grid IsVisible="{Binding IsNotLoading}" >
+                    <StackLayout HorizontalOptions="CenterAndExpand" IsVisible="{Binding IsNotSuccess}">
+                        <Label
+                    Margin="0,40,0,0"
+                    Style="{StaticResource PaymentLabelStyle}" TextColor="DarkRed"
+                    Text="ERROR OCCURRED" />
+                        <Label
+                    Margin="17,8,0,150"
+                    Style="{StaticResource PaymentDescriptionLabelStyle}" TextColor="Red"
+                    Text="{Binding ErrorMessage}" />
+                    </StackLayout>
+                </Grid>
+                <Grid IsVisible="{Binding IsSuccess}"    BackgroundColor="{DynamicResource Gray-White}"   VerticalOptions="Start">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1" />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <BoxView    Grid.Row="0" HeightRequest="1"  Style="{StaticResource BoxViewStyle}" />
-                    <syncfusion:SfBarcode Margin="0" Grid.Row="1" TextColor="{StaticResource AppPrimaryDarkColor}"  Text="Q23TE" Symbology="QRCode"/>
+                    <syncfusion:SfBarcode Margin="0" Grid.Row="1" TextColor="{StaticResource AppPrimaryDarkColor}"  Text="{Binding CheckoutCode}" Symbology="QRCode"/>
                 </Grid>
 
-                <Label
-                    Margin="17,8"
-                    Style="{StaticResource PaymentDescriptionLabelStyle}"
+                <Label IsVisible="{Binding IsSuccess}"   Margin="17,8"  Style="{StaticResource PaymentDescriptionLabelStyle}"
                     Text="Show Self-Checkout code while walking out of store." />
+                
                 <button:SfButton HorizontalOptions="CenterAndExpand" VerticalOptions="EndAndExpand" Margin="0,10,0,10"  BackgroundColor="{StaticResource AppPrimaryColor}"
                VerticalTextAlignment="Center"        BorderWidth="0"     HeightRequest="40" WidthRequest="145" FontAttributes="Bold"   FontSize="16" CornerRadius="20"
                 Grid.Row="1" TextColor="{StaticResource Gray-White}"

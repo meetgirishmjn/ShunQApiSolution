@@ -302,4 +302,10 @@ namespace xApp.Services
         public string AuthToken { get; set; }
         public string Message { get; set; }
     }
+    public class PaySuccessInfoVM
+    {
+        public bool IsSuccess { get; set; }
+        public string ErrorMessage { get; set; }
+        public string CheckoutCode { get; set; }
+    }
 }

@@ -1,6 +1,8 @@
-﻿using Xamarin.Forms;
+﻿using System.Threading.Tasks;
+using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 using Xamarin.Forms.Xaml;
+using xApp.Services;
 
 namespace xApp.Views.CheckoutPages
 {
@@ -11,6 +13,8 @@ namespace xApp.Views.CheckoutPages
         public PaymentSuccessPage()
         {
             InitializeComponent();
+            this.BindingContext = new PaySuccessViewModelEx();
+            Task.Run(() =>(this.BindingContext as PaySuccessViewModelEx).OnLoad());
         }
 
         protected override bool OnBackButtonPressed()

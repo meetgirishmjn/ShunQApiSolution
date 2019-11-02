@@ -192,6 +192,11 @@ namespace xApp.Services
                 this.IsAddScanActive = false;
                 this.IsLoading = false;
                 this.IsScannerOn = false;
+
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    toastr.ShowInfo("Item added to cart");
+                });
             }
             catch (Exception ex)
             {
@@ -217,6 +222,11 @@ namespace xApp.Services
                 this.IsQrAnalysing = false;
                 this.IsScannerOn = false;
                 this.IsLoading = false;
+
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    toastr.ShowWarning("Item removed to cart");
+                });
             }
             catch(Exception ex)
             {
