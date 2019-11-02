@@ -35,18 +35,11 @@ namespace xApp.Droid.Custom
             base.OnElementChanged(e);
 
 
-            var webView = new Android.Webkit.WebView(_context);
-            webView.Settings.JavaScriptEnabled = true;
-            webView.Settings.JavaScriptCanOpenWindowsAutomatically = true;
-            webView.Settings.SetSupportMultipleWindows(true);
-     //       webView.SetWebViewClient(new JavascriptWebViewClient($"javascript: {JavascriptFunction}"));
             if (Control == null)
             {
-                //var webView = new Android.Webkit.WebView(_context);
-                //webView.Settings.JavaScriptEnabled = true;
-                //webView.Settings.JavaScriptCanOpenWindowsAutomatically = true;
-                //webView.Settings.SetSupportMultipleWindows(true);
-                //webView.SetWebViewClient(new JavascriptWebViewClient($"javascript: {JavascriptFunction}"));
+                var webView = new Android.Webkit.WebView(_context);
+                webView.Settings.JavaScriptEnabled = true;
+                webView.SetWebViewClient(new JavascriptWebViewClient($"javascript: {JavascriptFunction}"));
                 //SetNativeControl(webView);
 
             }

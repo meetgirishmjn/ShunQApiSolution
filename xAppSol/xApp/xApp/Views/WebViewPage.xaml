@@ -57,9 +57,9 @@
             <!--  Title View  -->
 
             <StackLayout Grid.Row="1" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
-                <!--<ActivityIndicator x:Name="activity_indicator" BackgroundColor="White" Margin="50" Color="DarkGray" />-->
+                <ActivityIndicator x:Name="activity_indicator" IsVisible="True" IsRunning="True" BackgroundColor="White" Margin="50"  /> 
 
-                <views:ExtendedWebView x:Name="Browser" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                <views:ExtendedWebView x:Name="webView" Navigated="webView_Navigated" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
 
                 </views:ExtendedWebView>
             </StackLayout>

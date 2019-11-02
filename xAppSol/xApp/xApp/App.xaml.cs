@@ -95,7 +95,10 @@ namespace xApp
         {
              MainPage.Navigation.PushAsync( new WebViewPage());
         }
-
+        public void GoToPaymentSuccessPage()
+        {
+            Device.BeginInvokeOnMainThread(() => MainPage = new NavigationPage(new PaymentSuccessPage()));
+        }
         //public void GoToLogIn()
         //{
         //    MainPage = new LoginPage();

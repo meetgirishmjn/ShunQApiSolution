@@ -4,7 +4,6 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             xmlns:themes="clr-namespace:xApp.Theme;assembly=xApp"
              x:Class="xApp.App">
     <Application.Resources>
         <ResourceDictionary>
@@ -16,6 +15,8 @@
             <x:String x:Key="BurgerMenu">&#xe72e;</x:String>
             
             <Color x:Key="PrimaryColor">#f54e5e</Color>
+            <Color x:Key="AppPrimaryColor">#3F51B5</Color>
+            <Color x:Key="AppPrimaryDarkColor">#303F9F</Color>
             <Color x:Key="PrimaryDarkColor">#d0424f</Color>
             <Color x:Key="PrimaryDarkenColor">#ab3641</Color>
             <Color x:Key="PrimaryLighterColor">#edcacd</Color>

@@ -7,10 +7,14 @@
 
   <ItemGroup>
     <None Remove="Images\EmptyCart.svg" />
+    <None Remove="Images\PaymentFailed.svg" />
+    <None Remove="Images\PaymentSuccess.svg" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Images\EmptyCart.svg" />
+    <EmbeddedResource Include="Images\PaymentFailed.svg" />
+    <EmbeddedResource Include="Images\PaymentSuccess.svg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,6 +26,7 @@
     <PackageReference Include="Syncfusion.Xamarin.Cards" Version="17.3.0.14" />
     <PackageReference Include="Syncfusion.Xamarin.Expander" Version="17.3.0.14" />
     <PackageReference Include="Syncfusion.Xamarin.SfBadgeView" Version="17.3.0.14" />
+    <PackageReference Include="Syncfusion.Xamarin.SfBarcode" Version="17.3.0.21" />
     <PackageReference Include="Syncfusion.Xamarin.SfBusyIndicator" Version="17.3.0.17" />
     <PackageReference Include="Syncfusion.Xamarin.SfCarousel" Version="17.3.0.14" />
     <PackageReference Include="Syncfusion.Xamarin.SfListView" Version="17.3.0.14" />
@@ -52,6 +57,12 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\CheckoutPages\PaymentDetailView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\CheckoutPages\PaymentFailedPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\CheckoutPages\PaymentSuccessPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\CheckoutPages\PayUPage.xaml">
