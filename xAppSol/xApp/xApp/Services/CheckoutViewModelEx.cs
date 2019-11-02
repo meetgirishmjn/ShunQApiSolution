@@ -173,7 +173,7 @@ namespace xApp.Services
             if (this.VM != null)
             {
                 //temp
-                
+                this.VM.IsCartValid = true;
                 //--
                 this.IsCartValid = this.VM.IsCartValid;
                
