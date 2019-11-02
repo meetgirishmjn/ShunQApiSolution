@@ -9,7 +9,8 @@
              xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
              xmlns:converter="clr-namespace:xApp.Converters"
              mc:Ignorable="d"
-             NavigationPage.HasNavigationBar="False"
+             NavigationPage.HasNavigationBar="True" BackgroundColor="White"
+             Title="Payment Option"
              x:Class="xApp.Views.WebViewPage">
 
     <ContentPage.Resources>
@@ -54,34 +55,6 @@
             </Grid.RowDefinitions>
 
             <!--  Title View  -->
-            <controls:TitleView Title="Dress" Grid.Row="0">
-                <controls:TitleView.TrailingView>
-                    <StackLayout HorizontalOptions="End" Orientation="Horizontal">
-                        <badge:SfBadgeView
-                            Margin="{Binding CartItemCount, Converter={x:StaticResource intToThicknessConverter}}"
-                            Padding="0"
-                            BadgeText="{Binding CartItemCount}"
-                            HeightRequest="42"
-                            HorizontalOptions="End"
-                            VerticalOptions="Center"
-                            WidthRequest="40">
-                            <badge:SfBadgeView.Content>
-                                <buttons:SfButton
-                                    CornerRadius="4"
-                                    Style="{StaticResource IconButtonStyle}"
-                                    Text="{StaticResource Cart}" />
-                            </badge:SfBadgeView.Content>
-                            <badge:SfBadgeView.BadgeSettings>
-                                <badge:BadgeSetting
-                                    BackgroundColor="{DynamicResource PrimaryColor}"
-                                    BadgeType="None"
-                                    FontSize="9"
-                                    Offset="-5,10" />
-                            </badge:SfBadgeView.BadgeSettings>
-                        </badge:SfBadgeView>
-                    </StackLayout>
-                </controls:TitleView.TrailingView>
-            </controls:TitleView>
 
             <StackLayout Grid.Row="1" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
                 <!--<ActivityIndicator x:Name="activity_indicator" BackgroundColor="White" Margin="50" Color="DarkGray" />-->

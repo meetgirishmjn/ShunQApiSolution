@@ -61,6 +61,8 @@ namespace xApp.Services
 
         public ICommand ApplyVoucherCommand { get; set; }
         public ICommand RemoveVoucherCommand { get; set; }
+        public ICommand PayNowCommand { get; set; }
+
 
         public CheckoutViewModelEx()
         {
@@ -68,8 +70,9 @@ namespace xApp.Services
             this.LineItems = new ObservableCollection<CheckoutViewModel.LineItem>();
             toastr = DependencyService.Get<IToastr>();
             ApplyVoucherCommand = new Command(onApplyVoucherCommand);
-           // RemoveVoucherCommand = new Command(onRemoveVoucherCommand);
-            api = new ApiService();
+            // RemoveVoucherCommand = new Command(onRemoveVoucherCommand);
+            PayNowCommand = new Command(onPayNowCommand);
+             api = new ApiService();
 
         }
 
@@ -163,6 +166,17 @@ namespace xApp.Services
         }
         #endregion "IsCartValid"
 
+        const string BTN_PAYNOW_TEXT = "Pay Now";
+        string _btnPayNowText = BTN_PAYNOW_TEXT;
+        public string BtnPayNowText
+        {
+            get { return _btnPayNowText; }
+            set
+            {
+                this._btnPayNowText = value;
+                this.NotifyPropertyChanged();
+            }
+        }
 
         public async void OnLoad()
         {
@@ -257,6 +271,20 @@ namespace xApp.Services
             catch (Exception ex)
             {
 
+            }
+        }
+
+
+        
+        public  void onPayNowCommand()
+        {
+            try
+            {
+                (App.Current as App).GoToPayULaunch();
+            }
+            catch (Exception ex)
+            {
+                toastr.ShowError(ex.Message);
             }
         }
     }

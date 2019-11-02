@@ -20,8 +20,8 @@ namespace xApp.Views
             {
                 InitializeComponent();
 
-                Browser.BackgroundColor = Color.FromRgba(0, 0, 0, 0.75);
-                this.BackgroundColor = Browser.BackgroundColor;
+                //Browser.BackgroundColor = Color.FromRgba(0, 0, 0, 0.75);
+                //this.BackgroundColor = Browser.BackgroundColor;
 
                 //activity_indicator.IsVisible = false;
                 // activity_indicator.IsRunning = true;

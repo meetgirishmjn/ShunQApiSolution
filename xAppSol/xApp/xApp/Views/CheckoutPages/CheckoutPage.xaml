@@ -456,7 +456,8 @@
                                         Phone=CenterAndExpand,
                                         Tablet=End}"
             Style="{StaticResource MagentaButtonStyle}"
-            Text="Pay Now"
+                                              Command="{Binding PayNowCommand}"
+            Text="{Binding BtnPayNowText}"
             WidthRequest="{OnIdiom Tablet=240,
                                    Phone=240,
                                    Default=-1}" />

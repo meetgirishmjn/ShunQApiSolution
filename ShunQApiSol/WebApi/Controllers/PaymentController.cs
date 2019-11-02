@@ -121,7 +121,7 @@ namespace WebApi.Controllers
             {
                 ContentType = "text/html",
                 StatusCode = (int)System.Net.HttpStatusCode.OK,
-                Content = "<b>pay/callback/failure</b>"
+                Content = "<i>Please Wait...</i><script>var msgData = { eventName: 'onPaymentFailed', eventData: { message: 'this.store.id'}}; var jsBridge = window.jsBridge; if (jsBridge && jsBridge.invokeAction) { jsBridge.invokeAction(JSON.stringify(data)); }</script>"
             };
             // return Ok();
         }
