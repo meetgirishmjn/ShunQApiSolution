@@ -43,7 +43,7 @@ namespace xApp.Services
             membershipUrl = apiEndpoint + "api/v1/membership/";
             //  mobileUrl = apiEndpoint + "api/v1/mobile/";
             mobileV2Url = apiEndpoint + "api/v2/mobile/";
-            merchantUrl = apiEndpoint + "api/v2/merchant/";
+            merchantUrl = apiEndpoint + "api/v1/merchant/";
             Toastr = DependencyService.Get<IToastr>();
         }
         private HttpClient getHttp()

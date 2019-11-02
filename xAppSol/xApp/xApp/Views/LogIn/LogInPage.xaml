@@ -181,8 +181,8 @@
                             Style="{StaticResource LabelStyle}"
                             Text="Or create an account using social media" />
 
-                        <!--  Login through facebook account  -->
-                        <buttons:SfButton
+                        <!--  Login through facebook/google account  -->
+                        <!--<buttons:SfButton
                             Grid.Row="7" IsEnabled="{Binding IsNotLoading}"
                             Margin="0,16,0,10"
                             BackgroundColor="{DynamicResource FacebookBlue}"
@@ -233,7 +233,7 @@
                                         TextColor="{DynamicResource Gray-White}" />
                                 </StackLayout>
                             </buttons:SfButton.Content>
-                        </buttons:SfButton>
+                        </buttons:SfButton>-->
 
                     </Grid>
 

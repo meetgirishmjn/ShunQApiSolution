@@ -1,4 +1,5 @@
 ﻿using BusinessCore;
+using BusinessCore.AppHandlers.Contracts;
 using BusinessCore.DataAccess.Contracts;
 using BusinessCore.Enums;
 using BusinessCore.Infrastructure.Caching;
@@ -96,6 +97,10 @@ namespace BusinessCore.AppHandlers
         protected IStoreService CreateStoreService()
         {
             return CreateService<IStoreService>();
+        }
+        protected ILoggerManager CreateLogger()
+        {
+            return CreateService<ILoggerManager>();
         }
 
         private ICacheManager _cache;

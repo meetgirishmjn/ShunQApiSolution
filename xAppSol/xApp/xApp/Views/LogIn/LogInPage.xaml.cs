@@ -23,8 +23,7 @@ namespace xApp.Views.LogIn
         public LoginPage()
         {
             InitializeComponent();
-            Email.Text = "meetgirish.mjn@gmail.com";
-            PasswordEntry.Text = "admin@mjngrs";
+            toastr = DependencyService.Get<IToastr>();
         }
 
         private async void LogIn_Clicked(object sender, System.EventArgs e)
@@ -37,6 +36,25 @@ namespace xApp.Views.LogIn
 
             try
             {
+
+                var email = (Email.Text ?? string.Empty).Trim();
+                var password = (PasswordEntry.Text ?? string.Empty);
+
+                if (email.Length == 0)
+                {
+                    toastr.ShowInfo("Email is required");
+                    return;
+                }
+                if (!email.Contains("@") || !email.Contains("."))
+                {
+                    toastr.ShowInfo("Invalid email format");
+                    return;
+                }
+                if (password.Length == 0)
+                {
+                    toastr.ShowInfo("Password is required");
+                    return;
+                }
                 var token = await new ApiService().LogIn(Email.Text, PasswordEntry.Text);
                 if (string.IsNullOrEmpty(token))
                     throw new Exception("Invalid credentials");

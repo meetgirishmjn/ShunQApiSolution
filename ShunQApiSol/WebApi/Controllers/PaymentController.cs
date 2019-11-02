@@ -105,16 +105,27 @@ namespace WebApi.Controllers
         [AllowAnonymous]
         public ContentResult OnPaymentSuccess()
         {
+            var status = "";
+            try
+            {
+                var payURes = new PayUSuccessModel().ReadFrom(Request.Form);
+                var logger = CreateLogger();
+                logger.LogInfo(Newtonsoft.Json.JsonConvert.SerializeObject(payURes));
+                status = "Success";
+            }
+            catch(Exception ex)
+            {
+                status = ex.Message;
+            }
             return new ContentResult
             {
                 ContentType = "text/html",
                 StatusCode = (int)System.Net.HttpStatusCode.OK,
-                Content = "<i>Please Wait...</i>"
+                Content = "<i>"+ status + "</i>"
             };
         }
 
         [HttpGet("app/pay/success/detail")]
-        [AllowAnonymous]
         public PaySuccessInfoVM GetPaymentSuccessInfo()
         {
             var result = new PaySuccessInfoVM();
