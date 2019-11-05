@@ -91,9 +91,9 @@ namespace xApp
             MainPage.Navigation.PushAsync(new Views.MyCart.MyCartPage("StoreShopPage"));
         }
 
-        public void GoToPayULaunch()
+        public void GoToPayULaunch(string cartId)
         {
-             MainPage.Navigation.PushAsync( new WebViewPage());
+             MainPage.Navigation.PushAsync( new WebViewPage(cartId));
         }
         public void GoToPaymentSuccessPage()
         {

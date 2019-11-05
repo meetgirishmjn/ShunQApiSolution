@@ -187,7 +187,7 @@ namespace xApp.Services
             if (this.VM != null)
             {
                 //temp
-                this.VM.IsCartValid = true;
+                 
                 //--
                 this.IsCartValid = this.VM.IsCartValid;
                
@@ -280,7 +280,10 @@ namespace xApp.Services
         {
             try
             {
-                (App.Current as App).GoToPayULaunch();
+                if (this.VM != null)
+                {
+                    (App.Current as App).GoToPayULaunch(this.VM.CartId);
+                }
             }
             catch (Exception ex)
             {

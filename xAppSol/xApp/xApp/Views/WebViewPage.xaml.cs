@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using xApp.Services;
 using xApp.ViewModels;
 using xApp.Views.CheckoutPages;
 
@@ -14,21 +15,24 @@ namespace xApp.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class WebViewPage : ContentPage
     {
-      //  public ExtendedWebView WebView;
-        public WebViewPage()
+        string cartId;
+
+        public WebViewPage(string cartId)
         {
             try
             {
                 InitializeComponent();
-
+                this.cartId = cartId;
                 //Browser.BackgroundColor = Color.FromRgba(0, 0, 0, 0.75);
                 //this.BackgroundColor = Browser.BackgroundColor;
 
                 //activity_indicator.IsVisible = false;
                 // activity_indicator.IsRunning = true;
+                var authToken = new ApiService().AuthToken;
                 webView.IsVisible = true;
-                webView.Source = xApp.App.PAYU_LAUNCH_URL;
-            }catch(Exception ex)
+                webView.Source = xApp.App.PAYU_LAUNCH_URL + "/" + authToken;
+            }
+            catch (Exception ex)
             {
 
             }

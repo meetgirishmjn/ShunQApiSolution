@@ -105,32 +105,75 @@ namespace WebApi.Controllers
         [AllowAnonymous]
         public ContentResult OnPaymentSuccess()
         {
+            BusinessCore.AppHandlers.Contracts.ILoggerManager logger = null;
+
             var status = "";
+            var txnid = "";
+            var payuMoneyId = "";
+            var payURes = "";
+            var email = "";
             try
             {
-                var payURes = new PayUSuccessModel().ReadFrom(Request.Form);
-                var logger = CreateLogger();
-                logger.LogInfo(Newtonsoft.Json.JsonConvert.SerializeObject(payURes));
-                status = "Success";
+                //take status for safety
+                status = Request.Form["status"].ToString();
+                txnid = Request.Form["txnid"].ToString();
+                payuMoneyId = Request.Form["payuMoneyId"].ToString();
+                email = Request.Form["payuMoneyId"].ToString();
+                logger = CreateLogger();
+                //var payURes = new PayUSuccessModel().ReadFrom(Request.Form);
+                payURes = new PayUSuccessModel().ReadAsString(Request.Form);
+                logger.LogInfo(payURes);
             }
             catch(Exception ex)
             {
-                status = ex.Message;
+                if (logger != null)
+                    logger.LogError("Error at pay/callback/success: " + ex.Message);
             }
+
+            try
+            {
+                var hashValidated = isPayUResponseHashValidated();
+                var service = CreateStoreService();
+                var voucher = new CartVoucher()
+                {
+                    PaymentGatewayName = "PayU",
+                    CartId = txnid,
+                    GatewayPaymentId = payuMoneyId,
+                    GatewayResponse = payURes,
+                    Status = status,
+                    IsSuccess = status.Equals("success", StringComparison.OrdinalIgnoreCase),
+                    UserEmail= email,
+                    HashValidated=hashValidated
+                };
+                service.CreateCartVoucher(voucher);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError("Error at pay/callback/success: voucher creation " + ex.Message);
+            }
+
             return new ContentResult
             {
                 ContentType = "text/html",
                 StatusCode = (int)System.Net.HttpStatusCode.OK,
-                Content = "<i>"+ status + "</i>"
+                Content = "<i> Please wait... </i>"
             };
         }
 
-        [HttpGet("app/pay/success/detail")]
-        public PaySuccessInfoVM GetPaymentSuccessInfo()
+        [HttpGet("app/pay/success/detail/{cartId}")]
+        public PaySuccessInfoVM GetPaymentSuccessInfo(string cartId)
         {
             var result = new PaySuccessInfoVM();
-            result.IsSuccess = true;
-            result.CheckoutCode = RandomString(6);
+            var service = CreateStoreService();
+            var paymentVoucher = service.GetCartVoucher(cartId);
+            result.IsSuccess = paymentVoucher.IsSuccess;
+            result.CheckoutCode = new IdToCodeConverter().ToCode(paymentVoucher.VoucherId);
+
+            if (!result.IsSuccess)
+            {
+                result.ErrorMessage = "Payment status not pending. Please contact store administrator.";
+            }
+
             return result;
         }
 
@@ -232,32 +275,107 @@ namespace WebApi.Controllers
             };
         }
 
-
-        [HttpGet("pay/checkout-launch/v3")]
-        [AllowAnonymous]
-        public ContentResult GetPayUHtmlV3()
+        public InitPayUViewModel InitPayU(string authToken)
         {
-           // var html = System.IO.File.ReadAllText(@"C:\Users\gmaha\OneDrive - Monsanto\pau_Index.html");
-            var html= "<!DOCTYPE html><html lang=\"en\"><head><title>Portal-Shun#Q</title><meta name=\"viewport\" content=\"width = device - width, initial - scale = 1, maximum - scale = 1, user - scalable = no\"><script id=\"bolt\" src=\"https://sboxcheckout-static.citruspay.com/bolt/run/bolt.min.js\" bolt-color=\"#0173CF\" bolt-logo=\"https://cdn0storage0shunq0dev.blob.core.windows.net/images/app/logo_light_sm.png\"></script></head><body class=\"menubar-hoverable header-fixed\"><form action=\"https://sandboxsecure.payu.in/_payment\" method=\"post\" id=\"testform\" name=\"testform\"><input type=\"hidden\" name=\"key\" value=\"__key__\"><input type=\"hidden\" name=\"firstname\" value=\"__firstname__\"><input type=\"hidden\" name=\"email\" value=\"__email__\"><input type=\"hidden\" name=\"phone\" value=\"__phone__\"><input type=\"hidden\" name=\"productinfo\" value=\"__productinfo__\"><input type=\"hidden\" name=\"udf1\" value=\"__udf1__\"><input type=\"hidden\" name=\"udf2\" value=\"__udf2__\"><input type=\"hidden\" name=\"udf3\" value=\"__udf3__\"><input type=\"hidden\" name=\"udf4\" value=\"__udf4__\"><input type=\"hidden\" name=\"udf5\" value=\"__udf5__\"><input type=\"hidden\" name=\"surl\" value=\"__surl__\"><input type=\"hidden\" name=\"furl\" value=\"__furl__\"><input type=\"hidden\" name=\"txnid\" value=\"__txnid__\"><input type=\"hidden\" name=\"hash\" value=\"__hash__\"><input type=\"hidden\" name=\"service_provider\" value=\"payu_paisa\"> <input type=\"hidden\" name=\"amount\" value=\"__amount__\"></form><script>document.testform.submit();</script></body></html>";
+            var service = CreateStoreService();
+            var user = CreateMembershipService().GetUserSession(authToken);
+            if (user == null)
+                throw new Exception("Session expired. Try again.");
 
-            var vm = InitPayU();
+            var tokens = this.AppConfig.MerchangePaymentTokenTest.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
 
-            html = html.Replace("__key__", vm.Key);
-            html = html.Replace("__firstname__", vm.firstName);
-            html = html.Replace("__email__", vm.Email);
-            html = html.Replace("__phone__", vm.Phone);
-            html = html.Replace("__productinfo__", vm.ProductName);
-            html = html.Replace("__udf1__", vm.udf1);
-            html = html.Replace("__udf2__", vm.udf2);
-            html = html.Replace("__udf3__", vm.udf3);
-            html = html.Replace("__udf4__", vm.udf4);
-            html = html.Replace("__udf5__", vm.udf5);
-            html = html.Replace("__surl__", vm.surl);
-            html = html.Replace("__furl__", vm.furl);
-            html = html.Replace("__txnid__", vm.TxnId);
-            html = html.Replace("__hash__", vm.HashCode);
-            html = html.Replace("__amount__", vm.Amount+"");
+            var cart = service.GetCart(user.Id);
+            if (cart == null)
+                throw new BusinessException("Cart does not exist or  cart is already checked-out");
 
+            if (cart.NetAmount <= 0)
+                throw new BusinessException("Invalid net-amount in Cart");
+
+            var salt = tokens[1];
+
+            
+            CurrentUser = new UserInfo
+            {
+                FullName = user.FullName,
+                MobileNumber = user.MobileNumber,
+                Email = user.Email
+            };
+
+            var vm = new InitPayUViewModel()
+            {
+                IsDebug = true,
+                Key = tokens[0],
+                Amount = cart.NetAmount,
+                Email = CurrentUser.Email,
+                Phone = CurrentUser.MobileNumber,
+                firstName = CurrentUser.FullName,
+                TxnId = cart.Id,
+                ProductName = "Shop at " + cart.StoreName,
+                udf1 = "u1",
+                udf2 = "u2",
+                udf3 = "u3",
+                udf4 = "u4",
+                udf5 = "u5",
+                surl = AppConfig.CoreApiEndpoint + "merchant/pay/callback/success",
+                furl = AppConfig.CoreApiEndpoint + "merchant/pay/callback/failure",
+                ColorCode = "#0173CF",
+                LogoUrl = AppConfig.ImageSrcEndpoint + "app/logo_light_sm.png"
+            };
+
+            string shaIn = $"{vm.Key}|{vm.TxnId}|{vm.Amount}|{vm.ProductName}|{vm.firstName}|{vm.Email}|{vm.udf1}|{vm.udf2}|{vm.udf3}|{vm.udf4}|{vm.udf5}||||||{salt}";
+
+            var shaBytes = Encoding.UTF8.GetBytes(shaIn);
+            using (var shaM = new System.Security.Cryptography.SHA512Managed())
+            {
+                var hash = shaM.ComputeHash(shaBytes);
+                vm.HashCode = getHashString(hash);
+            }
+
+            return vm;
+        }
+
+        private bool isPayUResponseHashValidated()
+        {
+            // before  sha512(key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5||||||SALT)
+            // after   sha512(SALT|status||||||udf5|udf4|udf3|udf2|udf1|email|firstname|productinfo|amount|txnid|key) 
+
+            return true;
+        }
+
+        [HttpGet("pay/checkout-launch/v3/{authToken}")]
+        [AllowAnonymous]
+        public ContentResult GetPayUHtmlV3(string authToken)
+        {
+            var html = string.Empty;
+            try
+            {
+                // var html = System.IO.File.ReadAllText(@"C:\Users\gmaha\OneDrive - Monsanto\pau_Index.html");
+                html = "<!DOCTYPE html><html lang=\"en\"><head><title>Portal-Shun#Q</title><meta name=\"viewport\" content=\"width = device - width, initial - scale = 1, maximum - scale = 1, user - scalable = no\"><script id=\"bolt\" src=\"https://sboxcheckout-static.citruspay.com/bolt/run/bolt.min.js\" bolt-color=\"#0173CF\" bolt-logo=\"https://cdn0storage0shunq0dev.blob.core.windows.net/images/app/logo_light_sm.png\"></script></head><body class=\"menubar-hoverable header-fixed\"><form action=\"https://sandboxsecure.payu.in/_payment\" method=\"post\" id=\"testform\" name=\"testform\"><input type=\"hidden\" name=\"key\" value=\"__key__\"><input type=\"hidden\" name=\"firstname\" value=\"__firstname__\"><input type=\"hidden\" name=\"email\" value=\"__email__\"><input type=\"hidden\" name=\"phone\" value=\"__phone__\"><input type=\"hidden\" name=\"productinfo\" value=\"__productinfo__\"><input type=\"hidden\" name=\"udf1\" value=\"__udf1__\"><input type=\"hidden\" name=\"udf2\" value=\"__udf2__\"><input type=\"hidden\" name=\"udf3\" value=\"__udf3__\"><input type=\"hidden\" name=\"udf4\" value=\"__udf4__\"><input type=\"hidden\" name=\"udf5\" value=\"__udf5__\"><input type=\"hidden\" name=\"surl\" value=\"__surl__\"><input type=\"hidden\" name=\"furl\" value=\"__furl__\"><input type=\"hidden\" name=\"txnid\" value=\"__txnid__\"><input type=\"hidden\" name=\"hash\" value=\"__hash__\"><input type=\"hidden\" name=\"service_provider\" value=\"payu_paisa\"> <input type=\"hidden\" name=\"amount\" value=\"__amount__\"></form><script>document.testform.submit();</script></body></html>";
+
+                var vm = InitPayU(authToken);
+
+                html = html.Replace("__key__", vm.Key);
+                html = html.Replace("__firstname__", vm.firstName);
+                html = html.Replace("__email__", vm.Email);
+                html = html.Replace("__phone__", vm.Phone);
+                html = html.Replace("__productinfo__", vm.ProductName);
+                html = html.Replace("__udf1__", vm.udf1);
+                html = html.Replace("__udf2__", vm.udf2);
+                html = html.Replace("__udf3__", vm.udf3);
+                html = html.Replace("__udf4__", vm.udf4);
+                html = html.Replace("__udf5__", vm.udf5);
+                html = html.Replace("__surl__", vm.surl);
+                html = html.Replace("__furl__", vm.furl);
+                html = html.Replace("__txnid__", vm.TxnId);
+                html = html.Replace("__hash__", vm.HashCode);
+                html = html.Replace("__amount__", vm.Amount + "");
+
+
+            }
+            catch (Exception ex)
+            {
+                html = "<b>" + ex.Message + "</b>";
+            }
             return new ContentResult
             {
                 ContentType = "text/html",

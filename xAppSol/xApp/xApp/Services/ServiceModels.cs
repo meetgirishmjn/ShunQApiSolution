@@ -179,13 +179,14 @@ namespace xApp.Services
         public string Longitude { get; set; }
     }
 
-    public class StoreCategoryItem
+    public  class StoreCategoryItem
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public int StoreCount { get; set; }
         public string ImageUrl { get; set; }
+        public bool IsSelected { get; set; }
     }
 
     public class StoreListViewModel
@@ -197,6 +198,7 @@ namespace xApp.Services
         public List<StoreListItem> StoreList { get; set; }
         public bool HasActiveCart { get; set; }
         public int? ActiveStoreId { get; set; }
+        public string SearchLocation { get; set; }
         public StoreListViewModel()
         {
             this.StoreList = new List<StoreListItem>();
@@ -231,6 +233,7 @@ namespace xApp.Services
     }
     public partial class CheckoutViewModel
     {
+        public string CartId { get; set; }
         public bool IsCartValid { get; set; }
         public string ValidationCaption { get; set; }
         public string ValidationTitle { get; set; }
@@ -307,5 +310,30 @@ namespace xApp.Services
         public bool IsSuccess { get; set; }
         public string ErrorMessage { get; set; }
         public string CheckoutCode { get; set; }
+    }
+
+    public class StoreListModel
+    {
+        public int PageIndex { get; set; }
+        public int PageSize { get; set; }
+        public string SearchKey { get; set; }
+        public string Latitude { get; set; }
+        public string Longitude { get; set; }
+        public string SortBy { get; set; }
+        public string SortDir { get; set; }
+
+        public int[] FilterByCategoryIds { get; set; }
+    }
+    public class ListItem
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+    }
+    public class SearchStoresViewModel
+    {
+        public List<ListItem> SortOptions { get; set; }
+        public List<StoreCategoryItem> StoreCategories { get; set; }
+        public StoreListViewModel StoreSearchResult { get; set; }
     }
 }

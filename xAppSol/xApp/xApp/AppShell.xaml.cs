@@ -14,6 +14,8 @@ namespace xApp
         public AppShell()
         {
             InitializeComponent();
+            Routing.RegisterRoute("storeFilterPage", typeof(Views.Store.FilterPage));
+            Routing.RegisterRoute("storeAddressSearchPage", typeof(Views.Store.AddressSearchPage));
             this.BindingContext = AppViewModel.Instance;
         }
 
@@ -30,7 +32,7 @@ namespace xApp
             }
         }
 
-
+      
         private  void menuLogout_Clicked(object sender, EventArgs e)
         {
             try

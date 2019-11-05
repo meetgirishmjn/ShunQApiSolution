@@ -83,7 +83,7 @@ namespace xApp.Services
             try
             {
                 var item = (e.ItemData as StoreCategoryItem);
-                await Shell.Current.GoToAsync($"//Stores");
+                await Shell.Current.GoToAsync($"//tabStores?categoryId={item.Id}");
             }
             catch (Exception ex)
             {

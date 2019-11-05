@@ -101,5 +101,12 @@ namespace xApp.ViewModels
             else
                 _cache.Add(tname, vm);
         }
+
+        public void ClearViewModel<T>()
+        {
+            var tname = typeof(T).Name;
+            if (_cache.ContainsKey(tname))
+                _cache.Remove(tname);
+        }
     }
 }

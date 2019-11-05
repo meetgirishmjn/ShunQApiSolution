@@ -7,8 +7,8 @@ namespace TelementryApi.RequestModels
 {
     public class ItemAddedModel
     {
-        public string CartId { get; set; }
-        public string ItemCode { get; set; }
+        public string CartQRCode { get; set; }
+        public string ItemQRCode { get; set; }
         public float CartWeight { get; set; }
     }
 }

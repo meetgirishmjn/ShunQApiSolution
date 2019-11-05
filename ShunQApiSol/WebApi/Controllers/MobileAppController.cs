@@ -87,7 +87,7 @@ namespace WebApi.Controllers
             result.PageIndex = model.PageIndex;
             result.PageCount = (int)Math.Ceiling((double)totalCount / model.PageSize);
             result.TotalCount = totalCount;
-
+            //result.SearchLocation = "Thanisandra main road - 560077";
             if (cart != null)
             {
                 result.HasActiveCart = true;
@@ -107,7 +107,8 @@ namespace WebApi.Controllers
                 ReviewRating = storeReviews.Contains(o.Id) ? storeReviews[o.Id].FirstOrDefault() : new StoreReview { StoreId = o.Id },
                 BannerImageUrl = imageUrl + o.BannerImage,
                 ImageUrl = imageUrl + o.Image,
-                Address = o.Address
+                Address = o.Address,
+                
             }).ToList();
 
             return result;
@@ -219,7 +220,6 @@ namespace WebApi.Controllers
             cartService.DiscardCart();
         }
 
-
         [HttpGet("views/home")]
         public HomeViewModel GetHomeViewModel()
         {
@@ -286,6 +286,7 @@ namespace WebApi.Controllers
 
             setCartImageUrl(cart);
 
+            viewModel.CartId = cart.Id;
             viewModel.IsCartValid = true;
             viewModel.ValidationCaption = "Total " + cart.Items.Count + " Items verified.";
             viewModel.ValidationTitle = "Cart Validation";
@@ -368,9 +369,9 @@ namespace WebApi.Controllers
         {
             var viewModel = new SearchStoresViewModel();
 
-            viewModel.SorOptions = GetStoreSortList();
+            viewModel.SortOptions = GetStoreSortList();
             viewModel.StoreCategories = GetStoreCategories();
-            viewModel.StoreList = SearchStores(model);
+            viewModel.StoreSearchResult = SearchStores(model);
 
             return viewModel;
         }
@@ -394,8 +395,8 @@ namespace WebApi.Controllers
             var cacheStatus = "";
             try
             {
-                Cache.Test();
-                cacheStatus = "ok";
+               // Cache.Test();
+               // cacheStatus = "ok";
             }
             catch (Exception ex)
             {
@@ -408,14 +409,14 @@ namespace WebApi.Controllers
                 CacheStatus= cacheStatus,
                 Status = "ok",
                 Version = "1.0.1",
-                VersionDesc= "Docker",
-                AppConfig =this.AppConfig,
-                OS=new
-                {
-                    OSArchitecture = System.Runtime.InteropServices.RuntimeInformation.OSArchitecture.ToString(),
-                    System.Runtime.InteropServices.RuntimeInformation.OSDescription,
-                    System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription,
-                }
+                VersionDesc= "appV3",
+                AppConfig =this.AppConfig 
+                //OS=new
+                //{
+                //    OSArchitecture = System.Runtime.InteropServices.RuntimeInformation.OSArchitecture.ToString(),
+                //    System.Runtime.InteropServices.RuntimeInformation.OSDescription,
+                //    System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription,
+                //}
             };
         }
     }

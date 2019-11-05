@@ -240,4 +240,19 @@ namespace xApp.Services
         }
 
     }
+
+   public class BaseVM  : INotifyPropertyChanged
+    {
+        #region "PropertyChanged"
+        public event PropertyChangedEventHandler PropertyChanged;
+        /// <summary>
+        /// The PropertyChanged event occurs when changing the value of property.
+        /// </summary>
+        /// <param name="propertyName">Property name</param>
+        public void NotifyPropertyChanged([CallerMemberName]string propertyName = null)
+        {
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        #endregion "PropertyChanged"
+    }
 }

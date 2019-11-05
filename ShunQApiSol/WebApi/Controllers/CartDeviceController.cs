@@ -33,9 +33,9 @@ namespace TelementryApi.Controllers
             var arg = new CartDeviceEventArg();
             arg.AppId = appId;
             arg.DeviceId = deviceId;
-            arg.CartDeviceId = model.CartId;
+            arg.CartDeviceId = model.CartQRCode;
             arg.CartWeight = model.CartWeight;
-            arg.ProductId = model.ItemCode;
+            arg.ProductId = model.ItemQRCode;
             
             await service.CartDeviceProductAddedAsync(arg);
 
@@ -54,9 +54,9 @@ namespace TelementryApi.Controllers
             var arg = new CartDeviceEventArg();
             arg.AppId = appId;
             arg.DeviceId = deviceId;
-            arg.CartDeviceId = model.CartId;
+            arg.CartDeviceId = model.CartQRCode;
             arg.CartWeight = model.CartWeight;
-            arg.ProductId = model.ItemCode;
+            arg.ProductId = model.ItemQRCode;
 
             await service.CartDeviceProductRemovedAsync(arg);
 

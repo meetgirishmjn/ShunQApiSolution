@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:tabView="clr-namespace:Syncfusion.XForms.TabView;assembly=Syncfusion.SfTabView.XForms"
+             xmlns:accrod="clr-namespace:Syncfusion.XForms.Accordion;assembly=Syncfusion.Expander.XForms"
+             xmlns:syncfusion="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+             mc:Ignorable="d"
+             Title="Filters"
+             x:Class="xApp.Views.Store.FilterPage">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Order="Primary"  Text="Clear" Priority="0" />
+    </ContentPage.ToolbarItems>
+    
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <tabView:SfTabView Margin="0,55,0,0">
+                <tabView:SfTabItem Title="Filter by" >
+                    <tabView:SfTabItem.Content>
+
+                        <accrod:SfAccordion ExpandMode="Single">
+                            <accrod:SfAccordion.Items>
+                                <accrod:AccordionItem>
+                                    <accrod:AccordionItem.Header>
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="50"/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="35"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Image Source="InvoiceItem.png" Margin="3" Aspect="AspectFit"/>
+                                            <Label TextColor="#495F6E" Text="Store Category" FontSize="16" Grid.Column="1" VerticalOptions="CenterAndExpand"/>
+                                        </Grid>
+                                    </accrod:AccordionItem.Header>
+                                    <accrod:AccordionItem.Content>
+                                        <Grid BackgroundColor="#FFFFFF">
+                                                <ListView VerticalOptions="Start" ItemsSource="{Binding StoreCategories}"  x:Name="list" SeparatorColor="Gray"  >
+                                                    
+                                                    <ListView.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <ViewCell>
+                                                                <syncfusion:SfCheckBox IsChecked="{Binding IsChecked}" Text="{Binding DisplayName}" />
+                                                            </ViewCell>
+                                                        </DataTemplate>
+                                                    </ListView.ItemTemplate>
+                                                </ListView>
+                                        </Grid>
+                                    </accrod:AccordionItem.Content>
+                                </accrod:AccordionItem>
+                            </accrod:SfAccordion.Items>
+                        </accrod:SfAccordion>
+                        
+                    </tabView:SfTabItem.Content>
+                </tabView:SfTabItem>
+                <tabView:SfTabItem Title="Sort by">
+                    <tabView:SfTabItem.Content>
+                        <ListView VerticalOptions="Start" ItemsSource="{Binding SortOptions}"  x:Name="listSort" SeparatorColor="Gray"  >
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <syncfusion:SfRadioButton IsChecked="{Binding IsChecked}" Text="{Binding Name}" />
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </tabView:SfTabItem.Content>
+                </tabView:SfTabItem>
+            </tabView:SfTabView>
+            <Button Clicked="onApplyFilter_Clicked" Grid.Row="1" Margin="5" BackgroundColor="#2196f3" TextColor="{StaticResource Gray-White}" Text="Confirm"></Button>
+        </Grid>
+     
+    </ContentPage.Content>
+</ContentPage>

@@ -35,6 +35,7 @@ namespace BusinessCore.DataAccess
         public DbSet<DiscountVoucherMaster> DiscountVoucherMasters { get; set; }
         public DbSet<CartDeviceMaster> CartDeviceMasters { get; set; }
         public DbSet<CartDeviceLog> CartDeviceLogs { get; set; }
+        public DbSet<PaymentVoucherMaster> PaymentVoucherMasters { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -276,12 +277,12 @@ namespace BusinessCore.DataAccess
             var storeDeviceData = new List<CartDeviceMaster>();
             storeData.ForEach(o =>
             {
-                for (var c = 0; c < 5; c++)
+                for (var c = 1; c <= 5; c++)
                 {
                     storeDeviceData.Add(new CartDeviceMaster
                     {
                         StoreMasterId = o.Id,
-                        CartDeviceId = Guid.NewGuid().ToString(),
+                        CartDeviceId = "ST"+o.Id+"SC"+c,
                         IsActive = true
                     });
                 }
@@ -409,6 +410,20 @@ namespace BusinessCore.DataAccess
                 new DiscountVoucherMaster { Id = Guid.NewGuid().ToString(), Code = "ICICIGTSEP", Title = "10% off", Description = "ICICI Tuesday Offer - Flat 10% OFF on Order of Rs 1500" },
             };
             modelBuilder.Entity<DiscountVoucherMaster>().HasData(vouchers);
+
+            modelBuilder.Entity<PaymentVoucherMaster>().HasData(new PaymentVoucherMaster
+            {
+                Id = 1023,
+                CartId = "SEED",
+                GatewayPaymentId = "SEED",
+                GatewayResponse = "SEED",
+                PaymentGatewayName = "SEED",
+                IsSuccess = false,
+                Status = "SEED",
+                HashValidation = false,
+                UserName = "SEED",
+                CreatedOn = DateTime.Now
+            });
 
             base.OnModelCreating(modelBuilder);
         }

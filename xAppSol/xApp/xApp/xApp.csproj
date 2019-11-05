@@ -33,6 +33,7 @@
     <PackageReference Include="Syncfusion.Xamarin.SfPopupLayout" Version="17.3.0.19" />
     <PackageReference Include="Syncfusion.Xamarin.SfRating" Version="17.3.0.17" />
     <PackageReference Include="Syncfusion.Xamarin.SfRotator" Version="17.3.0.14" />
+    <PackageReference Include="Syncfusion.Xamarin.SfTabView" Version="17.3.0.21" />
     <PackageReference Include="Xamarin.FFImageLoading" Version="2.4.11.982" />
     <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.11.982" />
     <PackageReference Include="Xamarin.Forms" Version="4.2.0.709249" />  
@@ -54,9 +55,6 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\CheckoutPages\CheckoutPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Views\CheckoutPages\PaymentDetailView.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\CheckoutPages\PaymentFailedPage.xaml">
@@ -104,6 +102,9 @@
     <EmbeddedResource Update="Views\StoreShop\Styles.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Views\Store\FilterPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\Store\StoreScanPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
@@ -127,6 +128,9 @@
     </Compile>
     <Compile Update="Views\StoreShop\Styles.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Store\AddressSearchPage.xaml.cs">
+      <DependentUpon>AddressSearchPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>

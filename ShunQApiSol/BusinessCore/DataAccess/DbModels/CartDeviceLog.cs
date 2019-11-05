@@ -17,10 +17,5 @@ namespace BusinessCore.DataAccess.DbModels
         public float CartWeight { get; set; }
         public string Data { get; set; }
         public DateTime CreatedOn { get; set; }
-
-        [ForeignKey("CartDeviceId")]
-        public CartDeviceMaster CartDevice { get; set; }
-
-        public ShoppingCart Cart { get; set; }
     }
 }

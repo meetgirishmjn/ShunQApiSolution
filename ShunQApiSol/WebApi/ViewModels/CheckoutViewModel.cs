@@ -8,6 +8,7 @@ namespace WebApi.ViewModels
 {
     public class CheckoutViewModel
     {
+        public string CartId { get; set; }
         public bool IsCartValid { get; set; }
         public string ValidationCaption { get; set; }
         public string ValidationTitle { get; set; }
@@ -50,7 +51,4 @@ namespace WebApi.ViewModels
             public bool HasDiscount { get; set; }
         }
     }
-
-
-
 }

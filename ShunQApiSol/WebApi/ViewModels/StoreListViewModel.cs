@@ -15,6 +15,8 @@ namespace WebApi.ViewModels
         public List<StoreListItem> StoreList { get; set; }
         public bool HasActiveCart { get; set; }
         public int? ActiveStoreId { get; set; }
+        public string SearchLocation { get; set; }
+
         public StoreListViewModel()
         {
             this.StoreList = new List<StoreListItem>();

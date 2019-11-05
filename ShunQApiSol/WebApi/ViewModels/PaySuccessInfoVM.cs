@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace WebApi.ViewModels
@@ -75,6 +76,17 @@ namespace WebApi.ViewModels
             }
 
             return result;
+        }
+
+        public string ReadAsString(IFormCollection form)
+        {
+            var sb = new StringBuilder();
+
+            foreach (var key in form.Keys)
+            {
+                sb.Append(string.Format("{0}:{1}&",key, form[key]));
+            }
+            return sb.ToString();
         }
     }
 }

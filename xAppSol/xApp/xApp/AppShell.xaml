@@ -60,13 +60,13 @@
    
     <!-- Your Pages -->
     <TabBar >
-        <Tab Title="Home"  >
+        <Tab Title="Home" Route="tabHome" >
             <Tab.Icon >
                 <FontImageSource FontFamily="{StaticResource FontAwesomeSolid}" Glyph="&#xf015;"  />
             </Tab.Icon>
             <ShellContent ContentTemplate="{DataTemplate local:HomePage}" />
         </Tab>
-        <Tab Title="Stores" Route="Stores" >
+        <Tab Title="Stores" Route="tabStores"   >
             <Tab.Icon>
                 <FontImageSource FontFamily="{StaticResource FontAwesomeSolid}" Glyph="&#xf54f;" />
             </Tab.Icon>

@@ -142,7 +142,11 @@ namespace BusinessCore.Services
             var cart = new ShoppingCartManager(userId,ContextManager).GetCart();
             return cart;
         }
-
+        public ShoppingCart GetCart(long userId)
+        {
+            var cart = new ShoppingCartManager(userId, ContextManager).GetCart();
+            return cart;
+        }
         public CartView GetCartView()
         {
             var status = (int)ShoppingCartStatus.InProgress;
@@ -371,11 +375,11 @@ namespace BusinessCore.Services
         public async Task<int> RemoveAllCartDeviceLogsAsync(string cartDeviceId)
         {
             var context = ContextManager.GetContext();
-            var lst = await context.CartDeviceLogs.Where(o => o.DeviceId == cartDeviceId).ToListAsync();
+            var lst = await context.CartDeviceLogs.Where(o => o.CartDeviceId == cartDeviceId).ToListAsync();
 
             var count = lst.Count;
             context.RemoveRange(lst);
-             
+            context.SaveChanges();
             return count;
         }
 
@@ -399,5 +403,55 @@ namespace BusinessCore.Services
             return result;
         }
 
+        public CartVoucher CreateCartVoucher(CartVoucher voucher)
+        {
+            var context = ContextManager.GetContext();
+            if (voucher.IsSuccess)
+            {
+                var cartDb = context.ShoppingCarts.Where(o => o.Id == voucher.CartId).FirstOrDefault();
+                cartDb.Status = (int)ShoppingCartStatus.Completed;
+            }
+
+            var vouchDb = new DataAccess.DbModels.PaymentVoucherMaster()
+            {
+                CreatedOn = DateTime.Now,
+                CartId = voucher.CartId,
+                PaymentGatewayName = voucher.PaymentGatewayName,
+                GatewayPaymentId = voucher.GatewayPaymentId,
+                Status = voucher.Status,
+                IsSuccess = voucher.IsSuccess,
+                GatewayResponse = voucher.GatewayResponse,
+                UserName = voucher.UserEmail,
+                HashValidation=voucher.HashValidated
+            };
+
+            context.PaymentVoucherMasters.Add(vouchDb);
+            context.SaveChanges();
+            voucher.VoucherId = vouchDb.Id;
+            voucher.CreatedOn = vouchDb.CreatedOn;
+
+            return voucher;
+        }
+
+        public CartVoucher GetCartVoucher(string cartId)
+        {
+            var context = ContextManager.GetContext();
+            var vouchDb = context.PaymentVoucherMasters.Where(o => o.CartId == cartId).OrderByDescending(o => o.CreatedOn).FirstOrDefault();
+            if(vouchDb==null)
+            return null;
+
+            var result = new CartVoucher
+            {
+                VoucherId = vouchDb.Id,
+                CartId = vouchDb.CartId,
+                CreatedOn = vouchDb.CreatedOn,
+                GatewayPaymentId = vouchDb.GatewayPaymentId,
+                PaymentGatewayName = vouchDb.PaymentGatewayName,
+                IsSuccess = vouchDb.IsSuccess,
+                Status = vouchDb.Status,
+                UserEmail = vouchDb.UserName
+            };
+            return result;
+        }
     }
 }

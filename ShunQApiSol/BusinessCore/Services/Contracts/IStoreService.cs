@@ -20,6 +20,7 @@ namespace BusinessCore.Services.Contracts
         List<StoreReview> StoreReviews(int[] storeIds);
         ShoppingCart StartShopping(string cartDeviceId);
         ShoppingCart GetCart(string cartId);
+        ShoppingCart GetCart(long userId);
         ShoppingCart GetCart();
         ShoppingCart AddItemToCart(string productbarcode);
         ShoppingCart RemoveItemFromCart(string productbarcode);
@@ -34,6 +35,7 @@ namespace BusinessCore.Services.Contracts
         CartValidationResult ValidateCart(string cartId);
         CartValidationResult ValidateCart();
         CartView GetCartView();
-
+        CartVoucher  CreateCartVoucher(CartVoucher voucher);
+        CartVoucher GetCartVoucher(string cartId);
     }
 }

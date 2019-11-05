@@ -12,15 +12,13 @@
               xmlns:rating="clr-namespace:Syncfusion.SfRating.XForms;assembly=Syncfusion.SfRating.XForms"
              xmlns:commonBehavior="clr-namespace:xApp.Behaviors"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:shimmer="clr-namespace:Syncfusion.XForms.Shimmer;assembly=Syncfusion.Core.XForms"
              mc:Ignorable="d"
-             Title="Store Search"
+             Title="Stores"
+             x:Name="storeSearchPage"
              x:Class="xApp.Views.Store.StoreSearchPage">
-        
-        <!--<ContentPage.Behaviors>
-            <behavior:CartBehavior />
-        </ContentPage.Behaviors>-->
 
-        <ContentPage.Resources>
+    <ContentPage.Resources>
             <ResourceDictionary>
                 <converter:BooleanToColorConverter x:Key="boolToColorConverter" />
                 <converter:BooleanToStringConverter x:Key="boolToStringConverter" />
@@ -35,45 +33,37 @@
 
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
             <ActivityIndicator HeightRequest="50" Margin="10,100,10,10" IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}" BackgroundColor="Transparent" />
 
             <!--  Title View  -->
-                <!--<controls:TitleView Title="Dress" Grid.Row="0">
-                    <controls:TitleView.TrailingView>
-                        <StackLayout HorizontalOptions="End" Orientation="Horizontal">
-                            <badge:SfBadgeView
-                            Margin="{Binding CartItemCount, Converter={x:StaticResource intToThicknessConverter}}"
-                            Padding="0"
-                            BadgeText="{Binding CartItemCount}"
-                            HeightRequest="42"
-                            HorizontalOptions="End"
-                            VerticalOptions="Center"
-                            WidthRequest="40">
-                                <badge:SfBadgeView.Content>
-                                    <buttons:SfButton
+            <StackLayout IsVisible="{Binding IsNotLoading}"  HorizontalOptions="End" Padding="5,0,10,0" Orientation="Horizontal">
+
+                <SearchBar Placeholder="Search stores..." FontSize="Small"   FontAttributes="Italic" HeightRequest="25"
+                       x:Name="searchBar1"      SearchCommand="{Binding PerformSearch}"
+                   SearchCommandParameter="{Binding Text, Source={x:Reference searchBar1}}">
+                </SearchBar>
+
+                <buttons:SfButton  Clicked="SfButton_Clicked"
                                     CornerRadius="4"
                                     Style="{StaticResource IconButtonStyle}"
-                                    Text="{StaticResource Cart}" />
-                                </badge:SfBadgeView.Content>
-                                <badge:SfBadgeView.BadgeSettings>
-                                    <badge:BadgeSetting
-                                    BackgroundColor="{DynamicResource PrimaryColor}"
-                                    BadgeType="None"
-                                    FontSize="9"
-                                    Offset="-5,10" />
-                                </badge:SfBadgeView.BadgeSettings>
-                            </badge:SfBadgeView>
-                        </StackLayout>
-                    </controls:TitleView.TrailingView>
-                </controls:TitleView>-->
+                                    Text="{StaticResource Filter}" />
 
-                <!--  ListView for catalog list  -->
+              
+            </StackLayout>
+
+            <StackLayout IsVisible="{Binding IsNotLoading}" HorizontalOptions="FillAndExpand" HeightRequest="35"  BackgroundColor="#35464d"  Grid.Row="1">
+                <Button Text="{Binding SearchLocation}" Clicked="SfButton1_Clicked" HorizontalOptions="Center"  FontSize="Micro" Padding="10,0,10,0" TextColor="{StaticResource Gray-White}" Margin="5" BorderColor="{StaticResource Gray-300}" BorderWidth="1"   CornerRadius="8" BackgroundColor="#27383f" HeightRequest="25" />
+            </StackLayout>
+
+          
+            <!--  ListView for catalog list  -->
                 <listView:SfListView
                 x:Name="ListViewList"
-                Grid.Row="1"
+                Grid.Row="2"
                 Margin="{OnIdiom Default='0,8,8,0',
                                  Desktop='15,15,15,0'}"
                 AutoFitMode="Height"
@@ -83,12 +73,12 @@
                 ItemSpacing="8,0,0,8"
                 ItemsSource="{Binding StoreItems}"
                 Style="{StaticResource SfListViewStyle}">
-
-                   
-
                     <listView:SfListView.ItemTemplate>
                         <DataTemplate>
-                            <Grid
+                        <shimmer:SfShimmer x:Name="shimmer" Type="Article"
+                           IsActive="{Binding Source={x:Reference storeSearchPage}, Path=BindingContext.IsSearching }">
+                            <shimmer:SfShimmer.Content>
+                                <Grid
                             Margin="0,0,0,8"
                             ColumnSpacing="0"
                             HorizontalOptions="FillAndExpand"
@@ -197,12 +187,14 @@
                                 Style="{StaticResource SfRatingStyle}"
                                 Value="{Binding ReviewRating.Value}" />
                             </Grid>
-                        </DataTemplate>
+                            </shimmer:SfShimmer.Content>
+                        </shimmer:SfShimmer>
+                    </DataTemplate>
                     </listView:SfListView.ItemTemplate>
 
                 </listView:SfListView>
-
-            </Grid>
+                
+        </Grid>
 
         </ContentPage.Content>
 </ContentPage>
