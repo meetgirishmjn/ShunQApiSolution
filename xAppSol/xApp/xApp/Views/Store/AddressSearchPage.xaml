@@ -53,7 +53,7 @@
             <StackLayout Grid.Row="1"  Margin="0"
                              BackgroundColor="Transparent"
                              Orientation="Horizontal" HorizontalOptions="FillAndExpand">
-                <Button  Text="Use current location"  Clicked="Button_Clicked"
+                <Button  Text="Use current location"  Clicked="btnCurrentLocation_Clicked"
                                FontSize="Small" HeightRequest="40"
                          BackgroundColor="{StaticResource Gray-200}"
                                FontAttributes="Italic"

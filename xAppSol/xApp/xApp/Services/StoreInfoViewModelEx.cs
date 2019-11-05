@@ -85,12 +85,16 @@ namespace xApp.Services
                 this.NotifyPropertyChanged(nameof(BadgeText));
             }
         }
+
+       
         public bool IsQrNotAnalysing
         {
             get { return !_isQrAnalysing; }
         }
 
         bool _isAddScanActive = false;
+
+        public string ScanAction { get { return IsAddScanActive ? "ADD" : "REMOVE"; } }
         public bool IsAddScanActive
         {
             get { return _isAddScanActive; }
@@ -99,6 +103,7 @@ namespace xApp.Services
                 this._isAddScanActive = value;
                 this.NotifyPropertyChanged();
                 this.NotifyPropertyChanged(nameof(IsAddScanNotActive));
+                this.NotifyPropertyChanged(nameof(ScanAction));
             }
         }
         public bool IsAddScanNotActive
@@ -192,11 +197,13 @@ namespace xApp.Services
                 this.IsAddScanActive = false;
                 this.IsLoading = false;
                 this.IsScannerOn = false;
-
-                Device.BeginInvokeOnMainThread(() =>
+                if (appVm != null)
                 {
-                    toastr.ShowInfo("Item added to cart");
-                });
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        toastr.ShowInfo("Item added to cart");
+                    });
+                }
             }
             catch (Exception ex)
             {
@@ -223,10 +230,13 @@ namespace xApp.Services
                 this.IsScannerOn = false;
                 this.IsLoading = false;
 
-                Device.BeginInvokeOnMainThread(() =>
+                if (appVm != null)
                 {
-                    toastr.ShowWarning("Item removed to cart");
-                });
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        toastr.ShowWarning("Item removed to cart");
+                    });
+                }
             }
             catch(Exception ex)
             {

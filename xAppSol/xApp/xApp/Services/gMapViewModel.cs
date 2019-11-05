@@ -168,19 +168,23 @@ namespace xApp.Services
             ShowRecentPlaces = (placeResult == null || placeResult.Count == 0);
         }
 
+        bool isInProgress = false;
         public async Task GetPlacesDetail(GooglePlaceAutoCompletePrediction placeA)
         {
+            if (isInProgress)
+                return;
+
             var place = await googleMapsApi.GetPlaceDetails(placeA.PlaceId);
             if (place != null)
             {
                 try
                 {
-                   
-                    await SecureStorage.SetAsync("storeSearchLocation", place.Latitude + "," + place.Longitude);
+                    var result = await (new GoogleMapsApiService()).ToSearchLocation(place.Latitude, place.Longitude);
+                    await SecureStorage.SetAsync("storeSearchLocation", Newtonsoft.Json.JsonConvert.SerializeObject(result));
                     Device.BeginInvokeOnMainThread(async () =>
                     {
                         await Shell.Current.Navigation.PopAsync();
-                        MessagingCenter.Send(place, "searchLocationChange");
+                        MessagingCenter.Send(result, "searchLocationChange");
                     });
                 }
                 catch (Exception ex)
@@ -192,6 +196,8 @@ namespace xApp.Services
                    });
                 }
             }
+
+            isInProgress = false;
         }
 
         void CleanFields()

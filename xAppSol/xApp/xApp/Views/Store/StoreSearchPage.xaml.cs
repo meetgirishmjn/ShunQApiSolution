@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -37,9 +38,10 @@ namespace xApp.Views.Store
                     Device.BeginInvokeOnMainThread(() => onLoad());
                 });
 
-                MessagingCenter.Subscribe<GooglePlace>(this, "searchLocationChange", searchLocationChanged);
+                MessagingCenter.Subscribe<StoreSearchLocation>(this, "searchLocationChange", searchLocationChanged);
                 MessagingCenter.Subscribe<FilterPageViewModelEx>(this, "storeFilterApplied", storeFilterApplied);
-                
+                MessagingCenter.Subscribe<object>(this, "storeFilterCleared", storeFilterCleared);
+
             }
             catch (Exception ex)
             {
@@ -50,25 +52,43 @@ namespace xApp.Views.Store
 
         private async void onLoad()
         {
-            string lat = "", lng = "";
-            int categoryId = 0;
-
             //wait for _categoryId to be set by route if routed from categories
             await Task.Delay(250);
 
-            int.TryParse(_categoryId, out categoryId);
+            int.TryParse(_categoryId, out int categoryId);
 
             var location = await getLatLong();
-            lat = location.Latitude;
-            lng = location.Longitude;
 
-            (this.BindingContext as StoreSearchEx).OnLoad(lat, lng, categoryId);
+            var searchReq = new StoreListModel
+            {
+                FilterByCategoryIds = new int[] { categoryId },
+                Latitude = location?.Latitude+"",
+                Longitude = location?.Longitude + ""
+            };
+
+            (this.BindingContext as StoreSearchEx).OnLoad(searchReq,true);
         }
 
-        private void searchLocationChanged(GooglePlace place)
+        private async void searchLocationChanged(StoreSearchLocation location)
         {
-            (this.BindingContext as StoreSearchEx).OnLoad(place.Latitude+"", place.Longitude+"");
+            try
+            {
+                await SecureStorage.SetAsync("storeSearchLocation", JsonConvert.SerializeObject(location));
+
+                var searchReq = new StoreListModel
+                {
+                    Latitude = location.Latitude.ToString(),
+                    Longitude = location.Longitude.ToString()
+                };
+
+                (this.BindingContext as StoreSearchEx).OnLoad(searchReq);
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Filter Error", "Could not update search filters.", "Ok");
+            }
         }
+
         private async void storeFilterApplied(FilterPageViewModelEx vm)
         {
             try
@@ -77,25 +97,54 @@ namespace xApp.Views.Store
                 int.TryParse(_categoryId, out int categoryId);
                 var location = await getLatLong();
 
+                var sort = vm.SortOptions.Where(o => o.IsChecked).FirstOrDefault();
+                
+                var searchReq = new StoreListModel
+                {
+                    SortBy =sort?.Name,
+                    FilterByCategoryIds =vm.StoreCategories.Where(o=>o.IsChecked).Select(o=>o.Id).ToArray(),
+                    Latitude =  location?.Latitude+"",
+                    Longitude = location?.Longitude + ""
+                };
+
+                (this.BindingContext as StoreSearchEx).OnLoad(searchReq);
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Location Error", "Could not get current location.", "Ok");
+                await DisplayAlert("Filter Error", "Could not update search filters.", "Ok");
             }
         }
-        
-        private async Task<(string Latitude, string Longitude)> getLatLong()
+
+        private async void storeFilterCleared(object sender)
         {
-            string lat = "", lng = "";
             try
             {
+                var location = await getLatLong();
 
-                //get user preference
-                var latCommaLng = await SecureStorage.GetAsync("storeSearchLocation");
-                if (latCommaLng != null && latCommaLng.Contains(","))
+                var searchReq = new StoreListModel
                 {
-                    lat = latCommaLng.Split(',')[0];
-                    lng = latCommaLng.Split(',')[1];
+                    Latitude = location?.Latitude + "",
+                    Longitude = location.Longitude + ""
+                };
+
+                (this.BindingContext as StoreSearchEx).OnLoad(searchReq);
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Filter Error", "Could not update search filters.", "Ok");
+            }
+        }
+
+        private async Task<StoreSearchLocation> getLatLong()
+        {
+            StoreSearchLocation result = null;
+            try
+            {
+                //get user preference
+                var str = await SecureStorage.GetAsync("storeSearchLocation");
+                if (str != null)
+                {
+                    result = JsonConvert.DeserializeObject< StoreSearchLocation>(str);
                 }
                 else
                 {
@@ -105,8 +154,8 @@ namespace xApp.Views.Store
 
                     if (location != null)
                     {
-                        lat = location.Latitude.ToString();
-                        lng = location.Longitude.ToString();
+                        result = await  new GoogleMapsApiService().ToSearchLocation(location.Latitude, location.Longitude);
+                       await SecureStorage.SetAsync("storeSearchLocation",JsonConvert.SerializeObject(result));
                     }
                 }
             }
@@ -118,67 +167,23 @@ namespace xApp.Views.Store
                 });
             }
 
-            return (Latitude : lat, Longitude : lng ); 
+            return result; 
         }
-        private async void SfButton_Clicked(object sender, EventArgs e)
+        private async void btnFilter_Clicked(object sender, EventArgs e)
         {
             await Shell.Current.GoToAsync("storeFilterPage");
         }
-        private async void SfButton1_Clicked(object sender, EventArgs e)
+        private async void btnChangeLocation_Clicked(object sender, EventArgs e)
         {
             await Shell.Current.GoToAsync("storeAddressSearchPage");
         }
+
+        private void StoreMapRoute_Clicked(object sender, EventArgs e)
+        {
+            var origin = "";
+            var destination = "";
+            // Device.OpenUri(new Uri("https://www.google.com/maps/dir/?api=1&origin=" + origin + "&destination=" + destination));
+            Device.OpenUri(new Uri("https://www.google.com/maps/dir/?api=1&origin=Google+Pyrmont+NSW&destination=QVB&destination_place_id=ChIJISz8NjyuEmsRFTQ9Iw7Ear8"));
+        }
     }
-
-    //public class CatalogPageViewModel
-    //{
-    //    private int cartItemCount = 10;
-    //    public int CartItemCount
-    //    {
-    //        get
-    //        {
-    //            return this.cartItemCount;
-    //        }
-    //        set
-    //        {
-    //            this.cartItemCount = value;
-    //        }
-    //    }
-
-    //    public ObservableCollection<Product> Products
-    //    {
-    //        get; set;
-    //    }
-
-    //    public CatalogPageViewModel()
-    //    {
-    //        this.Products = new ObservableCollection<Product>
-    //        {
-    //            new Product
-    //            {
-    //                Id = 1,
-    //                PreviewImage =App.BaseImageUrl + "Image1.png",
-    //                Name = "Full-Length Skirt",
-    //                Summary = "This plaid, cotton skirt will keep you warm in the air-conditioned office or outside on cooler days.",
-    //                Description = "This plaid, cotton skirt will keep you warm in the air-conditioned office or outside on cooler days.",
-    //                ActualPrice = 220,
-    //                DiscountPercent = 15,
-    //                OverallRating = 5,
-    //                PreviewImages = new List<string> { "Image1.png", "Image1.png", "Image1.png", "Image1.png", "Image1.png" },
-    //                Reviews = new ObservableCollection<Review>
-    //                {
-    //                    new Review
-    //                    {
-    //                        ProfileImage = "ProfileImage10.png",
-    //                        CustomerName = "Serina Williams",
-    //                        Comment = "Greatest purchase I have ever made in my life.",
-    //                        Rating = 5,
-    //                        Images = new List<string> { "Image1.png", "Image1.png", "Image1.png" },
-    //                        ReviewedDate = DateTime.Parse("2019-12-29")
-    //                    },
-    //                }
-    //            }
-    //        };
-    //    }
-    //}
 }

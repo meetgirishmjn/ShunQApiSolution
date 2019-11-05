@@ -4,8 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
+using System.Linq;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 
 namespace xApp.Services
 {
@@ -32,7 +33,34 @@ namespace xApp.Services
 
             return httpClient;
         }
+        public async Task<StoreSearchLocation> ToSearchLocation(double latitude, double longitude)
+        {
+            var result = new StoreSearchLocation { Latitude = latitude, Longitude = longitude };
+            try
+            {
+                var placemarks = await Geocoding.GetPlacemarksAsync(latitude, longitude);
+                if (placemarks != null)
+                {
+                    var places = placemarks.ToArray();
+                    if (places.Length > 1)
+                    {
+                        var place = places[1];
+                        var name = place.FeatureName;
+                        name = string.IsNullOrEmpty(name) ? place.Locality:name;
+                        name = string.IsNullOrEmpty(name) ? place.AdminArea : name;
 
+                        result.Name = name + (string.IsNullOrEmpty(place.PostalCode) ? "" : " - " + place.PostalCode);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exception that may have occurred in geocoding
+                result.Name = "Unknown";
+            }
+
+            return result;
+        }
         public async Task<GooglePlaceAutoCompleteResult> GetPlaces(string text)
         {
             GooglePlaceAutoCompleteResult results = null;
@@ -112,6 +140,14 @@ namespace xApp.Services
         [JsonProperty("predictions")]
         public List<GooglePlaceAutoCompletePrediction> AutoCompletePlaces { get; set; }
     }
+
+    public class StoreSearchLocation
+    {
+        public string Name { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+    }
+
     public class GooglePlace
     {
         public string Name { get; set; }

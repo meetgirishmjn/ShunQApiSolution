@@ -11,6 +11,7 @@ using BusinessCore;
 using Microsoft.AspNetCore.Authorization;
 using BusinessCore.Services.Models;
 using BusinessCore.AppHandlers;
+using System.IO;
 
 namespace WebApi.Controllers
 {
@@ -344,5 +345,17 @@ namespace WebApi.Controllers
             return result;
         }
 
+        [HttpGet("store/map-route")]
+        [AllowAnonymous]
+        public ContentResult GetStoreMapRoute()
+        {
+            var html = System.IO.File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Views/store-map-route.html"));
+            return new ContentResult
+            {
+                ContentType = "text/html",
+                StatusCode = (int)System.Net.HttpStatusCode.OK,
+                Content = html
+            };
+        }
     }
 }

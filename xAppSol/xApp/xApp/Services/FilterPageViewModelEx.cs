@@ -6,20 +6,25 @@ namespace xApp.Services
 {
     public class FilterPageViewModelEx : BaseVM
     {
-        public List<ListItem> SortOptions { get; set; }
+        public List<CategoryItem> SortOptions { get; set; }
         public List<CategoryItem> StoreCategories { get; set; }
 
         public FilterPageViewModelEx(SearchStoresViewModel vm)
         {
             if (vm != null)
             {
-                this.SortOptions = vm.SortOptions;
-                this.StoreCategories = vm.StoreCategories.Select(o => new CategoryItem { Name = o.Name, IsChecked = o.IsSelected, StoreCount = o.StoreCount }).ToList();
+                this.SortOptions = vm.SortOptions.Select(o=>new CategoryItem
+                {
+                    Id = o.Id,
+                    Name = o.Name
+                }).ToList();
+                this.StoreCategories = vm.StoreCategories.Select(o => new CategoryItem {Id=o.Id, Name = o.Name, IsChecked = o.IsSelected, StoreCount = o.StoreCount }).ToList();
             }
         }
 
         public class CategoryItem : BaseVM
         {
+            public int Id { get; set; }
             public string Name { get; set; }
 
             bool _isChecked = false;

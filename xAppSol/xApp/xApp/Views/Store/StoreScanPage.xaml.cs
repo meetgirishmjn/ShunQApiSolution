@@ -17,23 +17,23 @@ namespace xApp.Views.Store
     {
         public StoreScanPage()
         {
-            try
-            {
-                InitializeComponent();
-                renderScannerImage();
-                //this.ProfileImage.Source = App.BaseImageUrl + "ContactProfileImage.png";
-                this.ProfileImage.Source = "store_1001.jpg";
-                Task.Run(async () =>
-                {
-                    await Task.Delay(2000);
-                    var context = this.BindingContext as ContactProfileViewModel;
-                    context.IsLoading = false;
-                });
-            }
-            catch(Exception ex)
-            {
+            //try
+            //{
+            //    InitializeComponent();
+            //    renderScannerImage();
+            //    //this.ProfileImage.Source = App.BaseImageUrl + "ContactProfileImage.png";
+            //    this.ProfileImage.Source = "store_1001.jpg";
+            //    Task.Run(async () =>
+            //    {
+            //        await Task.Delay(2000);
+            //        var context = this.BindingContext as ContactProfileViewModel;
+            //        context.IsLoading = false;
+            //    });
+            //}
+            //catch(Exception ex)
+            //{
 
-            }
+            //}
         }
 
         public void Handle_OnScanResult(Result result)

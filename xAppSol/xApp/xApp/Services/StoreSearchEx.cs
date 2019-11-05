@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -8,6 +9,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace xApp.Services
@@ -42,11 +44,16 @@ namespace xApp.Services
                 PageSize = PAGE_SIZE,
                 SearchKey=query
             };
-            this.IsSearching = true;
-            var vm = await api.StoreSearch(seachReq);
 
-            storeSearchLoaded(vm);
-            this.IsSearching = false;
+
+            var str = await SecureStorage.GetAsync("storeSearchLocation");
+            if (str != null)
+            {
+                var loc = JsonConvert.DeserializeObject<StoreSearchLocation>(str);
+                seachReq.Latitude = (loc?.Latitude) + "";
+                seachReq.Longitude = (loc?.Longitude) + "";
+            }
+            OnLoad(seachReq);
         });
 
         public StoreSearchEx()
@@ -89,7 +96,7 @@ namespace xApp.Services
             get { return _searchLocation; }
             set { _searchLocation = value; this.NotifyPropertyChanged(); }
         }
-
+        public bool IsNoRecord { get { return this.StoreItems.Count == 0; } }
         public bool IsNotLoading
         {
             get { return !_isLoading; }
@@ -114,44 +121,69 @@ namespace xApp.Services
             get { return !_isSearching; }
         }
 
-        public async void OnLoad(string latitude,string longitude,int? categoryId=null)
+        //public async void OnLoad(string latitude,string longitude,int? categoryId=null)
+        //{
+        //    this.IsLoading = true;
+
+        //    var api = new ApiService();
+        //    var seachReq = new StoreListModel()
+        //    {
+        //        PageSize = PAGE_SIZE,
+        //        Latitude=latitude,
+        //        Longitude=longitude,
+        //    };
+
+        //    if (categoryId.HasValue && categoryId>0)
+        //        seachReq.FilterByCategoryIds = new int[] { categoryId.Value };
+
+        //    var vm = await api.StoreSearch(seachReq);
+
+        //    storeSearchLoaded(vm);
+
+        //    this.IsLoading = false;
+        //}
+
+        //private async void updateSearchLocation(StoreListModel searchReq)
+        //{
+        //    double.TryParse(searchReq.Latitude, out double lat);
+        //    double.TryParse(searchReq.Latitude, out double lng);
+        //    const string defVal = "Change Location";
+        //    if (lat > 0 && lng > 0)
+        //    {
+        //        var loc = await (new GoogleMapsApiService()).ToSearchLocation(lat, lng);
+        //        SearchLocation = loc == null ? defVal : loc.Name;
+        //    }
+        //    else
+        //        SearchLocation = defVal;
+        //}
+
+        public async void OnLoad(StoreListModel searchReq,bool isFirstLoad=false)
         {
-            this.IsLoading = true;
-
-            var api = new ApiService();
-            var seachReq = new StoreListModel()
-            {
-                PageSize = PAGE_SIZE,
-                Latitude=latitude,
-                Longitude=longitude,
-            };
-
-            if (categoryId.HasValue && categoryId>0)
-                seachReq.FilterByCategoryIds = new int[] { categoryId.Value };
-
-            var vm = await api.StoreSearch(seachReq);
-
-            storeSearchLoaded(vm);
-
-            this.IsLoading = false;
-        }
-
-        public async void OnLoad(StoreListModel searchReq)
-        {
-            this.IsLoading = true;
+            this.IsLoading = isFirstLoad;
+            this.IsSearching = !isFirstLoad;
+            await Task.Delay(200);
             searchReq.PageSize = PAGE_SIZE;
+
+            var str = await SecureStorage.GetAsync("storeSearchLocation");
+            if (str != null)
+            {
+                SearchLocation = JsonConvert.DeserializeObject<StoreSearchLocation>(str).Name;
+            }
+
             var vm = await api.StoreSearch(searchReq);
             storeSearchLoaded(vm);
             this.IsLoading = false;
+            this.IsSearching = false;
         }
-            void storeSearchLoaded(SearchStoresViewModel vm)
+        void storeSearchLoaded(SearchStoresViewModel vm)
         {
             if (vm != null)
             {
-                SearchLocation = vm.StoreSearchResult.SearchLocation;
                 this.StoreItems = new ObservableCollection<StoreListViewModel.StoreListItem>(vm.StoreSearchResult.StoreList);
             }
-            ViewModels.AppViewModel.Instance.SetViewModel(vm);
+            
+            //used by FilterPage
+             ViewModels.AppViewModel.Instance.SetViewModel(vm);
         }
         private async void onItemTapCommand(Syncfusion.ListView.XForms.ItemTappedEventArgs e)
         {

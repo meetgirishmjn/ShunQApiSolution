@@ -184,7 +184,7 @@
                                         FontSize="20"
                                         HorizontalOptions="Start"
                                         Style="{StaticResource LabelStyle2}"
-                                        Text="{Binding Amount, StringFormat='₹{0:0 }'}"
+                                        Text="{Binding Amount, StringFormat='₹{0:0.00}'}"
                                         TextColor="{DynamicResource PrimaryColor}" />
 
                                                         <Label
@@ -376,7 +376,7 @@
                 HorizontalOptions="EndAndExpand"
                 HorizontalTextAlignment="End"
                 Style="{StaticResource PriceLabelStyle}"
-                Text="{Binding TotalAmount, StringFormat='₹{0}'}" />
+                Text="{Binding TotalAmount, StringFormat='₹{0:0.00}'}" />
                                 <!--  Discount Percent  -->
                                 <Label
                 Grid.Row="3"
@@ -392,7 +392,7 @@
                 HorizontalOptions="EndAndExpand"
                 HorizontalTextAlignment="End"
                 Style="{StaticResource PriceLabelStyle}"
-                Text="{Binding TotalDiscount, StringFormat='₹{0}'}" />
+                Text="{Binding TotalDiscount, StringFormat='₹{0:0.00}'}" />
                                 <!--  Coupon Discount  -->
                                 <Label
                 Grid.Row="4"
@@ -410,7 +410,7 @@
                 HorizontalOptions="EndAndExpand"
                 HorizontalTextAlignment="End"
                 Style="{StaticResource PriceLabelStyle}"
-                Text="{Binding TotalVoucherDiscount, StringFormat='₹{0}'}" />
+                Text="{Binding TotalVoucherDiscount, StringFormat='₹{0:0.00}'}" />
                            
                                 <!--  Separator  -->
                                 <BoxView
@@ -440,7 +440,7 @@
                 LineHeight="{OnPlatform Android=1.25,
                                         Default=-1}"
                 Style="{StaticResource PriceLabelStyle}"
-                Text="{Binding OrderTotal, StringFormat='₹{0}'}"
+                Text="{Binding OrderTotal, StringFormat='₹{0:0.00}'}"
                 TextColor="{DynamicResource Gray-900}" />
 
                             </Grid>

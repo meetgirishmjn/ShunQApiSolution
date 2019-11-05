@@ -142,7 +142,7 @@
                                         FontSize="20"
                                         HorizontalOptions="Start"
                                         Style="{StaticResource LabelStyle2}"
-                                        Text="{Binding Price, StringFormat='₹{0:0 }'}"
+                                        Text="{Binding Price, StringFormat='₹{0:0.00}'}"
                                         TextColor="{DynamicResource PrimaryColor}" />
 
                                         <Label

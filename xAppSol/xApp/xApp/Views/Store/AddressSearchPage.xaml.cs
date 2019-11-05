@@ -25,14 +25,18 @@ namespace xApp.Views.Store
             {
                 Task.Run(async () =>
                 {
-                    await Task.Delay(1000);
+                    await Task.Delay(500);
                     Device.BeginInvokeOnMainThread(() => searchEntry.Focus());
                 });
             }
         }
 
-        private async void Button_Clicked(object sender, EventArgs e)
+        bool isInProcess = false;
+        private async void btnCurrentLocation_Clicked(object sender, EventArgs e)
         {
+            if (isInProcess)
+                return;
+            isInProcess = true;
             var gotLocation = false;
             try
             {
@@ -42,17 +46,23 @@ namespace xApp.Views.Store
 
                 if (location != null)
                 {
-                    await SecureStorage.SetAsync("storeSearchLocation", location.Latitude + "," + location.Longitude);
+                    gotLocation = true;
+                    var loc =await (new GoogleMapsApiService()).ToSearchLocation(location.Latitude, location.Longitude);
+                     await SecureStorage.SetAsync("storeSearchLocation", Newtonsoft.Json.JsonConvert.SerializeObject(loc));
                     Device.BeginInvokeOnMainThread(async () =>
                     {
                         await Shell.Current.Navigation.PopAsync();
-                        MessagingCenter.Send(new GooglePlace { Latitude = location.Latitude, Longitude = location.Longitude }, "searchLocationChange");
+                        MessagingCenter.Send(loc, "searchLocationChange");
                     });
                 }
             }
             catch (Exception ex)
             {
 
+            }
+            finally
+            {
+                isInProcess = false;
             }
 
             if (!gotLocation)

@@ -35,5 +35,22 @@ namespace xApp.Views.Store
                 });
             }
         }
+
+        private async void btnClear_Clicked(object sender, EventArgs e)
+        {
+            try
+            {
+                await Shell.Current.Navigation.PopAsync();
+                MessagingCenter.Send(sender, "storeFilterCleared");
+
+            }
+            catch (Exception ex)
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    DisplayAlert("Error on filter", ex.Message, "Ok");
+                });
+            }
+        }
     }
 }
