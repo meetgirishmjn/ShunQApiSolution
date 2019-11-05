@@ -33,7 +33,7 @@ namespace xApp.Views.LogIn
 
             IsLoading = true;
             btnLogIn.Text = "Please wait...";
-
+            btnLogIn.Focus();
             try
             {
 

@@ -26,6 +26,7 @@ namespace xApp.Views
             try
             {
                 InitializeComponent();
+                popupInProgress.Dismiss();
                 this.viewModel= AppViewModel.Instance.GetViewModel<HomeViewResult2>();
                 this.viewModel.AppView = AppViewModel.Instance;
                 this.viewModel.IsQRCodeAnalysing = false;
@@ -57,12 +58,17 @@ namespace xApp.Views
                 }
                 else
                 {
+                    popupInProgress.Show();
                     var api = new ApiService();
+
+                    var delayTask = Task.Delay(1000);
                     var app = api.RefreshAppViewModel();
+                    await Task.WhenAll(delayTask, app);
                    
                     if (app == null)
                     {
                         isClickProcessing = false;
+                        popupInProgress.Dismiss();
                         await DisplayAlert("Server not available", "Internal error occured. Try again.", "Ok");
                     }
                     else
@@ -74,6 +80,7 @@ namespace xApp.Views
                             ViewModels.AppViewModel.Instance.SetViewModel(vm);
                         }
                         isClickProcessing = false;
+                        popupInProgress.Dismiss();
                         App.Current.MainPage = new NavigationPage(new StoreShopPage());
                     }
                 }
@@ -81,6 +88,7 @@ namespace xApp.Views
             catch (Exception ex)
             {
                 isClickProcessing = false;
+                popupInProgress.Dismiss();
                 toastr.ShowError(ex.Message);
             }
         }

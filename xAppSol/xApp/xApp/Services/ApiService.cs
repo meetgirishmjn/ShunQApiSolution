@@ -15,7 +15,7 @@ namespace xApp.Services
         HttpClient client;
         string apiEndpoint = "https://shunq-api-dev.azurewebsites.net/";
         string membershipUrl = string.Empty;
-        // string mobileUrl = string.Empty;
+        string mobileUrl = string.Empty;
         string mobileV2Url = string.Empty;
         string merchantUrl = string.Empty;
         public static string __deviceId = string.Empty;
@@ -41,7 +41,7 @@ namespace xApp.Services
         {
             client = new HttpClient();
             membershipUrl = apiEndpoint + "api/v1/membership/";
-            //  mobileUrl = apiEndpoint + "api/v1/mobile/";
+            mobileUrl = apiEndpoint + "api/v1/mobile/";
             mobileV2Url = apiEndpoint + "api/v2/mobile/";
             merchantUrl = apiEndpoint + "api/v1/merchant/";
             Toastr = DependencyService.Get<IToastr>();
@@ -417,7 +417,7 @@ namespace xApp.Services
         {
             try
             {
-                var response = await getHttp().PostAsync(new Uri(mobileV2Url + "views/searchStores"), toPostBody(req));
+                var response = await getHttp().PostAsync(new Uri(mobileUrl + "views/searchStores"), toPostBody(req));
                 if (response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
@@ -438,7 +438,7 @@ namespace xApp.Services
         {
             try
             {
-                var response = await getHttp().GetAsync(new Uri(mobileV2Url.Replace("v2", "v1") + "views/checkout"));
+                var response = await getHttp().GetAsync(new Uri(mobileUrl + "views/checkout"));
                 if (response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
@@ -460,7 +460,7 @@ namespace xApp.Services
             try
             {
                 code = encode(code);
-                var response = await getHttp().PostAsync(new Uri(mobileV2Url.Replace("v2", "v1") + "checkout/add/voucher/" + code), null);
+                var response = await getHttp().PostAsync(new Uri(mobileUrl + "checkout/add/voucher/" + code), null);
                 if (response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
@@ -482,7 +482,7 @@ namespace xApp.Services
             try
             {
                 code = encode(code);
-                var response = await getHttp().PostAsync(new Uri(mobileV2Url.Replace("v2", "v1") + "checkout/remove/voucher/" + code), null);
+                var response = await getHttp().PostAsync(new Uri(mobileUrl + "checkout/remove/voucher/" + code), null);
                 if (response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();

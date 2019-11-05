@@ -152,6 +152,24 @@
                         </sfPopup:PopupView>
                     </sfPopup:SfPopupLayout.PopupView>
                 </sfPopup:SfPopupLayout>
+                <sfPopup:SfPopupLayout x:Name="popupInProgress"  ShowOverlayAlways="True" StaysOpen="True">
+                    <sfPopup:SfPopupLayout.PopupView>
+                        <sfPopup:PopupView HeaderTitle="" ShowHeader="False" HeightRequest="100" WidthRequest="100"  ShowFooter="False" ShowCloseButton="False" >
+                            <sfPopup:PopupView.ContentTemplate>
+                                <DataTemplate>
+                                    <StackLayout>
+                                        <Grid HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                                            <Grid.RowDefinitions >
+                                                <RowDefinition Height="70"  />
+                                            </Grid.RowDefinitions>
+                                            <ActivityIndicator  IsRunning="True" />
+                                        </Grid>
+                                    </StackLayout>
+                                </DataTemplate>
+                            </sfPopup:PopupView.ContentTemplate>
+                        </sfPopup:PopupView>
+                    </sfPopup:SfPopupLayout.PopupView>
+                </sfPopup:SfPopupLayout>
                 <Grid RowSpacing="0" VerticalOptions="Center">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />

@@ -68,7 +68,11 @@ namespace xApp.Services
 
         public string BadgeText { get { return this.Cart?.ItemCount > 0 ? this.Cart.ItemCount.ToString() : ""; } }
 
-        public string StartShoppingText { get { return IsQRCodeAnalysing?"QR Scanning ..." :(!this.HasActiveCart ? "START SHOPPING" : "RESUME SHOPPING"); } }
+        public string StartShoppingText { get
+            {
+
+                return IsQRCodeAnalysing ? "QR Scanning ..." : (!this.HasActiveCart ? "START SHOPPING" : "RESUME SHOPPING");
+            } }
 
         bool _isQRCodeAnalysing = false;
         public bool IsQRCodeAnalysing { get{ return _isQRCodeAnalysing; } set

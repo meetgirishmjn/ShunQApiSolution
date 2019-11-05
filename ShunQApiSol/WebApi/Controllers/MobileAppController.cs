@@ -105,8 +105,8 @@ namespace WebApi.Controllers
                 StoreName = o.Name,
                 HasActiveCart = o.Id == result.ActiveStoreId,
                 ReviewRating = storeReviews.Contains(o.Id) ? storeReviews[o.Id].FirstOrDefault() : new StoreReview { StoreId = o.Id },
-                BannerImageUrl = imageUrl + o.BannerImage,
-                ImageUrl = imageUrl + o.Image,
+                BannerImageUrl = imageUrl + "stores/" + o.BannerImage,
+                ImageUrl = imageUrl + "stores/" +  o.Image,
                 Address = o.Address,
                 
             }).ToList();
