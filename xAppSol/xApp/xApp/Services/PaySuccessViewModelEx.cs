@@ -90,10 +90,10 @@ namespace xApp.Services
         }
         #endregion "IsSuccess"
 
-        public async void OnLoad()
+        public async void OnLoad(string cartId)
         {
             this.api = new ApiService();
-            var result = await api.GetPaySuccessInfo();
+            var result = await api.GetPaySuccessInfo(cartId);
 
             if (result != null)
             {

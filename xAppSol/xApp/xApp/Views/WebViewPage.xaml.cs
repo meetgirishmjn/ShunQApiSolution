@@ -51,7 +51,11 @@ namespace xApp.Views
                 }
                 else if (e.Url.EndsWith("merchant/pay/callback/success"))
                 {
-                    (App.Current as App).GoToPaymentSuccessPage();
+                    //temp
+                    AppViewModel.Instance.CartItemCount = 0;
+                    AppViewModel.Instance.HasActiveCart = false;
+                    ///
+                    (App.Current as App).GoToPaymentSuccessPage(cartId);
                 }
             }
             catch (Exception ex)

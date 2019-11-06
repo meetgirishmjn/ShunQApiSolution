@@ -10,11 +10,11 @@ namespace xApp.Views.CheckoutPages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class PaymentSuccessPage : ContentPage
     {
-        public PaymentSuccessPage()
+        public PaymentSuccessPage(string cartId)
         {
             InitializeComponent();
             this.BindingContext = new PaySuccessViewModelEx();
-            Task.Run(() =>(this.BindingContext as PaySuccessViewModelEx).OnLoad());
+            Task.Run(() =>(this.BindingContext as PaySuccessViewModelEx).OnLoad(cartId));
         }
 
         protected override bool OnBackButtonPressed()

@@ -498,11 +498,11 @@ namespace xApp.Services
             }
             return null;
         }
-        public async Task<PaySuccessInfoVM> GetPaySuccessInfo()
+        public async Task<PaySuccessInfoVM> GetPaySuccessInfo(string cartId)
         {
             try
             {
-                var response = await getHttp().GetAsync(new Uri(merchantUrl + "app/pay/success/detail"));
+                var response = await getHttp().GetAsync(new Uri(merchantUrl + "app/pay/success/detail/"+ cartId));
                 if (response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
