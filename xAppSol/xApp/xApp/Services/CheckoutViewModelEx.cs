@@ -201,9 +201,13 @@ namespace xApp.Services
                 this.LineItems = new ObservableCollection<CheckoutViewModel.LineItem>(this.VM.LineItems);
                 this.Vouchers = new ObservableCollection<CheckoutViewModel.VoucherItem>(this.VM.AppliedVouchers);
                 UpdateUIPriceInfo();
+                this.IsLoading = false;
             }
-
-            this.IsLoading = false;
+            else
+            {
+                await Task.Delay(500);
+                (App.Current as App).GoBack();
+            }
         }
 
         private async void onItemTapCommand(Syncfusion.ListView.XForms.ItemTappedEventArgs e)

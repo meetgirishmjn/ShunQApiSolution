@@ -531,7 +531,7 @@ namespace xApp.Services
                     updatAppViewModel(new AppViewModel
                     {
                         CartItemCount = result.CartItemCount,
-                        HasActiveCart = result.HasActiveCart,
+                        HasActiveCart = false,
                         FullName = result.FullName,
                         UserName = result.UserName,
                     });

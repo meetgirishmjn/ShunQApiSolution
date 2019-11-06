@@ -34,6 +34,7 @@ namespace xApp.Services
 
         public class Tile
         {
+            public int CategoryId { get; set; }
             public string ImageUrl { get; set; }
             public string Title { get; set; }
             public string DetailUrl { get; set; }

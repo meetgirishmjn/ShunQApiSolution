@@ -166,6 +166,11 @@ namespace WebApi.Controllers
             var result = new PaySuccessInfoVM();
             var service = CreateStoreService();
             var paymentVoucher = service.GetCartVoucher(cartId);
+            if(paymentVoucher==null)
+            {
+                result.ErrorMessage = "Invalid cart id.";
+                return result;
+            }
             result.IsSuccess = paymentVoucher.IsSuccess;
             result.CheckoutCode = new IdToCodeConverter().ToCode(paymentVoucher.VoucherId);
 

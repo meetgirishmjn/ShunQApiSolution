@@ -36,7 +36,7 @@ namespace BusinessCore.Extensions
         {
             string id = "";
             char pChar = ' ';
-            foreach (char c in code.Substring(1))
+            foreach (char c in code)
             {
                 if (char.IsNumber(c))
                 {

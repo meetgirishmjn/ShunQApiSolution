@@ -151,6 +151,18 @@ namespace xApp.Services
             this.api = new ApiService();
         }
 
+        public ICommand CategorySelectedCommand => new Command<HomeViewResult.Tile>(async (HomeViewResult.Tile item) =>
+       {
+           try
+           {
+               await Shell.Current.GoToAsync($"//tabStores?categoryId={item.CategoryId}");
+           }
+           catch (Exception ex)
+           {
+
+           }
+       });
+
         public List<ServiceItem> AllServices { get; set; } = new List<ServiceItem>
             {
                 new ServiceItem

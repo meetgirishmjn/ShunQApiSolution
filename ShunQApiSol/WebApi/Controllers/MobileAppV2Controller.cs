@@ -370,7 +370,7 @@ namespace WebApi.Controllers
             {
                 DeleteFlag=true,
                 CartItemCount = 0,
-                HasActiveCart = true,
+                HasActiveCart = false,
                 FullName = CurrentUser.FullName,
                 UserName = CurrentUser.Name,
             };

@@ -18,7 +18,7 @@
              mc:Ignorable="d"
              x:Class="xApp.Views.HomePage"
              Title="ShunQ - Home"
-             x:Name="BrowseItemsPage">
+             x:Name="homePage">
     <!--<NavigationPage.TitleView>
         <Image Source="tab_feed.png"
                VerticalOptions="CenterAndExpand"
@@ -277,9 +277,9 @@
                 ItemsSource="{Binding TileSections[0].Tiles}"
                 Style="{StaticResource SfListViewStyle}">
 
-                        <!--<listView:SfListView.Behaviors>
-                            <behavior:SfListViewTapBehavior Command="{Binding Path=BindingContext.CategorySelectedCommand, Source={x:Reference categoryPage}}"/>
-                        </listView:SfListView.Behaviors>-->
+                        <listView:SfListView.Behaviors>
+                            <behavior:SfListViewTapBehavior  Command="{Binding Path=BindingContext.CategorySelectedCommand, Source={x:Reference homePage}}" />
+                        </listView:SfListView.Behaviors>
 
                         <listView:SfListView.ItemTemplate>
                             <DataTemplate>
