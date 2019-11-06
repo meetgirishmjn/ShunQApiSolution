@@ -216,6 +216,8 @@ namespace xApp.Services
             public StoreReview ReviewRating { get; set; }
             public bool HasActiveCart { get; set; }
             public Address Address { get; set; }
+            public string DistanceText { get; set; }
+
         }
     }
 
@@ -335,5 +337,14 @@ namespace xApp.Services
         public List<ListItem> SortOptions { get; set; }
         public List<StoreCategoryItem> StoreCategories { get; set; }
         public StoreListViewModel StoreSearchResult { get; set; }
+    }
+
+    public class DiscardCartViewModel
+    {
+        public bool DeleteFlag { get; set; }
+        public bool HasActiveCart { get; set; }
+        public int CartItemCount { get; set; }
+        public string UserName { get; set; }
+        public string FullName { get; set; }
     }
 }

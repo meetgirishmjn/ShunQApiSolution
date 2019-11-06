@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:services="clr-namespace:xApp.Services"
+             xmlns:rating="clr-namespace:Syncfusion.SfRating.XForms;assembly=Syncfusion.SfRating.XForms"
+             xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:viewmodel="clr-namespace:xApp.ViewModels"
+             mc:Ignorable="d" Title="Store direction route"
+             x:Class="xApp.Views.Store.StoreRoutePage">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+
+        <Style x:Key="CommonSfBorderStyle" TargetType="border:SfBorder">
+            <Setter Property="BackgroundColor" Value="{StaticResource Gray-White}" />
+            <Setter Property="BorderWidth" Value="{OnIdiom Default=2, Desktop=0}" />
+            <Setter Property="BorderColor" Value="{StaticResource Gray-White}" />
+            <Setter Property="HorizontalOptions" Value="Center" />
+            <Setter Property="VerticalOptions" Value="Center" />
+        </Style>
+        <rating:SfRatingSettings
+        x:Key="RatingSettings1"
+        RatedFill="{StaticResource OrangeyYellow}"
+        RatedStroke="{StaticResource OrangeyYellow}" />
+    </ContentPage.Resources>
+    
+    <ContentPage.Content>
+        <Grid>
+
+            <!--  Product Image  -->
+            <viewmodel:ExtendedWebView Margin="0,-5,0,0" x:Name="webView" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+
+            </viewmodel:ExtendedWebView>
+
+            <Grid VerticalOptions="EndAndExpand">
+                <BoxView BackgroundColor="{StaticResource Gray-Black}" Opacity="0.7" />
+
+                <Grid
+                    Padding="16"
+                    ColumnSpacing="16"
+                    RowSpacing="8"
+                    VerticalOptions="EndAndExpand">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <!--  Profile Image  -->
+                    <border:SfBorder
+                        BorderWidth="0"
+                        CornerRadius="24"
+                        HeightRequest="48"
+                        Style="{StaticResource CommonSfBorderStyle}"
+                        WidthRequest="48">
+                        <ffimageloading:CachedImage Source="{Binding Store.ImageUrl}" BackgroundColor="{StaticResource Gray-200}" />
+                    </border:SfBorder>
+
+                    <StackLayout
+                        Grid.Column="1"
+                        Orientation="Horizontal"
+                        VerticalOptions="Center">
+
+                        <StackLayout Spacing="0" VerticalOptions="Start">
+                            <!--  Customer Name  -->
+                            <Label
+                                FontFamily="{StaticResource Montserrat-SemiBold}"
+                                FontSize="16"
+                                Style="{StaticResource CommonLabelStyle}"
+                                Text="{Binding Store.StoreName}"
+                                TextColor="{StaticResource Gray-White}" />
+
+                            <!--  Commented Date  -->
+                            <Label
+                                FontFamily="{StaticResource Montserrat-Regular}"
+                                FontSize="12"
+                                Style="{StaticResource CommonLabelStyle}"
+                                Text="{Binding AddressLine}"
+                                TextColor="{StaticResource Gray-White}" />
+
+                        </StackLayout>
+
+                        <!--  Product Rating  -->
+                        <rating:SfRating x:Name="sfRating1"
+                            HorizontalOptions="EndAndExpand"
+                            RatingSettings="{StaticResource RatingSettings1}"
+                            Style="{StaticResource CommonSfRatingStyle}"
+                            VerticalOptions="Start"
+                            Value="{Binding Store.ReviewRating.Value}" />
+
+                    </StackLayout>
+
+                    <!--  Product Review  -->
+                    <!--<Label
+                        Grid.Row="1"
+                        Grid.ColumnSpan="2"
+                        FontFamily="{StaticResource Montserrat-Medium}"
+                        FontSize="14"
+                        Style="{StaticResource CommonLabelStyle}"
+                        Text="These boots are stunning and I look stunning in them."
+                        TextColor="{StaticResource Gray-White}" />
+
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ProfileCommand}" CommandParameter="{Binding .}" />
+                    </Grid.GestureRecognizers>-->
+                </Grid>
+
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

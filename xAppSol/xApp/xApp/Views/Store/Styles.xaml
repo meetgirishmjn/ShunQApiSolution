@@ -42,7 +42,28 @@
             <Setter Property="WidthRequest" Value="40" />
         </Style>
 
-        <!--  Common style for labels  -->
+    <!--store route-->
+    <Style x:Key="CommonLabelStyle" TargetType="Label">
+        <Setter Property="LineHeight" Value="{OnPlatform Android=1.25, Default=-1}" />
+        <Setter Property="TextColor" Value="{StaticResource Gray-700}" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="HorizontalTextAlignment" Value="Start" />
+        <Setter Property="VerticalTextAlignment" Value="Center" />
+        <Setter Property="VerticalOptions" Value="Center" />
+        <Setter Property="HorizontalOptions" Value="Start" />
+    </Style>
+    <Style x:Key="CommonSfRatingStyle" TargetType="rating:SfRating">
+        <Setter Property="ItemCount" Value="5" />
+        <Setter Property="ReadOnly" Value="True" />
+        <Setter Property="ItemSize" Value="13" />
+        <Setter Property="ItemSpacing" Value="1" />
+        <Setter Property="VerticalOptions" Value="Center" />
+        <Setter Property="HorizontalOptions" Value="Start" />
+    </Style>
+   
+    <!--///store route-->
+
+    <!--  Common style for labels  -->
         <Style x:Key="LabelStyle" TargetType="Label">
             <Setter Property="TextColor" Value="{DynamicResource Gray-700}" />
             <Setter Property="FontFamily" Value="Montserrat-Regular" />
@@ -62,6 +83,7 @@
             <Setter Property="IsScrollBarVisible" Value="False" />
             <Setter Property="VerticalOptions" Value="FillAndExpand" />
         </Style>
+
 
         <!--  Header Template for Catalog SfListView  -->
         <DataTemplate x:Key="CatalogDefaultHeaderTemplate">

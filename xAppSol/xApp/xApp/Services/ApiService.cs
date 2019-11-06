@@ -382,8 +382,8 @@ namespace xApp.Services
                     });
                     return result;
                 }
-                else
-                    handleError(response);
+                //else
+                //    handleError(response);
             }
             catch (Exception ex)
             {
@@ -519,7 +519,7 @@ namespace xApp.Services
             return null;
         }
 
-        public async Task<bool> DiscardCart()
+        public async Task<DiscardCartViewModel> DiscardCart()
         {
             try
             {
@@ -527,7 +527,14 @@ namespace xApp.Services
                 if (response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
-                    var result = JsonConvert.DeserializeObject<bool>(content);
+                    var result = JsonConvert.DeserializeObject<DiscardCartViewModel>(content);
+                    updatAppViewModel(new AppViewModel
+                    {
+                        CartItemCount = result.CartItemCount,
+                        HasActiveCart = result.HasActiveCart,
+                        FullName = result.FullName,
+                        UserName = result.UserName,
+                    });
                     return result;
                 }
                 else
@@ -537,7 +544,7 @@ namespace xApp.Services
             {
                 handleInternetError(ex);
             }
-            return false;
+            return null;
         }
          
     }

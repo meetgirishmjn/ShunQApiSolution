@@ -10,6 +10,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using xApp.Models.Detail;
 using xApp.Services;
+using xApp.ViewModels;
 
 namespace xApp.Views.Store
 {
@@ -182,12 +183,16 @@ namespace xApp.Views.Store
             await Shell.Current.GoToAsync("storeAddressSearchPage");
         }
 
-        private void StoreMapRoute_Clicked(object sender, EventArgs e)
+        private async void StoreMapRoute_Clicked(object sender, EventArgs e)
         {
-            var origin = "";
-            var destination = "";
-            // Device.OpenUri(new Uri("https://www.google.com/maps/dir/?api=1&origin=" + origin + "&destination=" + destination));
-            Device.OpenUri(new Uri("https://www.google.com/maps/dir/?api=1&origin=Google+Pyrmont+NSW&destination=QVB&destination_place_id=ChIJISz8NjyuEmsRFTQ9Iw7Ear8"));
+            var store = (sender as Xamarin.Forms.Button).CommandParameter as StoreListViewModel.StoreListItem;
+            AppViewModel.Instance.SetViewModel(store);
+            await Shell.Current.Navigation.PushModalAsync(new StoreRoutePage());
+          //  await Shell.c("storeRoutePage");
+            //var origin = "12.9360,77.6938";
+            //var destination = "12.9169429,77.621934";
+            //// Device.OpenUri(new Uri("https://www.google.com/maps/dir/?api=1&origin=" + origin + "&destination=" + destination));
+            //Device.OpenUri(new Uri("https://www.google.com/maps/dir/?api=1&origin=Google+Pyrmont+NSW&destination=QVB&destination_place_id=ChIJISz8NjyuEmsRFTQ9Iw7Ear8"));
         }
 
         private void searchBar1_TextChanged(object sender, TextChangedEventArgs e)

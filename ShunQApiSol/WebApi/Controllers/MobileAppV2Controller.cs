@@ -257,6 +257,9 @@ namespace WebApi.Controllers
         {
             var cartService = CreateStoreService();
             var cart = cartService.GetCart();
+            if (cart == null)
+                throw new BusinessException("Shopping is not started.");
+
             cart = setCartImageUrl(cart);
 
             cart.UserName = CurrentUser.Name;
@@ -349,7 +352,7 @@ namespace WebApi.Controllers
         [AllowAnonymous]
         public ContentResult GetStoreMapRoute()
         {
-            var html = System.IO.File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Views/store-map-route.html"));
+            var html = System.IO.File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "Views/map.html"));
             return new ContentResult
             {
                 ContentType = "text/html",
@@ -359,11 +362,20 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("cart/discard")]
-        public bool DiscardCart()
+        public DiscardCartViewModel DiscardCart()
         {
             var cartService = CreateStoreService();
-            cartService.DiscardCart();
-            return true;
+          cartService.DiscardCart();
+
+            var result = new DiscardCartViewModel
+            {
+                DeleteFlag=true,
+                CartItemCount = 0,
+                HasActiveCart = true,
+                FullName = CurrentUser.FullName,
+                UserName = CurrentUser.Name,
+            };
+            return result;
         }
     }
 }

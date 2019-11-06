@@ -16,6 +16,7 @@ namespace xApp
             InitializeComponent();
             Routing.RegisterRoute("storeFilterPage", typeof(Views.Store.FilterPage));
             Routing.RegisterRoute("storeAddressSearchPage", typeof(Views.Store.AddressSearchPage));
+            Routing.RegisterRoute("storeRoutePage", typeof(Views.Store.StoreRoutePage));
             this.BindingContext = AppViewModel.Instance;
         }
 

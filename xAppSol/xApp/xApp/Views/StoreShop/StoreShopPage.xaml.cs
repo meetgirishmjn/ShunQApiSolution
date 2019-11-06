@@ -103,9 +103,9 @@ namespace xApp.Views.StoreShop
                 if (flag)
                 {
                     vm.IsLoading = true;
-                    flag = await new ApiService().DiscardCart();
+                    var result = await new ApiService().DiscardCart();
                     vm.IsLoading = false;
-                    if (flag)
+                    if (result!=null)
                     {
                         (App.Current as App).GoToHome();
                     }

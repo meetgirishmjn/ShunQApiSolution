@@ -112,6 +112,7 @@ namespace xApp.Services
             set
             {
                 this._isSearching = value;
+                this.IsLoading = value;
                 this.NotifyPropertyChanged();
                 this.NotifyPropertyChanged(nameof(IsNotSearching));
             }
@@ -161,6 +162,7 @@ namespace xApp.Services
 
         public async void OnLoad(StoreListModel searchReq,bool isFirstLoad=false)
         {
+            this.StoreItems.Clear();
             this.IsLoading = isFirstLoad;
             this.IsSearching = !isFirstLoad;
             await Task.Delay(200);
@@ -177,10 +179,25 @@ namespace xApp.Services
             this.IsLoading = false;
             this.IsSearching = false;
         }
-        void storeSearchLoaded(SearchStoresViewModel vm)
+       async void  storeSearchLoaded(SearchStoresViewModel vm)
         {
             if (vm != null)
             {
+                StoreSearchLocation curLoc = null;
+                var str = await SecureStorage.GetAsync("storeSearchLocation");
+                if (str != null)
+                {
+                    curLoc = JsonConvert.DeserializeObject<StoreSearchLocation>(str);
+
+                    vm.StoreSearchResult.StoreList.ForEach(o =>
+                    {
+                        Location l1 = new Location(curLoc.Latitude, curLoc.Longitude);
+                        Location l2 = new Location(double.Parse(o.Address.Latitude), double.Parse( o.Address.Longitude));
+                        double km = Location.CalculateDistance(l1, l2, DistanceUnits.Kilometers);
+                        o.DistanceText= String.Format("{0:0.0}", km)+" km";
+                    });
+                }
+               
                 this.StoreItems = new ObservableCollection<StoreListViewModel.StoreListItem>(vm.StoreSearchResult.StoreList);
             }
             

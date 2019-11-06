@@ -12,7 +12,6 @@
               xmlns:rating="clr-namespace:Syncfusion.SfRating.XForms;assembly=Syncfusion.SfRating.XForms"
              xmlns:commonBehavior="clr-namespace:xApp.Behaviors"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
-             xmlns:shimmer="clr-namespace:Syncfusion.XForms.Shimmer;assembly=Syncfusion.Core.XForms"
              mc:Ignorable="d"
              Title="Stores"
              x:Name="storeSearchPage"
@@ -78,9 +77,6 @@
                 Style="{StaticResource SfListViewStyle}">
                     <listView:SfListView.ItemTemplate>
                         <DataTemplate>
-                        <shimmer:SfShimmer x:Name="shimmer" Type="Article"
-                           IsActive="{Binding Source={x:Reference storeSearchPage}, Path=BindingContext.IsSearching}">
-                            <shimmer:SfShimmer.Content>
                                 <Grid
                             Margin="0,0,0,8"
                             ColumnSpacing="0"
@@ -111,7 +107,7 @@
                                 HeightRequest="{OnIdiom Default=120,
                                                         Desktop=120}"
                                 WidthRequest="{OnIdiom Default=140,
-                                                       Desktop=200}"
+                                                       Desktop=140}"
                                 Source="{Binding ImageUrl}"  />
 
                                 <!--  Product Name  -->
@@ -179,13 +175,13 @@
                                     LineHeight="{OnPlatform Android=1.25,
                                                             Default=-1}"
                                     Style="{StaticResource LabelStyle}"
-                                    Text="2.5 Km"
+                                    Text="{Binding DistanceText}"
                                     TextColor="{DynamicResource SecondaryGradient}"
                                     VerticalOptions="CenterAndExpand"
                                     VerticalTextAlignment="Center" />
 
-                                            <Button Clicked="StoreMapRoute_Clicked" Text="&#xf4d7;" FontFamily="{StaticResource FontAwesomeSolid}" HeightRequest="40"  WidthRequest="40" HorizontalOptions="End"  
-TextColor="{StaticResource SecondaryGradient}" BackgroundColor="{StaticResource Gray-100}" Margin="5,0,0,0"  />
+                                            <Button Clicked="StoreMapRoute_Clicked" CommandParameter="{Binding .}" Text="&#xf4d7;" FontFamily="{StaticResource FontAwesomeSolid}" HeightRequest="40"  WidthRequest="40" HorizontalOptions="End"  
+TextColor="{StaticResource GoogleRed}" BackgroundColor="{StaticResource Gray-100}" Margin="5,0,0,0"  />
                                         <!--<Label
                                     Margin="0,6,0,6"
                                     FontFamily="{StaticResource Montserrat-Medium}"
@@ -202,11 +198,8 @@ TextColor="{StaticResource SecondaryGradient}" BackgroundColor="{StaticResource 
 
 
                                 </Grid>
-                            </shimmer:SfShimmer.Content>
-                        </shimmer:SfShimmer>
                     </DataTemplate>
                     </listView:SfListView.ItemTemplate>
-
                 </listView:SfListView>
                 
         </Grid>
