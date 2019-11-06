@@ -205,7 +205,7 @@ namespace WebApi.Controllers
                 ReviewRating = new StoreReview { StoreId = store.Id },
                 BannerImageUrl = imageUrl + "stores/" + store.BannerImage,
                 ImageUrl = imageUrl + "stores/" + store.Image,
-                Address =new Address
+                Address = new Address
                 {
                     AddressLine = "Survey No. 132(P) wide Thanisandra main road",
                     AddressLine2 = " 5th Block, MS Ramaiah North City",
@@ -356,6 +356,14 @@ namespace WebApi.Controllers
                 StatusCode = (int)System.Net.HttpStatusCode.OK,
                 Content = html
             };
+        }
+
+        [HttpPost("cart/discard")]
+        public bool DiscardCart()
+        {
+            var cartService = CreateStoreService();
+            cartService.DiscardCart();
+            return true;
         }
     }
 }
