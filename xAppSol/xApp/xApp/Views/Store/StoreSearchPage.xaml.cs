@@ -23,6 +23,7 @@ namespace xApp.Views.Store
             set
             {
                 _categoryId = Uri.UnescapeDataString(value);
+                onLoad(true);
             }
         }
 
@@ -35,13 +36,14 @@ namespace xApp.Views.Store
 
                 Task.Run(() =>
                 {
-                    Device.BeginInvokeOnMainThread(() => onLoad());
+                     Shell.Current.GoToAsync($"//tabStores?categoryId=-1");
+                    // Device.BeginInvokeOnMainThread(() => onLoad(true));
                 });
 
                 MessagingCenter.Subscribe<StoreSearchLocation>(this, "searchLocationChange", searchLocationChanged);
                 MessagingCenter.Subscribe<FilterPageViewModelEx>(this, "storeFilterApplied", storeFilterApplied);
                 MessagingCenter.Subscribe<object>(this, "storeFilterCleared", storeFilterCleared);
-
+                ViewModels.AppViewModel.Instance.ClearViewModel<FilterPageViewModelEx>();
             }
             catch (Exception ex)
             {
@@ -50,10 +52,10 @@ namespace xApp.Views.Store
         
         }
 
-        private async void onLoad()
+        private async void onLoad(bool isOnLoad=false)
         {
             //wait for _categoryId to be set by route if routed from categories
-            await Task.Delay(250);
+           // await Task.Delay(250);
 
             int.TryParse(_categoryId, out int categoryId);
 
@@ -66,8 +68,9 @@ namespace xApp.Views.Store
                 Longitude = location?.Longitude + ""
             };
 
-            (this.BindingContext as StoreSearchEx).OnLoad(searchReq,true);
+            (this.BindingContext as StoreSearchEx).OnLoad(searchReq, isOnLoad);
         }
+
 
         private async void searchLocationChanged(StoreSearchLocation location)
         {
@@ -89,6 +92,7 @@ namespace xApp.Views.Store
             }
         }
 
+        
         private async void storeFilterApplied(FilterPageViewModelEx vm)
         {
             try
@@ -106,7 +110,7 @@ namespace xApp.Views.Store
                     Latitude =  location?.Latitude+"",
                     Longitude = location?.Longitude + ""
                 };
-
+                
                 (this.BindingContext as StoreSearchEx).OnLoad(searchReq);
             }
             catch (Exception ex)
@@ -184,6 +188,12 @@ namespace xApp.Views.Store
             var destination = "";
             // Device.OpenUri(new Uri("https://www.google.com/maps/dir/?api=1&origin=" + origin + "&destination=" + destination));
             Device.OpenUri(new Uri("https://www.google.com/maps/dir/?api=1&origin=Google+Pyrmont+NSW&destination=QVB&destination_place_id=ChIJISz8NjyuEmsRFTQ9Iw7Ear8"));
+        }
+
+        private void searchBar1_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (searchBar1.Text.Trim().Length == 0)
+                (this.BindingContext as StoreSearchEx).PerformSearch.Execute("");
         }
     }
 }

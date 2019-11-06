@@ -17,15 +17,29 @@
     <NavigationPage.TitleView>
         <StackLayout Orientation="Horizontal" VerticalOptions="Center">
             <Label Text="Store Shop-Cart" TextColor="White" VerticalTextAlignment="Center" FontSize="Subtitle" ></Label>
-            <Button Clicked="OnHome_Clicked" FontSize="Large" HorizontalOptions="EndAndExpand" Text="&#xf015;" BackgroundColor="Transparent" TextColor="White">
+            <!--<Button Clicked="OnHome_Clicked" FontSize="Large" HorizontalOptions="EndAndExpand" Text="&#xf015;" BackgroundColor="Transparent" TextColor="White">
                 <Button.FontFamily>
                     <OnPlatform x:TypeArguments="x:String">
                         <On Platform="Android" Value="{StaticResource FontAwesomeSolid}" />
                     </OnPlatform>
                 </Button.FontFamily>
-            </Button>
+            </Button>-->
         </StackLayout>
     </NavigationPage.TitleView>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text=""  Clicked="OnHome_Clicked"
+                 IconImageSource="home.png"
+                 Order="Primary"
+                 Priority="0" />
+
+        <ToolbarItem Text="Discard Cart"
+                     Clicked="lnkDiscardCart_Clicked"
+                 IconImageSource="discardcart.png"
+                 Order="Secondary"
+                 Priority="0" />
+    </ContentPage.ToolbarItems>
+    
     <ContentPage.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

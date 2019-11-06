@@ -93,6 +93,31 @@ namespace xApp.Views.StoreShop
             }
         }
 
+        private async  void lnkDiscardCart_Clicked(object sender, EventArgs e)
+        {
+            var vm = (this.BindingContext as StoreInfoViewModel);
+            try
+            {
+                var flag =await DisplayAlert("Discard cart", "Are you sure you want stop shopping?", "Yes", "No");
+
+                if (flag)
+                {
+                    vm.IsLoading = true;
+                    flag = await new ApiService().DiscardCart();
+                    vm.IsLoading = false;
+                    if (flag)
+                    {
+                        (App.Current as App).GoToHome();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                vm.IsLoading = false;
+                toastr.ShowError(ex.Message);
+            }
+        }
+
         //public void OnScanResult(Result result)
         //{
         //    if (isAnalysing)

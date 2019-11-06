@@ -518,6 +518,28 @@ namespace xApp.Services
             }
             return null;
         }
+
+        public async Task<bool> DiscardCart()
+        {
+            try
+            {
+                var response = await getHttp().PostAsync(new Uri(mobileV2Url + "cart/discard"),null);
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    var result = JsonConvert.DeserializeObject<bool>(content);
+                    return result;
+                }
+                else
+                    handleError(response);
+            }
+            catch (Exception ex)
+            {
+                handleInternetError(ex);
+            }
+            return false;
+        }
+         
     }
 
 }

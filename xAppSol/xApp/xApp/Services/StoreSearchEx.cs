@@ -28,6 +28,8 @@ namespace xApp.Services
             {
                 this._storeItems = value;
                 this.NotifyPropertyChanged();
+                this.NotifyPropertyChanged(nameof(IsNoRecord));
+                
             }
         }
 
@@ -96,7 +98,7 @@ namespace xApp.Services
             get { return _searchLocation; }
             set { _searchLocation = value; this.NotifyPropertyChanged(); }
         }
-        public bool IsNoRecord { get { return this.StoreItems.Count == 0; } }
+        public bool IsNoRecord { get { return !IsLoading && !IsSearching && this.StoreItems.Count == 0; } }
         public bool IsNotLoading
         {
             get { return !_isLoading; }

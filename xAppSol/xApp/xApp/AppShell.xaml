@@ -51,11 +51,11 @@
         </DataTemplate>
     </Shell.FlyoutHeaderTemplate>
 
-    <MenuItem Text="My Orders" IconImageSource="tab_feed.png"/>
-    <MenuItem Text="About Us" IconImageSource="tab_about.png"/>
-    
-     
-    <MenuItem Text="Logout" Clicked="menuLogout_Clicked" />
+    <MenuItem Text="My Orders" IconImageSource="order.png" />
+    <MenuItem Text="About Us" IconImageSource="aboutus.png"/>
+
+
+    <MenuItem Text="Logout" Clicked="menuLogout_Clicked" IconImageSource="logout.png" />
 
    
     <!-- Your Pages -->
@@ -66,7 +66,7 @@
             </Tab.Icon>
             <ShellContent ContentTemplate="{DataTemplate local:HomePage}" />
         </Tab>
-        <Tab Title="Stores" Route="tabStores"   >
+        <Tab Title="Stores" Route="tabStores"     >
             <Tab.Icon>
                 <FontImageSource FontFamily="{StaticResource FontAwesomeSolid}" Glyph="&#xf54f;" />
             </Tab.Icon>

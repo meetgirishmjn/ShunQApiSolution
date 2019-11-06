@@ -16,15 +16,22 @@ namespace xApp.Views.Store
         public FilterPage()
         {
             InitializeComponent();
-           this.BindingContext = new FilterPageViewModelEx(ViewModels.AppViewModel.Instance.GetViewModel<SearchStoresViewModel>());
+            var vm = ViewModels.AppViewModel.Instance.GetViewModel<FilterPageViewModelEx>();
+           
+            if (vm == null)
+                vm =  new FilterPageViewModelEx(ViewModels.AppViewModel.Instance.GetViewModel<SearchStoresViewModel>());
+           
+           this.BindingContext = vm;
         }
 
         private async void onApplyFilter_Clicked(object sender, EventArgs e)
         {
             try
             {
+                var vm = this.BindingContext as FilterPageViewModelEx;
+                ViewModels.AppViewModel.Instance.SetViewModel(vm);
                 await Shell.Current.Navigation.PopAsync();
-                MessagingCenter.Send(this.BindingContext as FilterPageViewModelEx, "storeFilterApplied");
+                MessagingCenter.Send(vm, "storeFilterApplied");
 
             }
             catch (Exception ex)
@@ -40,6 +47,7 @@ namespace xApp.Views.Store
         {
             try
             {
+                ViewModels.AppViewModel.Instance.ClearViewModel<FilterPageViewModelEx>();
                 await Shell.Current.Navigation.PopAsync();
                 MessagingCenter.Send(sender, "storeFilterCleared");
 
