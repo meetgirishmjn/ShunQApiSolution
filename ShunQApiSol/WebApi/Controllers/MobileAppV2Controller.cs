@@ -119,11 +119,16 @@ namespace WebApi.Controllers
         [HttpPost("store/startShopping/{code}")]
         public StoreInfoViewModel StartShopping(string code)
         {
-            var cartDeviceId = code;
+            var cartDeviceId = (code ?? string.Empty).Trim();
             var service = CreateStoreService();
 
             //temp
-            cartDeviceId = "temp";
+            if (!cartDeviceId.StartsWith("ST100"))
+            {
+                cartDeviceId = "temp";
+            }
+            //--
+
 
             var cart = service.StartShopping(cartDeviceId);
             var storeVm = getStoreVmById(cart.StoreId);
