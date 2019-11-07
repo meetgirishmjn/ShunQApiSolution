@@ -68,51 +68,43 @@
                 Grid.Row="3"
                 Margin="{OnIdiom Default='0,8,8,0',
                                  Desktop='15,15,15,0'}"
-                AutoFitMode="Height"
+                AutoFitMode="None"
                 HorizontalOptions="FillAndExpand"
                 IsStickyHeader="False"
-                ItemSize="170"
+                ItemSize="120"
                 ItemSpacing="8,0,0,8"
+                                     Orientation="Vertical"
                 ItemsSource="{Binding StoreItems}"
                 Style="{StaticResource SfListViewStyle}">
                     <listView:SfListView.ItemTemplate>
                         <DataTemplate>
-                                <Grid
+                                <Grid 
                             Margin="0,0,0,8"
                             ColumnSpacing="0"
                             HorizontalOptions="FillAndExpand"
                             RowSpacing="0"
                             VerticalOptions="FillAndExpand">
 
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="{OnIdiom Default=Auto, Desktop=0.2*}" />
-                                    <ColumnDefinition Width="{OnIdiom Default=*, Desktop=*}" />
-                                    <ColumnDefinition Width="32" />
-                                </Grid.ColumnDefinitions>
-
-                                <!--  Product Image  -->
+                                    
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="140"   />
+                                <ColumnDefinition Width="{OnIdiom Default=*, Desktop=*}" />
+                            </Grid.ColumnDefinitions>
 
                             <ffimageloading:CachedImage
-                                 Grid.RowSpan="4"
                                 Margin="8,0,16,0"
-                                Aspect="Fill"
+                                Aspect="AspectFill"
                                 BackgroundColor="{DynamicResource Gray-F0}"
                                 HeightRequest="{OnIdiom Default=120,
                                                         Desktop=120}"
                                 WidthRequest="{OnIdiom Default=140,
                                                        Desktop=140}"
                                 Source="{Binding ImageUrl}"  />
+                                   
+                                    
+                            <StackLayout Grid.Column="1" HorizontalOptions="FillAndExpand"  Orientation="Vertical" VerticalOptions="FillAndExpand">
 
-                                <!--  Product Name  -->
                                 <Label
-                                Grid.Column="1"
                                 Margin="0,0,0,8"
                                 FontFamily="{StaticResource Montserrat-SemiBold}"
                                 LineBreakMode="TailTruncation"
@@ -121,17 +113,6 @@
                                 Text="{Binding StoreName}"
                                 TextColor="{DynamicResource Gray-900}" />
 
-                                <!--  Favourite Icon  -->
-                                <!--<Button
-                                Grid.Column="2"
-                                Margin="0,0,0,8"
-                                Padding="0"
-                                CommandParameter="{Binding}"
-                                Style="{StaticResource FavouriteButtonStyle}"
-                                Text="{Binding IsFavourite, Converter={StaticResource boolToStringConverter}, ConverterParameter=1}"
-                                TextColor="{Binding IsFavourite, Converter={x:StaticResource boolToColorConverter}, ConverterParameter=4}" />-->
-
-                                <!--  Product Description  -->
                                 <Label
                                 Grid.Row="1"
                                 Grid.Column="1"
@@ -145,30 +126,28 @@
                                 Style="{StaticResource LabelStyle}"
                                 Text="{Binding Description}" />
 
-                                    <!--  Product Rating  -->
+                                <Grid Margin="0" >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
 
-                                    <Grid Grid.Row="2" Grid.Column="1" Margin="0" Grid.ColumnSpan="2"> 
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="*" />
-                                        </Grid.ColumnDefinitions>
-
-                                        <rating:SfRating 
+                                    <rating:SfRating 
                                 HorizontalOptions="Start"
                                 RatingSettings="{StaticResource RatingSettings}"
                                 Style="{StaticResource SfRatingStyle}"
                                 Value="{Binding ReviewRating.Value}" />
-                                    
-                                    
+
+
                                     <StackLayout
                                 Grid.Column="1"
                                 Margin="0,0,0,0"
                                     HorizontalOptions="End"
                                 Orientation="Horizontal"
                                 Spacing="2">
-                                    
+
                                         <!--  Product Price  -->
-                                    <Label
+                                        <Label
                                     FontFamily="{StaticResource Montserrat-Medium}"
                                     FontSize="12"
                                     HorizontalOptions="Start"
@@ -180,7 +159,7 @@
                                     VerticalOptions="CenterAndExpand"
                                     VerticalTextAlignment="Center" />
 
-                                            <Button Clicked="StoreMapRoute_Clicked" CommandParameter="{Binding .}" Text="&#xf4d7;" FontFamily="{StaticResource FontAwesomeSolid}" HeightRequest="40"  WidthRequest="40" HorizontalOptions="End"  
+                                        <Button Clicked="StoreMapRoute_Clicked" CommandParameter="{Binding .}" Text="&#xf4d7;" FontFamily="{StaticResource FontAwesomeSolid}" HeightRequest="40"  WidthRequest="40" HorizontalOptions="End"  
 TextColor="{StaticResource GoogleRed}" BackgroundColor="{StaticResource Gray-100}" Margin="5,0,0,0"  />
                                         <!--<Label
                                     Margin="0,6,0,6"
@@ -193,10 +172,9 @@ TextColor="{StaticResource GoogleRed}" BackgroundColor="{StaticResource Gray-100
                                     VerticalOptions="Center"
                                     VerticalTextAlignment="Center" />-->
 
-                                </StackLayout>
-                                    </Grid>
-
-
+                                    </StackLayout>
+                                </Grid>
+                            </StackLayout>
                                 </Grid>
                     </DataTemplate>
                     </listView:SfListView.ItemTemplate>

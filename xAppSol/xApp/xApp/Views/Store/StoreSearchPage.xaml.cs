@@ -77,6 +77,8 @@ namespace xApp.Views.Store
         {
             try
             {
+                isEventProcessing = true;
+                searchBar1.Text = "";
                 await SecureStorage.SetAsync("storeSearchLocation", JsonConvert.SerializeObject(location));
 
                 var searchReq = new StoreListModel
@@ -91,6 +93,10 @@ namespace xApp.Views.Store
             {
                 await DisplayAlert("Filter Error", "Could not update search filters.", "Ok");
             }
+            finally
+            {
+                isEventProcessing = false;
+            }
         }
 
         
@@ -98,6 +104,8 @@ namespace xApp.Views.Store
         {
             try
             {
+                isEventProcessing = true;
+                searchBar1.Text = "";
 
                 int.TryParse(_categoryId, out int categoryId);
                 var location = await getLatLong();
@@ -118,12 +126,20 @@ namespace xApp.Views.Store
             {
                 await DisplayAlert("Filter Error", "Could not update search filters.", "Ok");
             }
+            finally
+            {
+                isEventProcessing = false;
+            }
         }
 
         private async void storeFilterCleared(object sender)
         {
             try
             {
+                
+                isEventProcessing = true;
+                searchBar1.Text = "";
+
                 var location = await getLatLong();
 
                 var searchReq = new StoreListModel
@@ -137,6 +153,10 @@ namespace xApp.Views.Store
             catch (Exception ex)
             {
                 await DisplayAlert("Filter Error", "Could not update search filters.", "Ok");
+            }
+            finally
+            {
+                isEventProcessing = false;
             }
         }
 
@@ -195,8 +215,12 @@ namespace xApp.Views.Store
             //Device.OpenUri(new Uri("https://www.google.com/maps/dir/?api=1&origin=Google+Pyrmont+NSW&destination=QVB&destination_place_id=ChIJISz8NjyuEmsRFTQ9Iw7Ear8"));
         }
 
+        bool isEventProcessing = false;
         private void searchBar1_TextChanged(object sender, TextChangedEventArgs e)
         {
+            if (isEventProcessing)
+                return;
+
             if (searchBar1.Text.Trim().Length == 0)
                 (this.BindingContext as StoreSearchEx).PerformSearch.Execute("");
         }

@@ -165,7 +165,7 @@ namespace xApp.Services
             this.StoreItems.Clear();
             this.IsLoading = isFirstLoad;
             this.IsSearching = !isFirstLoad;
-            await Task.Delay(200);
+            await Task.Delay(1000);
             searchReq.PageSize = PAGE_SIZE;
 
             var str = await SecureStorage.GetAsync("storeSearchLocation");
