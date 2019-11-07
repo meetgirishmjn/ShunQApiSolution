@@ -221,7 +221,9 @@ namespace xApp.Views.Store
             if (isEventProcessing)
                 return;
 
-            if (searchBar1.Text.Trim().Length == 0)
+            var searchTextApplied = (this.BindingContext as StoreSearchEx).IsSearchTextApplied;
+
+            if(searchTextApplied && searchBar1.Text.Trim().Length == 0)
                 (this.BindingContext as StoreSearchEx).PerformSearch.Execute("");
         }
     }

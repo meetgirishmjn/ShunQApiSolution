@@ -39,6 +39,7 @@ namespace xApp.Services
         public ICommand ItemTapCommand { get; set; }
 
 
+        public bool IsSearchTextApplied = false;
         public ICommand PerformSearch => new Command<string>(async (string query) =>
         {
             var seachReq = new StoreListModel()
@@ -47,6 +48,7 @@ namespace xApp.Services
                 SearchKey=query
             };
 
+            IsSearchTextApplied = query.Trim().Length > 0;
 
             var str = await SecureStorage.GetAsync("storeSearchLocation");
             if (str != null)
@@ -89,6 +91,7 @@ namespace xApp.Services
                 this._isLoading = value;
                 this.NotifyPropertyChanged();
                 this.NotifyPropertyChanged(nameof(IsNotLoading));
+                this.NotifyPropertyChanged(nameof(IsNoRecord));
             }
         }
 
@@ -112,9 +115,10 @@ namespace xApp.Services
             set
             {
                 this._isSearching = value;
-                this.IsLoading = value;
+             //   this.IsLoading = value;
                 this.NotifyPropertyChanged();
                 this.NotifyPropertyChanged(nameof(IsNotSearching));
+                this.NotifyPropertyChanged(nameof(IsNoRecord));
             }
         }
 
@@ -162,10 +166,10 @@ namespace xApp.Services
 
         public async void OnLoad(StoreListModel searchReq,bool isFirstLoad=false)
         {
-            this.StoreItems.Clear();
+             this.StoreItems.Clear();
             this.IsLoading = isFirstLoad;
             this.IsSearching = !isFirstLoad;
-            await Task.Delay(1000);
+            var delayTask=  Task.Delay(2000);
             searchReq.PageSize = PAGE_SIZE;
 
             var str = await SecureStorage.GetAsync("storeSearchLocation");
@@ -174,8 +178,11 @@ namespace xApp.Services
                 SearchLocation = JsonConvert.DeserializeObject<StoreSearchLocation>(str).Name;
             }
 
-            var vm = await api.StoreSearch(searchReq);
-            storeSearchLoaded(vm);
+            var apiTask= api.StoreSearch(searchReq);
+
+             await Task.WhenAll(delayTask, apiTask);
+        //    var vm = await api.StoreSearch(searchReq);
+            storeSearchLoaded(apiTask.Result);
             this.IsLoading = false;
             this.IsSearching = false;
         }
