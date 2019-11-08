@@ -7,6 +7,8 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 using FFImageLoading.Forms.Platform;
+using Plugin.FacebookClient;
+using Android.Content;
 
 namespace xApp.Droid
 {
@@ -26,6 +28,7 @@ namespace xApp.Droid
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             FFImageLoading.Forms.Platform.CachedImageRenderer.Init(true);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+            FacebookClientManager.Initialize(this);
             CachedImageRenderer.InitImageViewHandler();
             Syncfusion.XForms.Android.PopupLayout.SfPopupLayoutRenderer.Init();
             LoadApplication(new App());
@@ -38,6 +41,12 @@ namespace xApp.Droid
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
 
+        protected override void OnActivityResult(int requestCode, Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+            if (resultCode == Result.Ok)
+                FacebookClientManager.OnActivityResult(requestCode, resultCode, data);
+        }
         protected override void OnDestroy()
         {
             try

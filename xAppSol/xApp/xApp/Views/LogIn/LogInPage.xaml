@@ -182,12 +182,12 @@
                             Text="Or create an account using social media" />
 
                         <!--  Login through facebook/google account  -->
-                        <!--<buttons:SfButton
+                        <buttons:SfButton
                             Grid.Row="7" IsEnabled="{Binding IsNotLoading}"
                             Margin="0,16,0,10"
                             BackgroundColor="{DynamicResource FacebookBlue}"
                             Clicked="onFbLoginCommand"
-                            CornerRadius="20"
+                            CornerRadius="20" x:Name="btnFbLogin"
                             HeightRequest="40">
                             <buttons:SfButton.Content>
                                 <StackLayout
@@ -200,7 +200,7 @@
                                         Text="&#xe735;"
                                         TextColor="{DynamicResource Gray-White}"
                                         VerticalTextAlignment="Center" />
-                                    <Label
+                                    <Label x:Name="lblFbLogin"
                                         FontFamily="{StaticResource Montserrat-Medium}"
                                         FontSize="16"
                                         Text="Login with Facebook"
@@ -208,7 +208,7 @@
                                 </StackLayout>
                             </buttons:SfButton.Content>
                         </buttons:SfButton>
-
+ <!--
                         <buttons:SfButton
                             Grid.Row="8" IsEnabled="{Binding IsNotLoading}"
                             Margin="0,5,0,2"

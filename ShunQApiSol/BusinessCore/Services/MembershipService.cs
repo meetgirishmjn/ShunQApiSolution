@@ -520,17 +520,15 @@ namespace BusinessCore.Services
 
             var context = ContextManager.GetContext();
 
-            var uniqueId = providerPre + "@" + model.Id;
-
             var modelDb = (from o in context.UserMasterOAuths
-                           where o.Id == uniqueId 
+                           where o.Id == model.Email 
                            select o).SingleOrDefault();
             if (modelDb == null)
             {
                 modelDb = new DataAccess.DbModels.UserMasterOAuth()
                 {
-                    Id = uniqueId,
-                    Name = model.Id,
+                    Id = model.Id,
+                    Name = model.Email,
                     Email = model.Email,
                     EmailVerified = true,
                     MobileNumber = model.MobileNumber,

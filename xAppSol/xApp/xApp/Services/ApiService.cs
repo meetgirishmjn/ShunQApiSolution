@@ -150,6 +150,30 @@ namespace xApp.Services
             return string.Empty;
         }
 
+        public async Task<string> LogInSocial(LoginOauthModel model)
+        {
+            try
+            {
+                string data = JsonConvert.SerializeObject(model);
+                HttpContent reqData = new StringContent(data, Encoding.UTF8, "application/json");
+
+                client.DefaultRequestHeaders.Add("app-id", AppId);
+                client.DefaultRequestHeaders.Add("device-id", DeviceId);
+
+                var response = await client.PostAsync(new Uri(membershipUrl + "app/oauth/login"), reqData);
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    var result = JsonConvert.DeserializeObject<LogInResult>(content);
+                    return result.IsValid ? result.AuthToken : string.Empty;
+                }
+            }
+            catch (Exception ex)
+            {
+                handleInternetError(ex);
+            }
+            return string.Empty;
+        }
         public async Task<bool> Logout()
         {
             try
