@@ -73,7 +73,7 @@
                             Grid.Row="1"
                             Margin="0,-16,0,8"
                             FontFamily="{StaticResource Montserrat-Medium}"
-                            HorizontalTextAlignment="Center"
+                            HorizontalTextAlignment="Center" 
                             Style="{StaticResource LabelStyle}"
                             Text="Enter your new password to reset the old password" />
 
@@ -84,7 +84,7 @@
                             Style="{StaticResource SfBorderStyle}">
                             <control:BorderlessEntry
                                 x:Name="NewPasswordEntry"
-                                IsPassword="True"
+                                IsPassword="True" MaxLength="50"
                                 Placeholder="New Password"
                                 Style="{StaticResource EntryStyle}"
                                 Text="{Binding Password}" />
@@ -97,7 +97,7 @@
                             Style="{StaticResource SfBorderStyle}">
                             <control:BorderlessEntry
                                 x:Name="ConfirmNewPasswordEntry"
-                                Keyboard="Numeric"
+                                Keyboard="Numeric" MaxLength="10"
                                 Placeholder="Enter OTP you received"
                                 Style="{StaticResource EntryStyle}"
                                 Text="{Binding OTP}" />

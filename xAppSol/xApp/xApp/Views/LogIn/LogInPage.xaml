@@ -103,7 +103,7 @@
 
                                     <control:BorderlessEntry
                         x:Name="Email"
-                        Placeholder="Email"
+                        Placeholder="Email" MaxLength="250"
                         Style="{StaticResource EntryStyle}"
                         Text="{Binding Email}" />
 
@@ -144,7 +144,7 @@
                             <control:BorderlessEntry
                                 x:Name="PasswordEntry"
                                 IsPassword="True"
-                                Placeholder="Password"
+                                Placeholder="Password" MaxLength="50"
                                 Style="{StaticResource EntryStyle}"
                                 Text="{Binding Password}" />
                         </border:SfBorder>

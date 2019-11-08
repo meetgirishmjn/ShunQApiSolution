@@ -80,7 +80,7 @@
                             <control:BorderlessEntry
                                 Placeholder="Email"
                                 Style="{StaticResource EntryStyle}"
-                                Keyboard="Email"
+                                Keyboard="Email" MaxLength="250"
                                 Text="{Binding Email}" />
                         </border:SfBorder>
                         

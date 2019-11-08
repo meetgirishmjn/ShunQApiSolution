@@ -43,7 +43,7 @@
             <!--  Title View  -->
             <StackLayout IsVisible="{Binding IsNotLoading}"  HorizontalOptions="End" Padding="5,0,10,0" Orientation="Horizontal">
 
-                <SearchBar Placeholder="Search stores..." FontSize="Small"   FontAttributes="Italic" HeightRequest="25"
+                <SearchBar Placeholder="Search stores..." MaxLength="50" FontSize="Small"   FontAttributes="Italic" HeightRequest="25"
                        x:Name="searchBar1" TextChanged="searchBar1_TextChanged"     SearchCommand="{Binding PerformSearch}"
                    SearchCommandParameter="{Binding Text, Source={x:Reference searchBar1}}">
                 </SearchBar>
