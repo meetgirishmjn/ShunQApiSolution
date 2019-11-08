@@ -135,6 +135,9 @@ namespace BusinessCore.Extensions
             if (str == null)
                 return false;
 
+            if (str.Trim().Length==0)
+                return false;
+
             if (str.Length < 10)
                 return false;
 

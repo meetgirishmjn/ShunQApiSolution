@@ -118,11 +118,11 @@ namespace xApp.Views.LogIn
                 };
 
                 var token = await new ApiService().LogInSocial(model);
-                if (string.IsNullOrEmpty(token))
-                    throw new Exception("Failed to log-in. Try again.");
-
-                await SecureStorage.SetAsync("oAuthToken", token);
-                App.Current.MainPage = new AppLaunch();
+                if (!string.IsNullOrEmpty(token))
+                {
+                    await SecureStorage.SetAsync("oAuthToken", token);
+                    App.Current.MainPage = new AppLaunch();
+                }
 
             }
             catch (Exception ex)

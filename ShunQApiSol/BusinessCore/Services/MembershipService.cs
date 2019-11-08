@@ -502,15 +502,15 @@ namespace BusinessCore.Services
         {
             var providerName = model.OAuthProvider.TrimAll().ToUpper();
             model.Email = model.Email.TrimAll().ToUpper();
-            model.MobileNumber = model.MobileNumber.TrimAll();
+            model.MobileNumber = string.Empty;
 
             if (!VALID_OAUTH_PROVIDERS.Contains(providerName))
                 throw new BusinessException("Invalid OAuth Provider " + model.OAuthProvider + ". Must be one of these: " + string.Join(",", VALID_OAUTH_PROVIDERS));
 
-            if(model.Id.Length==0)
+            if (model.Id.Length == 0)
                 throw new BusinessException("Id can not be empty");
 
-            if (model.Email.Length==0)
+            if (model.Email.Length == 0)
                 throw new BusinessException("Email can not be empty");
 
             if (!model.Email.IsEmail())
@@ -521,13 +521,15 @@ namespace BusinessCore.Services
             var context = ContextManager.GetContext();
 
             var modelDb = (from o in context.UserMasterOAuths
-                           where o.Id == model.Email 
+                           where o.Id == providerPre + "_" + model.Id
                            select o).SingleOrDefault();
+
+            var pendingChanges = false;
             if (modelDb == null)
             {
                 modelDb = new DataAccess.DbModels.UserMasterOAuth()
                 {
-                    Id = model.Id,
+                    Id = providerPre + "_" + model.Id,
                     Name = model.Email,
                     Email = model.Email,
                     EmailVerified = true,
@@ -540,17 +542,21 @@ namespace BusinessCore.Services
                     Gender = string.Empty,
                     ImageId = string.Empty,
                 };
-
                 context.UserMasterOAuths.Add(modelDb);
+                pendingChanges = true;
+            }
+            var emailExists = context.UserMasters.Where(o => o.Email.ToUpper() == model.Email).Any();
 
-                if (context.UserMasters.Where(o => o.Email.ToUpper() == model.Email).Any())
-                    throw new BusinessException("User is already registerd with Email: " + model.Email);
+            if (!emailExists)
+            {
 
-                if (model.MobileNumber.IsMobileNumber())
-                {
-                    if (context.UserMasters.Where(o => o.MobileNumber.ToUpper() == model.MobileNumber).Any())
-                        throw new BusinessException("User is already registerd with Mobile-Number: " + model.MobileNumber);
-                }
+                //throw new BusinessException("User is already registerd with Email: " + model.Email);
+
+                //if (model.MobileNumber.IsMobileNumber())
+                //{
+                //    if (context.UserMasters.Where(o => o.MobileNumber.ToUpper() == model.MobileNumber).Any())
+                //        throw new BusinessException("User is already registerd with Mobile-Number: " + model.MobileNumber);
+                //}
 
                 var objDb = new DataAccess.DbModels.UserMaster();
                 objDb.Name = model.Email;
@@ -564,13 +570,16 @@ namespace BusinessCore.Services
                 objDb.CreatedOn = DateTime.Now;
                 objDb.CreatedBy = 1;
                 objDb.IsDeleted = false;
-                objDb.UserType = "OAUTH";
+                objDb.UserType = providerPre + "_OAUTH";
                 objDb.Gender = objDb.ImageId = string.Empty;
 
                 context.UserMasters.Add(objDb);
-
-                context.SaveChanges();
+                pendingChanges = true;
             }
+
+            if (pendingChanges)
+                context.SaveChanges();
+
             model.Roles = new string[] { RoleNames.User.ToString() };
             return model;
         }

@@ -167,6 +167,8 @@ namespace xApp.Services
                     var result = JsonConvert.DeserializeObject<LogInResult>(content);
                     return result.IsValid ? result.AuthToken : string.Empty;
                 }
+                else
+                    handleError(response);
             }
             catch (Exception ex)
             {
