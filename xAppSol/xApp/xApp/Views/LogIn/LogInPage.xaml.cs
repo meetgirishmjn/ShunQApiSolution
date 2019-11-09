@@ -96,7 +96,7 @@ namespace xApp.Views.LogIn
                 if(toastr == null)
                     toastr = DependencyService.Get<IToastr>();
 
-               var res = await CrossFacebookClient.Current.RequestUserDataAsync(new string[] { "email", "first_name",  "last_name" }, new string[] { "email" });
+               var res = await CrossFacebookClient.Current.RequestUserDataAsync(new string[] { "email", "first_name",  "last_name", "id" }, new string[] { "email" });
 
                 if (res.Status != FacebookActionStatus.Completed)
                     throw new Exception("Something went wrong. Check your connection.");
