@@ -303,7 +303,7 @@ namespace WebApi.Controllers
                     Quantity = items.Count,
                     Title = items[0].ProductName,
                     SubTitle = items[0].DiscountText,
-                    MRP = items[0].MRP,
+                    MRP = items.Sum(o=>o.MRP),
                     HasDiscount = items[0].Discount > 0
                 });
             }
