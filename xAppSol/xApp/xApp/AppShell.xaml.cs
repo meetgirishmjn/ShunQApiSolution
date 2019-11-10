@@ -17,6 +17,8 @@ namespace xApp
             Routing.RegisterRoute("storeFilterPage", typeof(Views.Store.FilterPage));
             Routing.RegisterRoute("storeAddressSearchPage", typeof(Views.Store.AddressSearchPage));
             Routing.RegisterRoute("storeRoutePage", typeof(Views.Store.StoreRoutePage));
+            Routing.RegisterRoute("myOrdersPage", typeof(Views.Orders.MyOrdersPage));
+            
             this.BindingContext = AppViewModel.Instance;
         }
 
@@ -52,6 +54,11 @@ namespace xApp
                 var toastr = DependencyService.Get<IToastr>();
                 toastr.ShowError(ex.Message);
             }
+        }
+
+        private async void menuMyOrders_Clicked(object sender, EventArgs e)
+        {
+           //await Current.Navigation.PushAsync(new Views.Orders.MyOrdersPage());
         }
     }
 }

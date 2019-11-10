@@ -460,8 +460,8 @@
                     </StackLayout>
                 </Grid>
             </ScrollView>
-            
-            <StackLayout  Grid.Row="1"  BackgroundColor="{StaticResource Gray-100}" VerticalOptions="FillAndExpand" HorizontalOptions="Fill">
+
+            <StackLayout  IsVisible="{Binding IsNotLoading}" Grid.Row="1"  BackgroundColor="{StaticResource Gray-100}" VerticalOptions="FillAndExpand" HorizontalOptions="Fill">
                 <!--  Place order button  -->
                 <buttons:SfButton IsVisible="{Binding IsCartValid}"
             Margin="5"

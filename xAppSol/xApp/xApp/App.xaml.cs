@@ -93,7 +93,7 @@ namespace xApp
 
         public void GoToPayULaunch(string cartId)
         {
-             MainPage.Navigation.PushAsync( new WebViewPage(cartId));
+             MainPage.Navigation.PushAsync( new PayUPage(cartId));
         }
         public void GoToPaymentSuccessPage(string cartId)
         {
