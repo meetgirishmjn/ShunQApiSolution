@@ -469,7 +469,7 @@ namespace BusinessCore.Services
 
             result.TotalCount = context.ShoppingCarts.Where(o => o.UserId==CurrentUser.Id && o.Status == status).Count();
 
-            var carts = (from sc in context.ShoppingCarts
+            result.Items = (from sc in context.ShoppingCarts
                          join s in context.StoreMasters on sc.StoreId equals s.Id
                          where sc.UserId == CurrentUser.Id && sc.Status==status
                          select
@@ -487,7 +487,7 @@ namespace BusinessCore.Services
 
             result.PageIndex = pageIndex;
             result.PageSize = pageSize;
-            result.CurrentPageCount = carts.Count;
+            result.CurrentPageCount = result.Items.Count;
             result.PageCount = pageCount;
 
             return result;
@@ -550,6 +550,7 @@ namespace BusinessCore.Services
                         OrderDate = voucher.CreatedOn,
                         StoreId = cart.StoreId,
                         StoreName = cart.StoreName,
+                        StoreImage=cart.StoreImage
                     });
                 }
                 else
@@ -562,6 +563,7 @@ namespace BusinessCore.Services
                         Status = "Payment Error",
                         StoreId = cart.StoreId,
                         StoreName = cart.StoreName,
+                        StoreImage = cart.StoreImage
                     });
                 }
             }
