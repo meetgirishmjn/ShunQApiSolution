@@ -121,6 +121,7 @@ namespace xApp.Services
             {
                 this._discardedOrders = value;
                 this.NotifyPropertyChanged();
+                NotifyPropertyChanged(nameof(IsNoRecord2));
             }
         }
 
@@ -177,7 +178,7 @@ namespace xApp.Services
                 if (!IsSuccess)
                     return "Payment not made. Please contact support.";
 
-                return string.Format("{0}:0.00", Amount) + " - " + OrderDate.ToShortDateString();
+                return agoFromNow(OrderDate) + " - " +  string.Format("₹{0:0.00}", Amount);
             }
         }
         public object StatusColor
@@ -188,6 +189,43 @@ namespace xApp.Services
                     return Application.Current.Resources["Green"];
                 else
                     return Application.Current.Resources["Red"];
+            }
+        }
+
+        public string OrderDateAgo
+        {
+            get
+            {
+                return agoFromNow(OrderDate);
+            }
+        }
+
+        private string agoFromNow(DateTime dt)
+        {
+            var dtNow = DateTime.Now;
+            var tspan = dtNow.Subtract(dt);
+
+            //today
+            if (dt.Year == dtNow.Year && dt.Month == dtNow.Month && dt.Day == dtNow.Day)
+            {
+
+                if (tspan.Hours < 1 && tspan.Minutes < 1)
+                    return "just now";
+                else if (tspan.Hours < 1)
+                    return tspan.Minutes + (tspan.Minutes > 1 ? " minutes" : " minute") + " ago";
+                else
+                    return "Today, " + dt.ToString("hh:mm tt");
+            }
+            else
+            {
+                //if yesterday
+                var ys = dtNow.AddDays(-1);
+                if (dt.Year == ys.Year && dt.Month == ys.Month && dt.Day == ys.Day)
+                    return "Yesterday, " + dt.ToString("hh:mm tt");
+                else if (dtNow.Year == dt.Year)
+                    return dt.ToString("MMM dd, hh:mm tt");
+                else
+                    return dt.ToString("dd/MM/yyyy hh:mm tt");
             }
         }
     }

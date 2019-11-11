@@ -132,7 +132,8 @@
                                         Spacing="0"
                                         VerticalOptions="Start">
 
-                                        <!--  Order ID  -->
+                                            
+                                                <!--  Order ID  -->
                                         <Label
                                             Margin="0"
                                             FontFamily="{StaticResource Montserrat-Medium}"
@@ -168,8 +169,8 @@
                                         </border:SfBorder>
 
                                     </StackLayout>
-
-                                </Grid>
+                                            
+                                        </Grid>
                             </DataTemplate>
                         </listView:SfListView.ItemTemplate>
 
@@ -278,7 +279,7 @@
                                             Margin="0"
                                             FontFamily="{StaticResource Montserrat-Medium}"
                                             FontSize="12"
-                                            Text="{Binding OrderQR, StringFormat='Order QR: {0}'}"
+                                            Text="{Binding OrderDateAgo}"
                                             VerticalOptions="Center" />
 
                                                 <!--  Order status  -->

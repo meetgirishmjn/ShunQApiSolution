@@ -22,6 +22,11 @@ namespace BusinessCore.Extensions
             return new DateTime(date.Value.Year, date.Value.Month, date.Value.Day);
         }
 
+        public static DateTime ToIST(this DateTime date)
+        {
+            return TimeZoneInfo.ConvertTimeFromUtc(date, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+        }
+
         public static DateTime? ToSqlDate(this DateTime? date)
         {
             if (!date.HasValue)

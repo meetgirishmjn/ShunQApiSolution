@@ -405,16 +405,18 @@ namespace BusinessCore.Services
 
         public CartVoucher CreateCartVoucher(CartVoucher voucher)
         {
+            var dtNow = DateTime.Now;
             var context = ContextManager.GetContext();
             if (voucher.IsSuccess)
             {
                 var cartDb = context.ShoppingCarts.Where(o => o.Id == voucher.CartId).FirstOrDefault();
                 cartDb.Status = (int)ShoppingCartStatus.Completed;
+                cartDb.UpdatedOn = dtNow;
             }
 
             var vouchDb = new DataAccess.DbModels.PaymentVoucherMaster()
             {
-                CreatedOn = DateTime.Now,
+                CreatedOn = dtNow,
                 CartId = voucher.CartId,
                 PaymentGatewayName = voucher.PaymentGatewayName,
                 GatewayPaymentId = voucher.GatewayPaymentId,
@@ -472,7 +474,8 @@ namespace BusinessCore.Services
             result.Items = (from sc in context.ShoppingCarts
                          join s in context.StoreMasters on sc.StoreId equals s.Id
                          where sc.UserId == CurrentUser.Id && sc.Status==status
-                         select
+                            orderby sc.UpdatedOn descending
+                            select
                          new OrderItem
                          {
                              OrderId = sc.Id,

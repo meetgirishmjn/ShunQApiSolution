@@ -11,6 +11,7 @@ using BusinessCore;
 using Microsoft.AspNetCore.Authorization;
 using BusinessCore.Services.Models;
 using BusinessCore.AppHandlers;
+using BusinessCore.Extensions;
 
 namespace WebApi.Controllers
 {
@@ -379,8 +380,11 @@ namespace WebApi.Controllers
        private void setImage(IEnumerable<OrderItem> items)
         {
             var imageUrl = this.AppConfig.ImageSrcEndpoint;
-           foreach(var o in items)
+            foreach (var o in items)
+            {
                 o.StoreImage = imageUrl + "stores/" + o.StoreImage;
+                o.OrderDate = o.OrderDate.ToIST();
+            }
         }
 
         [HttpPost("order/history")]
@@ -403,11 +407,12 @@ namespace WebApi.Controllers
 
             return result;
         }
-
+        
         [HttpGet("Ver")]
         [AllowAnonymous]
         public VersionViewModel Ver()
         {
+
             var membsership = base.CreateMembershipService();
 
             var dbStatus = "ok";

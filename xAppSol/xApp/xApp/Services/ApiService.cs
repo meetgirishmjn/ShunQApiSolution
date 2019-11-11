@@ -80,7 +80,7 @@ namespace xApp.Services
             return text.Replace("/", "").Replace("\\", "").Replace("&", "");
         }
 
-        private async void handleInternetError(Exception ex)
+        private  void handleInternetError(Exception ex)
         {
             Device.BeginInvokeOnMainThread(() => this.Toastr.ShowError("Internet not reachable. Check connection."));
         }
