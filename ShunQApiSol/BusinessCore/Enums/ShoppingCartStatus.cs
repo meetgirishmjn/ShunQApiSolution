@@ -9,6 +9,7 @@ namespace BusinessCore.Enums
         None=0,
         InProgress=1,
         Discarded=2,
-        Completed=3
+        Completed=3,
+        NotPaid=4
     }
 }

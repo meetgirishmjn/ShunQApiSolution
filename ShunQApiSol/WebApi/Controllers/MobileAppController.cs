@@ -376,6 +376,26 @@ namespace WebApi.Controllers
             return viewModel;
         }
 
+        [HttpPost("order/history")]
+        public PagedItemResult<OrderItem> GetOrderHistory(PagedItemRead option)
+        {
+            var cartService = CreateStoreService();
+
+            var result = cartService.ReadFinishedOrders(option);
+
+            return result;
+        }
+
+        [HttpPost("order/history/discarded")]
+        public PagedItemResult<OrderItem> GetDiscardedOrderHistory(PagedItemRead option)
+        {
+            var cartService = CreateStoreService();
+
+            var result = cartService.ReadDiscardedOrders(option);
+
+            return result;
+        }
+
         [HttpGet("Ver")]
         [AllowAnonymous]
         public VersionViewModel Ver()

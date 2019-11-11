@@ -293,6 +293,7 @@ namespace BusinessCore.Services
                 throw new BusinessException("Shopping-cart does not exist");
 
             objDb.Status = (int)ShoppingCartStatus.Discarded;
+            objDb.UpdatedOn = DateTime.Now;
 
             context.SaveChanges();
         }

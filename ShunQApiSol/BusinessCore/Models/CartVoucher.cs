@@ -10,6 +10,7 @@ namespace BusinessCore.Models
         public string PaymentGatewayName { get; set; }
         public string Status { get; set; }
         public string CartId { get; set; }
+        public float Amount { get; set; }
         public string GatewayResponse { get; set; }
         public string GatewayPaymentId { get; set; }
         public string UserEmail { get; set; }

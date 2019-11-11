@@ -112,6 +112,7 @@ namespace WebApi.Controllers
             var payuMoneyId = "";
             var payURes = "";
             var email = "";
+            float amount =0;
             try
             {
                 //take status for safety
@@ -119,6 +120,7 @@ namespace WebApi.Controllers
                 txnid = Request.Form["txnid"].ToString();
                 payuMoneyId = Request.Form["payuMoneyId"].ToString();
                 email = Request.Form["payuMoneyId"].ToString();
+                float.TryParse( Request.Form["amount"].ToString(),out amount);
                 logger = CreateLogger();
                 //var payURes = new PayUSuccessModel().ReadFrom(Request.Form);
                 payURes = new PayUSuccessModel().ReadAsString(Request.Form);
@@ -143,7 +145,8 @@ namespace WebApi.Controllers
                     Status = status,
                     IsSuccess = status.Equals("success", StringComparison.OrdinalIgnoreCase),
                     UserEmail= email,
-                    HashValidated=hashValidated
+                    Amount= amount,
+                    HashValidated =hashValidated
                 };
                 service.CreateCartVoucher(voucher);
             }

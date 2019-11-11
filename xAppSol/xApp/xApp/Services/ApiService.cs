@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
-using xApp.Models;
+using System.Linq;
 using xApp.ViewModels;
 
 namespace xApp.Services
@@ -572,7 +572,28 @@ namespace xApp.Services
             }
             return null;
         }
-         
+
+        public async Task<OrderHistoryResult> ReadMyOrders(PagedItemRead model)
+        {
+            try
+            {
+                var response = await getHttp().PostAsync(new Uri(mobileV2Url + "order/history"), null);
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    var result = JsonConvert.DeserializeObject<OrderHistoryResult>(content);
+                    return result;
+                }
+                else
+                    handleError(response);
+            }
+            catch (Exception ex)
+            {
+                handleInternetError(ex);
+            }
+            return null;
+        }
+
     }
 
 }

@@ -6,9 +6,6 @@
                xmlns:svg="clr-namespace:xApp.Controls"
              xmlns:core="clr-namespace:Syncfusion.XForms.Core;assembly=Syncfusion.Core.XForms"
              xmlns:button="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
-             xmlns:viewModel="clr-namespace:xApp.ViewModels.ErrorAndEmpty"
-             xmlns:mycart="clr-namespace:xApp.Views.MyCart"
-             xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              mc:Ignorable="d"
              Title="{Binding Title}"
@@ -19,18 +16,64 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <Style x:Key="SfButtonStyle2" TargetType="button:SfButton">
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="TextColor" Value="{DynamicResource Gray-700}" />
+                <Setter Property="FontFamily" Value="Montserrat-Regular" />
+                <Setter Property="FontSize" Value="16" />
+            </Style>
+            <Style
+        x:Key="OptionButtonLabelStyle"
+        BasedOn="{StaticResource LabelStyle}"
+        TargetType="Label">
+                <Setter Property="HorizontalTextAlignment" Value="Center" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+            </Style>
         </ResourceDictionary>
-    </ContentPage.Resources>
 
+   
+    </ContentPage.Resources>
+  
     <ContentPage.Content>
         <StackLayout VerticalOptions="FillAndExpand" >
+            <svg:TitleView Title="" BackgroundColor="{DynamicResource Gray-White}" >
+                <svg:TitleView.TrailingView>
+                    <StackLayout   VerticalOptions="Center" HorizontalOptions="End" Orientation="Horizontal">
+                        <button:SfButton
+                Margin="0"
+                Padding="0"
+                CornerRadius="4"
+                HeightRequest="32"
+                Style="{StaticResource SfButtonStyle2}">
+                            <button:SfButton.Content>
+                                <StackLayout
+                        Padding="8,5,8,6"
+                        Orientation="Horizontal"
+                        Spacing="8"
+                        VerticalOptions="Center">
+                                    <Label
+                           
+                            FontSize="18"
+                           Text="&#xf53c;" FontFamily="{StaticResource FontAwesomeSolid}"
+                            VerticalTextAlignment="End" />
+                                    <Label
+                            FontFamily="{StaticResource Montserrat-SemiBold}"
+                            Style="{StaticResource OptionButtonLabelStyle}"
+                            Text="Checkout"
+                            VerticalTextAlignment="Center" />
+                                </StackLayout>
+                            </button:SfButton.Content>
+                        </button:SfButton>
+                    </StackLayout>
+                </svg:TitleView.TrailingView>
+            </svg:TitleView>
             <ActivityIndicator HeightRequest="50" Margin="10,100,10,10" IsVisible="{Binding IsLoading}" IsRunning="{Binding IsLoading}" BackgroundColor="Transparent" />
 
             <ScrollView VerticalScrollBarVisibility="Never" VerticalOptions="FillAndExpand" >
 
             <!--  Cart Details  -->
                 <Grid 
-                Margin="{OnIdiom Default='0,16,0,0',
+                Margin="{OnIdiom Default='0,0,0,16',
                                  Desktop='16'}"
                 BackgroundColor="{OnIdiom Default={StaticResource Transparent},
                                           Desktop={DynamicResource Gray-White},

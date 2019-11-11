@@ -8,9 +8,12 @@
              xmlns:listView="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
              xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms"
              xmlns:view="clr-namespace:xApp.Views.Orders"
+             xmlns:control="clr-namespace:xApp.Controls"
+             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              mc:Ignorable="d"
               BackgroundColor="{StaticResource Gray-100}"
              Title="My Orders"
+             NavigationPage.HasNavigationBar="False"
              x:Class="xApp.Views.Orders.MyOrdersPage">
 
     <ContentPage.Resources>
@@ -20,31 +23,43 @@
     </ContentPage.Resources>
     
     <ContentPage.Content>
+        <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <Grid HorizontalOptions="FillAndExpand" HeightRequest="60" BackgroundColor="{StaticResource TitleBarBg}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Clicked="btnBack_Clicked"  Text="&#xf30a;" FontFamily="{StaticResource FontAwesomeSolid}" TextColor="White" WidthRequest="60" BackgroundColor="Transparent" FontSize="24"  HorizontalOptions="Start"/>
+                <Label Text="Order History" VerticalTextAlignment="Center" Margin="10,0,0,0"  FontAttributes="Bold"  FontSize="Subtitle" TextColor="White" Grid.Column="1"></Label>
+            </Grid>
         <tabView:SfTabView BackgroundColor="{StaticResource Gray-White}" VisibleHeaderCount="4">
             <tabView:SfTabView.SelectionIndicatorSettings>
                 <tabView:SelectionIndicatorSettings StrokeThickness="3" Color="{StaticResource PrimaryColor}" />
 
             </tabView:SfTabView.SelectionIndicatorSettings>
             <tabView:SfTabItem
-                Title="All Orders"
+                Title="Complete"
                 SelectionColor="{StaticResource PrimaryColor}"
                 TitleFontColor="{StaticResource Gray-700}"
                 TitleFontFamily="{StaticResource Montserrat-Medium}"
                 TitleFontSize="14">
                 <tabView:SfTabItem.Content>
-                    <Grid   HorizontalOptions="CenterAndExpand" >
+                        <Grid   BackgroundColor="{StaticResource Gray-100}" HorizontalOptions="CenterAndExpand" >
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <Label Text="No Records to display"  TextColor="{StaticResource Gray-400}" FontAttributes="Italic"></Label>
+                            <Label Text="No Records to display" IsVisible="{Binding IsNoRecord}" HorizontalOptions="Center" Margin="20" TextColor="{StaticResource Gray-400}" FontAttributes="Italic"></Label>
                     <!--  My Order list  -->
-                    <listView:SfListView
+                    <listView:SfListView Grid.Row="1"
                         x:Name="myOrderList"
                         AutoFitMode="DynamicHeight"
                         BackgroundColor="{StaticResource Gray-100}"
-                        ItemsSource="{Binding OrderDetails}"
+                        ItemsSource="{Binding Orders}"
                         SelectionMode="None"
+                             LoadMoreOption="AutoOnScroll"
+                 LoadMoreCommand="{Binding LoadMoreItemsCommand}"
+                 LoadMoreCommandParameter="{Binding Source={x:Reference myOrderList}}"             
                         TapCommand="{Binding ItemSelectedCommand}"
                         VerticalOptions="Start">
 
@@ -70,7 +85,7 @@
                                     </Grid.ColumnDefinitions>
 
                                     <!--  Product image  -->
-                                    <Image
+                                            <ffimageloading:CachedImage
                                         Grid.Row="0"
                                         Grid.RowSpan="4"
                                         Grid.Column="0"
@@ -78,14 +93,8 @@
                                         Aspect="Fill"
                                         BackgroundColor="{StaticResource Gray-200}"
                                         HeightRequest="80"
-                                        WidthRequest="80">
-                                        <Image.Source>
-                                            <UriImageSource
-                                                CacheValidity="14"
-                                                CachingEnabled="true"
-                                                Uri="{Binding ProductImage}" />
-                                        </Image.Source>
-                                    </Image>
+                                        WidthRequest="80"     Source="{Binding StoreImageUrl}">
+                                    </ffimageloading:CachedImage>
 
                                     <!--  Product name  -->
                                     <Label
@@ -98,7 +107,7 @@
                                         LineBreakMode="TailTruncation"
                                         LineHeight="1.5"
                                         MaxLines="1"
-                                        Text="{Binding Name}"
+                                        Text="{Binding StoreName}"
                                         TextColor="{StaticResource Gray-900}" />
 
                                     <!--  Description label  -->
@@ -110,7 +119,7 @@
                                         FontSize="12"
                                         HorizontalOptions="StartAndExpand"
                                         LineHeight="1.5"
-                                        Text="{Binding Description}"
+                                        Text="{Binding OrderDesc}"
                                         TextColor="{StaticResource Gray-700}" />
 
                                     <StackLayout
@@ -128,7 +137,7 @@
                                             Margin="0"
                                             FontFamily="{StaticResource Montserrat-Medium}"
                                             FontSize="12"
-                                            Text="{Binding OrderID, StringFormat='Order ID: {0}'}"
+                                            Text="{Binding OrderQR, StringFormat='Order QR: {0}'}"
                                             VerticalOptions="Center" />
 
                                         <!--  Order status  -->
@@ -152,7 +161,7 @@
                                                         FontSize="12"
                                                         HorizontalOptions="CenterAndExpand"
                                                         Text="{Binding Status}"
-                                                        TextColor="{Binding Status, Converter={x:StaticResource StringToColorConverter}, ConverterParameter=0}"
+                                                        TextColor="{Binding StatusColor}"
                                                         VerticalOptions="Center" />
                                                 </Grid>
                                             </border:SfBorder.Content>
@@ -171,40 +180,23 @@
             </tabView:SfTabItem>
 
             <tabView:SfTabItem
-                Title="Requested"
+                Title="Discarded"
                 SelectionColor="{StaticResource PrimaryColor}"
                 TitleFontColor="{StaticResource Gray-700}"
                 TitleFontFamily="{StaticResource Montserrat-Medium}"
                 TitleFontSize="14">
                 <tabView:SfTabItem.Content>
-                    <view:MyOrdersView />
-                </tabView:SfTabItem.Content>
+                        <Grid   BackgroundColor="{StaticResource Gray-100}" HorizontalOptions="CenterAndExpand" >
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Label Text="No Records to display" HorizontalOptions="Center" Margin="20" TextColor="{StaticResource Gray-400}" FontAttributes="Italic"></Label>
+                        </Grid>
+                    </tabView:SfTabItem.Content>
             </tabView:SfTabItem>
-
-            <tabView:SfTabItem
-                Title="Complete"
-                SelectionColor="{StaticResource PrimaryColor}"
-                TitleFontColor="{StaticResource Gray-700}"
-                TitleFontFamily="{StaticResource Montserrat-Medium}"
-                TitleFontSize="14">
-                <tabView:SfTabItem.Content>
-                    <view:MyOrdersView />
-                </tabView:SfTabItem.Content>
-            </tabView:SfTabItem>
-
-            <tabView:SfTabItem
-                Title="Cancelled"
-                SelectionColor="{StaticResource PrimaryColor}"
-                TitleFontColor="{StaticResource Gray-700}"
-                TitleFontFamily="{StaticResource Montserrat-Medium}"
-                TitleFontSize="14">
-                <tabView:SfTabItem.Content>
-                    <view:MyOrdersView />
-                </tabView:SfTabItem.Content>
-
-            </tabView:SfTabItem>
-
         </tabView:SfTabView>
+        </StackLayout>
 
     </ContentPage.Content>
 </ContentPage>

@@ -99,6 +99,11 @@ namespace xApp
         {
             Device.BeginInvokeOnMainThread(() => MainPage = new NavigationPage(new PaymentSuccessPage(cartId)));
         }
+
+        public void GotMyOrders()
+        {
+            App.Current.MainPage = new NavigationPage(new Views.Orders.MyOrdersPage());
+        }
         //public void GoToLogIn()
         //{
         //    MainPage = new LoginPage();

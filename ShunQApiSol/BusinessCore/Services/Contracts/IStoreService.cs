@@ -37,5 +37,8 @@ namespace BusinessCore.Services.Contracts
         CartView GetCartView();
         CartVoucher  CreateCartVoucher(CartVoucher voucher);
         CartVoucher GetCartVoucher(string cartId);
+        PagedItemResult<OrderItem> ReadFinishedOrders(PagedItemRead option);
+        PagedItemResult<OrderItem> ReadDiscardedOrders(PagedItemRead option);
     }
+
 }

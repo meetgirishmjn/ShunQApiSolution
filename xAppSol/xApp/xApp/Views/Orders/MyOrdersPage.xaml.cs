@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using xApp.Services;
 
 namespace xApp.Views.Orders
 {
@@ -15,6 +16,23 @@ namespace xApp.Views.Orders
         public MyOrdersPage()
         {
             InitializeComponent();
+            this.BindingContext = new MyOrdersViewModel();
+            Task.Run(() =>
+            {
+                (this.BindingContext as MyOrdersViewModel).OnLoad();
+            });
+        }
+
+
+        protected override bool OnBackButtonPressed()
+        {
+            App.Current.MainPage = new AppShell();
+            return true;
+        }
+
+        private void btnBack_Clicked(object sender, EventArgs e)
+        {
+            App.Current.MainPage = new AppShell();
         }
     }
 }

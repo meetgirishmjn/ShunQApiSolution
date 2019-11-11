@@ -70,12 +70,12 @@ namespace WebApi
                 builder => builder.AllowAnyOrigin().AllowCredentials().AllowAnyMethod().AllowAnyHeader());
             });
 
-            var connection = @"data source=(localdb)\MSSQLLocalDB;Initial Catalog=shunqApi-db;Integrated Security=True;MultipleActiveResultSets=False;Connection Timeout=30;";
+       //     var connection = @"data source=(localdb)\MSSQLLocalDB;Initial Catalog=shunqApi-db;Integrated Security=True;MultipleActiveResultSets=False;Connection Timeout=30;";
 
-            if (isProduction)
-            {
-                connection = @"Server=tcp:shunq-dbserver-dev-v1.database.windows.net,1433;Initial Catalog=shunqApi-db;Persist Security Info=False;User ID=grsadmin;Password=EJBdBpiHJia8FErpu*)OCnTr;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-            }
+        //    if (isProduction)
+         //   {
+          var      connection = @"Server=tcp:shunq-dbserver-dev-v1.database.windows.net,1433;Initial Catalog=shunqApi-db;Persist Security Info=False;User ID=grsadmin;Password=EJBdBpiHJia8FErpu*)OCnTr;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+         //   }
 
             if (isProduction)
             {

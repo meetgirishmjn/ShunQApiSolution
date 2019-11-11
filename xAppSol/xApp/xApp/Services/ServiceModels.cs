@@ -348,4 +348,35 @@ namespace xApp.Services
         public string UserName { get; set; }
         public string FullName { get; set; }
     }
+
+    public class PagedItemRead
+    {
+        public int PageIndex { get; set; }
+        public int PageSize { get; set; }
+        public string SearchKey { get; set; }
+        public string SortBy { get; set; }
+        public string SortDir { get; set; }
+    }
+
+    public class OrderHistoryResult
+    {
+        public int PageIndex { get; set; }
+        public int PageSize { get; set; }
+        public int CurrentPageCount { get; set; }
+        public int PageCount { get; set; }
+        public int TotalCount { get; set; }
+
+        public List<OrderItem> Items { get; set; }
+    }
+    public partial class OrderItem
+    {
+        public string OrderId { get; set; }
+        public string OrderQR { get; set; }
+        public string Status { get; set; }
+        public bool IsSuccess { get; set; }
+        public int StoreId { get; set; }
+        public string StoreName { get; set; }
+        public DateTime OrderDate { get; set; }
+        public float Amount { get; set; }
+    }
 }
