@@ -505,7 +505,7 @@ namespace BusinessCore.Services
             var status = (int)ShoppingCartStatus.InProgress;
             var status2 = (int)ShoppingCartStatus.Discarded;
 
-            result.TotalCount = context.ShoppingCarts.Where(o => o.UserId== CurrentUser.Id && o.Status != status).Count();
+            result.TotalCount = context.ShoppingCarts.Where(o => o.UserId== CurrentUser.Id && o.Status != status && o.Status != status2).Count();
 
             var carts= (from sc in context.ShoppingCarts
                        join s in context.StoreMasters on sc.StoreId equals s.Id

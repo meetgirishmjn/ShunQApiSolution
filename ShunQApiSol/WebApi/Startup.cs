@@ -41,12 +41,12 @@ namespace WebApi
 
             HostingEnvironment = env;
         }
-    
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             var isProduction = HostingEnvironment.IsProduction();
-           
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             //inject IOptions<T>
@@ -70,12 +70,12 @@ namespace WebApi
                 builder => builder.AllowAnyOrigin().AllowCredentials().AllowAnyMethod().AllowAnyHeader());
             });
 
-       //     var connection = @"data source=(localdb)\MSSQLLocalDB;Initial Catalog=shunqApi-db;Integrated Security=True;MultipleActiveResultSets=False;Connection Timeout=30;";
+            var connection = @"data source=(localdb)\MSSQLLocalDB;Initial Catalog=shunqApi-db;Integrated Security=True;MultipleActiveResultSets=False;Connection Timeout=30;";
 
-        //    if (isProduction)
-         //   {
-          var      connection = @"Server=tcp:shunq-dbserver-dev-v1.database.windows.net,1433;Initial Catalog=shunqApi-db;Persist Security Info=False;User ID=grsadmin;Password=EJBdBpiHJia8FErpu*)OCnTr;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
-         //   }
+            if (isProduction)
+            {
+                connection = @"Server=tcp:shunq-dbserver-dev-v1.database.windows.net,1433;Initial Catalog=shunqApi-db;Persist Security Info=False;User ID=grsadmin;Password=EJBdBpiHJia8FErpu*)OCnTr;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            }
 
             if (isProduction)
             {
@@ -84,9 +84,9 @@ namespace WebApi
                 services.AddSingleton(typeof(ILoggerManager), logger);
             }
             else
-                services.AddSingleton(typeof(ILoggerManager), new MyLocalLogService(AppContext.BaseDirectory+"shunq-logs.txt"));
+                services.AddSingleton(typeof(ILoggerManager), new MyLocalLogService(AppContext.BaseDirectory + "shunq-logs.txt"));
 
-            services.AddSingleton(typeof(ICacheManager), new RedisCacheClient(appConfig.RedisConnectionString,appConfig.CachingEnabled));
+            services.AddSingleton(typeof(ICacheManager), new RedisCacheClient(appConfig.RedisConnectionString, appConfig.CachingEnabled));
             services.AddSingleton(typeof(IAdminService), new AdminService(connection));
             services.AddTransient(typeof(IMembershipService), typeof(MembershipService));
             services.AddTransient(typeof(IStoreService), typeof(StoreService));
