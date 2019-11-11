@@ -479,7 +479,8 @@ namespace BusinessCore.Services
                              OrderDate = sc.UpdatedOn.HasValue ? sc.UpdatedOn.Value : sc.CreatedOn,
                              Status = "Discarded",
                              StoreId = sc.StoreId,
-                             StoreName = s.Name
+                             StoreName = s.Name,
+                             StoreImage = s.Image
                          }).ToList();
 
             var pageCount = (int)Math.Ceiling((double)result.TotalCount / pageSize);
@@ -516,6 +517,7 @@ namespace BusinessCore.Services
                            cartId = sc.Id,
                            sc.StoreId,
                            StoreName=s.Name,
+                           StoreImage = s.Image
                        }).Skip(pageSize * (pageIndex - 1)).Take(pageSize).ToList();
 
             var cartIds = carts.Select(o => o.cartId).ToArray();

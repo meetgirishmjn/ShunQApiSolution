@@ -376,13 +376,20 @@ namespace WebApi.Controllers
             return viewModel;
         }
 
+       private void setImage(IEnumerable<OrderItem> items)
+        {
+            var imageUrl = this.AppConfig.ImageSrcEndpoint;
+           foreach(var o in items)
+                o.StoreImage = imageUrl + "stores/" + o.StoreImage;
+        }
+
         [HttpPost("order/history")]
         public PagedItemResult<OrderItem> GetOrderHistory(PagedItemRead option)
         {
             var cartService = CreateStoreService();
 
             var result = cartService.ReadFinishedOrders(option);
-
+            setImage(result.Items);
             return result;
         }
 
@@ -392,6 +399,7 @@ namespace WebApi.Controllers
             var cartService = CreateStoreService();
 
             var result = cartService.ReadDiscardedOrders(option);
+            setImage(result.Items);
 
             return result;
         }

@@ -32,7 +32,7 @@
                 <Button Clicked="btnBack_Clicked"  Text="&#xf30a;" FontFamily="{StaticResource FontAwesomeSolid}" TextColor="White" WidthRequest="60" BackgroundColor="Transparent" FontSize="24"  HorizontalOptions="Start"/>
                 <Label Text="Order History" VerticalTextAlignment="Center" Margin="10,0,0,0"  FontAttributes="Bold"  FontSize="Subtitle" TextColor="White" Grid.Column="1"></Label>
             </Grid>
-        <tabView:SfTabView BackgroundColor="{StaticResource Gray-White}" VisibleHeaderCount="4">
+        <tabView:SfTabView SelectionChanged="SfTabView_SelectionChanged" BackgroundColor="{StaticResource Gray-White}" VisibleHeaderCount="4">
             <tabView:SfTabView.SelectionIndicatorSettings>
                 <tabView:SelectionIndicatorSettings StrokeThickness="3" Color="{StaticResource PrimaryColor}" />
 
@@ -93,7 +93,7 @@
                                         Aspect="Fill"
                                         BackgroundColor="{StaticResource Gray-200}"
                                         HeightRequest="80"
-                                        WidthRequest="80"     Source="{Binding StoreImageUrl}">
+                                        WidthRequest="80"     Source="{Binding StoreImage}">
                                     </ffimageloading:CachedImage>
 
                                     <!--  Product name  -->
@@ -191,7 +191,130 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
-                            <Label Text="No Records to display" HorizontalOptions="Center" Margin="20" TextColor="{StaticResource Gray-400}" FontAttributes="Italic"></Label>
+                            <Label Text="No Records to display" IsVisible="{Binding IsNoRecord2}" HorizontalOptions="Center" Margin="20" TextColor="{StaticResource Gray-400}" FontAttributes="Italic"></Label>
+                            <!--  My Order list  -->
+                            <listView:SfListView Grid.Row="1"
+                        x:Name="myDiscardedOrderList"
+                        AutoFitMode="DynamicHeight"
+                        BackgroundColor="{StaticResource Gray-100}"
+                        ItemsSource="{Binding DiscardedOrders}"
+                        SelectionMode="None"
+                             LoadMoreOption="AutoOnScroll"
+                 LoadMoreCommand="{Binding LoadMoreDiscardedItemsCommand}"
+                 LoadMoreCommandParameter="{Binding Source={x:Reference myDiscardedOrderList}}"             
+                        VerticalOptions="Start">
+
+                                <listView:SfListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid
+                                    Margin="0,16,0,0"
+                                    BackgroundColor="{StaticResource Gray-White}"
+                                    ColumnSpacing="0"
+                                    RowSpacing="0">
+
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="{OnIdiom Default=1, Phone=0}" />
+                                            </Grid.RowDefinitions>
+
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <!--  Product image  -->
+                                            <ffimageloading:CachedImage
+                                        Grid.Row="0"
+                                        Grid.RowSpan="4"
+                                        Grid.Column="0"
+                                        Margin="16,8,16,16"
+                                        Aspect="Fill"
+                                        BackgroundColor="{StaticResource Gray-200}"
+                                        HeightRequest="80"
+                                        WidthRequest="80"     Source="{Binding StoreImage}">
+                                            </ffimageloading:CachedImage>
+
+                                            <!--  Product name  -->
+                                            <Label
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        Margin="0,8,0,4"
+                                        FontFamily="{StaticResource Montserrat-SemiBold}"
+                                        FontSize="14"
+                                        HorizontalOptions="StartAndExpand"
+                                        LineBreakMode="TailTruncation"
+                                        LineHeight="1.5"
+                                        MaxLines="1"
+                                        Text="{Binding StoreName}"
+                                        TextColor="{StaticResource Gray-900}" />
+
+                                            <!--  Description label  -->
+                                            <Label
+                                        Grid.Row="1"
+                                        Grid.Column="1"
+                                        Margin="0,0,0,8"
+                                        FontFamily="{StaticResource Montserrat-Medium}"
+                                        FontSize="12"
+                                        HorizontalOptions="StartAndExpand"
+                                        LineHeight="1.5"
+                                        Text="{Binding OrderDesc}"
+                                        TextColor="{StaticResource Gray-700}" />
+
+                                            <StackLayout
+                                        Grid.Row="2"
+                                        Grid.Column="1"
+                                        Margin="0,4,0,0"
+                                        Padding="0"
+                                        HorizontalOptions="Start"
+                                        Orientation="Horizontal"
+                                        Spacing="0"
+                                        VerticalOptions="Start">
+
+                                                <!--  Order ID  -->
+                                                <Label
+                                            Margin="0"
+                                            FontFamily="{StaticResource Montserrat-Medium}"
+                                            FontSize="12"
+                                            Text="{Binding OrderQR, StringFormat='Order QR: {0}'}"
+                                            VerticalOptions="Center" />
+
+                                                <!--  Order status  -->
+
+                                                <border:SfBorder
+                                            Margin="8,0"
+                                            Padding="0"
+                                            BorderColor="Transparent"
+                                            CornerRadius="12"
+                                            HasShadow="False"
+                                            HeightRequest="24"
+                                            HorizontalOptions="Start"
+                                            WidthRequest="96">
+
+                                                    <border:SfBorder.Content>
+                                                        <Grid>
+                                                            <BoxView BackgroundColor="{Binding Status, Converter={x:StaticResource StringToColorConverter}, ConverterParameter=0}" Opacity="0.07" />
+
+                                                            <Label
+                                                        FontFamily="{StaticResource Montserrat-SemiBold}"
+                                                        FontSize="12"
+                                                        HorizontalOptions="CenterAndExpand"
+                                                        Text="{Binding Status}"
+                                                        TextColor="{Binding StatusColor}"
+                                                        VerticalOptions="Center" />
+                                                        </Grid>
+                                                    </border:SfBorder.Content>
+                                                </border:SfBorder>
+
+                                            </StackLayout>
+
+                                        </Grid>
+                                    </DataTemplate>
+                                </listView:SfListView.ItemTemplate>
+
+                            </listView:SfListView>
                         </Grid>
                     </tabView:SfTabItem.Content>
             </tabView:SfTabItem>

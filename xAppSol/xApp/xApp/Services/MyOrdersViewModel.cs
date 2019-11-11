@@ -10,7 +10,7 @@ namespace xApp.Services
 {
     public class MyOrdersViewModel : BaseVM
     {
-        public ObservableCollection<OrderItem> _orders;
+        public ObservableCollection<OrderItem> _orders=new ObservableCollection<OrderItem> ();
         public ObservableCollection<OrderItem> Orders
         {
             get
@@ -59,7 +59,7 @@ namespace xApp.Services
         }
 
         const int PAGE_SIZE = 20;
-        public void OnLoad(int pageIndex = 1)
+        public async void OnLoad(int pageIndex = 1)
         {
             this.IsLoading = true;
             var model = new PagedItemRead
@@ -68,16 +68,17 @@ namespace xApp.Services
                 PageSize = PAGE_SIZE
             };
             PageIndex = 1;
-            var vm = new ApiService().ReadMyOrders(model);
+            var vm =await new ApiService().ReadMyOrders(model);
             if (vm != null)
             {
 
-                this.Orders = new ObservableCollection<OrderItem>(vm.Result.Items);
+                this.Orders = new ObservableCollection<OrderItem>(vm.Items);
             }
             this.IsLoading = false;
         }
-
+     
         public int PageIndex=1;
+   
         public ICommand LoadMoreItemsCommand => new Command<object>(async (object obj) =>
         {
             var listView = obj as Syncfusion.ListView.XForms.SfListView;
@@ -104,7 +105,68 @@ namespace xApp.Services
             //Disables LoadMoreIndicator after adding the items.
             listView.IsBusy = false;
         });
-       
+
+        #region "TAB2"
+        public int PageIndexDiscarded = 1;
+        public bool IsLoading2 { get; set; }
+        public bool IsNoRecord2 { get { return !IsLoading2 && this.DiscardedOrders.Count == 0; } }
+        public ObservableCollection<OrderItem> _discardedOrders=new ObservableCollection<OrderItem> ();
+        public ObservableCollection<OrderItem> DiscardedOrders
+        {
+            get
+            {
+                return _discardedOrders;
+            }
+            set
+            {
+                this._discardedOrders = value;
+                this.NotifyPropertyChanged();
+            }
+        }
+
+        public async void LoadDiscarded()
+        {
+            IsLoading2 = true;
+            var model = new PagedItemRead
+            {
+                PageIndex = PageIndexDiscarded,
+                PageSize = PAGE_SIZE
+            };
+            PageIndexDiscarded = 1;
+            var vm =await new ApiService().ReadDiscardedOrders(model);
+            if (vm != null)
+            {
+                this.DiscardedOrders = new ObservableCollection<OrderItem>(vm.Items);
+            }
+            IsLoading2 = false;
+        }
+        public ICommand LoadMoreDiscardedItemsCommand => new Command<object>(async (object obj) =>
+        {
+            var listView = obj as Syncfusion.ListView.XForms.SfListView;
+            //Enables LoadMoreIndicator to the LoadMoreTemplate.
+            listView.IsBusy = true;
+            var delaytask = Task.Delay(2000);
+
+            var model = new PagedItemRead
+            {
+                PageIndex = PageIndexDiscarded + 1,
+                PageSize = PAGE_SIZE
+            };
+
+            var apitask = new ApiService().ReadDiscardedOrders(model);
+            await Task.WhenAll(delaytask, apitask);
+            var vm = apitask.Result;
+            if (vm != null)
+            {
+                PageIndexDiscarded = vm.PageIndex;
+                vm.Items.ForEach(o => DiscardedOrders.Add(o));
+            }
+            //Disables LoadMoreIndicator after adding the items.
+            listView.IsBusy = false;
+        });
+
+        #endregion "TAB2"
+
     }
 
     public partial class OrderItem
