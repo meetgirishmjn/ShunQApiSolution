@@ -4,13 +4,20 @@ using System.Net;
 using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
+using BusinessCore.AppHandlers.Contracts;
 using BusinessCore.Services.Contracts;
 using BusinessCore.Services.Models;
 
 namespace BusinessCore.Services
 {
     public class GmailGateway : IEmailGateway
-    {
+    {  
+        ILoggerManager  logger;
+        public GmailGateway(ILoggerManager logger)
+        {
+            this.logger = logger;
+        }
+
         public async Task<MailSendResult> SendMail(string to, string subject, string body)
         {
             var result = new MailSendResult();
@@ -35,9 +42,11 @@ namespace BusinessCore.Services
             }
             catch (Exception ex)
             {
+                logger.LogError("SendMail Exception: " + ex.Message);
                 result.Status = ex.Message;
                 result.HasError = true;
             }
+
             return result;
         }
     }
