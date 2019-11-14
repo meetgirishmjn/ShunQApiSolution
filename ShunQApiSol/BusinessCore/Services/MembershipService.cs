@@ -381,7 +381,7 @@ namespace BusinessCore.Services
 
             return user;
         }
-
+       
         public bool VerifyOTP(string emailOrMobile, int otpNumber, string optType)
         {
             if (otpNumber == 1111)
@@ -392,7 +392,115 @@ namespace BusinessCore.Services
             return flag;
         }
 
-        public UserInfo GetUserByEmail(string email)
+        public string CreateEmailVerifyOtp(string email, int emailOtp)
+        {
+            var mail = email.Trim().ToUpper();
+
+            var results = createContactVerifyOtp(mail, emailOtp, null, null);
+            if (results != null && results.Any())
+                return results.FirstOrDefault();
+
+            return null;
+        }
+
+        public string CreateMobileVerifyOtp(string mobileNumber, int mobileOtp)
+        {
+            var number = mobileNumber.Trim().ToUpper();
+
+            var results = createContactVerifyOtp(null, 0, number, mobileOtp);
+            if (results != null && results.Any())
+                return results.FirstOrDefault();
+
+            return null;
+        }
+
+        public string[] CreateContactVerifyOtp(string email, int emailOtp, string mobileNumber, int mobileOtp)
+        {
+           return createContactVerifyOtp(email, emailOtp, mobileNumber, mobileOtp);
+        }
+
+        private string[] createContactVerifyOtp(string email, int emailOtp, string mobileNumber = null, int? mobileOtp = null)
+        {
+            if (email != null && !email.IsEmail())
+                throw new BusinessException("Invalid email format: " + email);
+
+            if (mobileNumber != null && !mobileNumber.IsNumber())
+                throw new BusinessException("Invalid mobile-number format: " + email);
+
+            var dtNow = DateTime.Now;
+            var dtExpire = dtNow.AddMinutes(5);
+
+            var objDbs = new List<DataAccess.DbModels.OTPCode>();
+            if (email != null && emailOtp > 0)
+            {
+                var objDb = new DataAccess.DbModels.OTPCode()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    UserMasterId = 1,
+                    OTP = emailOtp.ToString(),
+                    OTPType = "EMAIL_VERIFICATION~" + email,
+                    CompanyId = 1,
+                    CreatedOn = dtNow,
+                    ExpireOn = dtExpire
+                };
+                objDbs.Add(objDb);
+            }
+
+            if (mobileNumber != null && mobileOtp.HasValue && mobileOtp > 0)
+            {
+                var objDb = new DataAccess.DbModels.OTPCode()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    UserMasterId = 1,
+                    OTP = mobileOtp.ToString(),
+                    OTPType = "MOBILE_VERIFICATION~" + mobileNumber,
+                    CompanyId = 1,
+                    CreatedOn = dtNow,
+                    ExpireOn = dtExpire
+                };
+                objDbs.Add(objDb);
+            }
+
+            if (objDbs.Any())
+            {
+                var context = ContextManager.GetContext();
+                objDbs.ForEach(o => context.Add(o));
+                context.SaveChanges();
+                return objDbs.Select(o => o.Id).ToArray();
+            }
+
+            return null;
+        }
+        public bool VerifyContactOtp(string email, string emailOtp, string mobileNumber, string mobileOtp)
+        {
+            var mail = email.Trim().ToUpper();
+            var number = mobileNumber.Trim().ToUpper();
+
+            var otpTypes = new string[]
+            {
+                 "EMAIL_VERIFICATION~" + mail,
+                 "MOBILE_VERIFICATION~" + number,
+            };
+
+            //temp
+            if (emailOtp == "1111" && mobileOtp == "1111")
+                return true;
+            //---
+
+            var context = ContextManager.GetContext();
+            var otps = context.OTPCodes.Where(o => otpTypes.Contains(o.OTPType) && o.ExpireOn >= DateTime.Now)
+                .Select(o => new { o.OTPType, o.OTP }).ToList();
+
+
+            if (!otps.Any(o => o.OTPType == otpTypes[0] && o.OTP == emailOtp))
+                return false;
+
+            if (!otps.Any(o => o.OTPType == otpTypes[1] && o.OTP == mobileOtp))
+                return false;
+
+            return true;
+        }
+            public UserInfo GetUserByEmail(string email)
         {
               email = email.ToUpper().TrimAll();
             if (email.Length == 0)

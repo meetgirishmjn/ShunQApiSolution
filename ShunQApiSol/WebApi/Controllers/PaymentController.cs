@@ -42,64 +42,64 @@ namespace WebApi.Controllers
             }
         }
 
-        [HttpGet("app/payu/init")]
-        [AllowAnonymous]
-        public InitPayUViewModel  InitPayU()
-        {
-            var service = CreateStoreService();
-            var tokens = this.AppConfig.MerchangePaymentTokenTest.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+        //[HttpGet("app/payu/init")]
+        //[AllowAnonymous]
+        //public InitPayUViewModel  InitPayU()
+        //{
+        //    var service = CreateStoreService();
+        //    var tokens = this.AppConfig.MerchangePaymentTokenTest.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
 
-            var cart = service.GetCart();
-            cart = new ShoppingCart();
-            if (cart == null)
-                throw new BusinessException("Cart does not exist");
+        //    var cart = service.GetCart();
+        //    cart = new ShoppingCart();
+        //    if (cart == null)
+        //        throw new BusinessException("Cart does not exist");
 
-            cart.NetAmount = 2867.65F;
-            if (cart.NetAmount <= 0)
-                throw new BusinessException("Invalid net-amount in Cart");
+        //    cart.NetAmount = 2867.65F;
+        //    if (cart.NetAmount <= 0)
+        //        throw new BusinessException("Invalid net-amount in Cart");
 
-            var salt = tokens[1];
+        //    var salt = tokens[1];
 
-            cart.Id = "ciererewgrsmjn";
-            CurrentUser = new UserInfo
-            {
-                FullName = "Girish Mahajan",
-                MobileNumber = "8871384762",
-                Email = "meetgirish.mjn@gmail.com",
-            };
+        //    cart.Id = "ciererewgrsmjn";
+        //    CurrentUser = new UserInfo
+        //    {
+        //        FullName = "Girish Mahajan",
+        //        MobileNumber = "8871384762",
+        //        Email = "meetgirish.mjn@gmail.com",
+        //    };
 
-            var vm = new InitPayUViewModel()
-            {
-                IsDebug = true,
-                Key = tokens[0],
-                Amount = cart.NetAmount,
-                Email = CurrentUser.Email,
-                Phone = CurrentUser.MobileNumber,
-                firstName = CurrentUser.FullName,
-                TxnId = cart.Id,
-                ProductName = "Purchase at " + "cart.StoreName",
-                udf1 = "u1",
-                udf2 = "u2",
-                udf3 = "u3",
-                udf4 = "u4",
-                udf5 = "u5",
-                surl = AppConfig.CoreApiEndpoint + "merchant/pay/callback/success",
-                furl = AppConfig.CoreApiEndpoint + "merchant/pay/callback/failure",
-                ColorCode = "#0173CF",
-                LogoUrl = AppConfig.ImageSrcEndpoint + "app/logo_light_sm.png"
-            };
+        //    var vm = new InitPayUViewModel()
+        //    {
+        //        IsDebug = true,
+        //        Key = tokens[0],
+        //        Amount = cart.NetAmount,
+        //        Email = CurrentUser.Email,
+        //        Phone = CurrentUser.MobileNumber,
+        //        firstName = CurrentUser.FullName,
+        //        TxnId = cart.Id,
+        //        ProductName = "Purchase at " + "cart.StoreName",
+        //        udf1 = "u1",
+        //        udf2 = "u2",
+        //        udf3 = "u3",
+        //        udf4 = "u4",
+        //        udf5 = "u5",
+        //        surl = AppConfig.CoreApiEndpoint + "merchant/pay/callback/success",
+        //        furl = AppConfig.CoreApiEndpoint + "merchant/pay/callback/failure",
+        //        ColorCode = "#0173CF",
+        //        LogoUrl = AppConfig.ImageSrcEndpoint + "app/logo_light_sm.png"
+        //    };
 
-            string shaIn = $"{vm.Key}|{vm.TxnId}|{vm.Amount}|{vm.ProductName}|{vm.firstName}|{vm.Email}|{vm.udf1}|{vm.udf2}|{vm.udf3}|{vm.udf4}|{vm.udf5}||||||{salt}";
+        //    string shaIn = $"{vm.Key}|{vm.TxnId}|{vm.Amount}|{vm.ProductName}|{vm.firstName}|{vm.Email}|{vm.udf1}|{vm.udf2}|{vm.udf3}|{vm.udf4}|{vm.udf5}||||||{salt}";
             
-            var shaBytes = Encoding.UTF8.GetBytes(shaIn);
-            using (var shaM = new System.Security.Cryptography.SHA512Managed())
-            {
-                var hash = shaM.ComputeHash(shaBytes);
-                vm.HashCode = getHashString(hash);
-            }
+        //    var shaBytes = Encoding.UTF8.GetBytes(shaIn);
+        //    using (var shaM = new System.Security.Cryptography.SHA512Managed())
+        //    {
+        //        var hash = shaM.ComputeHash(shaBytes);
+        //        vm.HashCode = getHashString(hash);
+        //    }
 
-            return vm;
-        }
+        //    return vm;
+        //}
 
         [HttpPost("pay/callback/success")]
         [AllowAnonymous]
@@ -283,7 +283,7 @@ namespace WebApi.Controllers
             };
         }
 
-        public InitPayUViewModel InitPayU(string authToken)
+        private InitPayUViewModel InitPayU(string authToken)
         {
             var service = CreateStoreService();
             var user = CreateMembershipService().GetUserSession(authToken);
