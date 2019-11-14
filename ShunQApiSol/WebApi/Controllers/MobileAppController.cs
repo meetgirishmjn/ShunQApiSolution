@@ -442,7 +442,7 @@ namespace WebApi.Controllers
                 CacheStatus= cacheStatus,
                 Status = "ok",
                 Version = "1.0.1",
-                VersionDesc= "appV3",
+                VersionDesc= "email",
                 AppConfig =this.AppConfig 
                 //OS=new
                 //{

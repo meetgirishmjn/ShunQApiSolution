@@ -23,11 +23,11 @@ namespace BusinessCore.Services
             var result = new MailSendResult();
             try
             {
-                using (var client = new SmtpClient("smtp.gmail.com"))
+                using (var client = new SmtpClient("in-v3.mailjet.com"))
                 {
 
                     client.UseDefaultCredentials = false;
-                    client.Credentials = new NetworkCredential("Shunq.CareServices.v1@gmail.com", "shunq@V12019");
+                    client.Credentials = new NetworkCredential("83ca57e7fe4276b4c774aba98008ec63", "0f084858b779085d4e9fa365d17934ff");
                     client.EnableSsl = true;
                     client.Port = 587;
                     MailMessage mailMessage = new MailMessage();
