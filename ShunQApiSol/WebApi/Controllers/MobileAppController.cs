@@ -441,15 +441,9 @@ namespace WebApi.Controllers
                 DbStatus = dbStatus,
                 CacheStatus= cacheStatus,
                 Status = "ok",
-                Version = "1.0.1",
-                VersionDesc= "email",
+                Version = "1.2.0",
+                VersionDesc= "cart add issue",
                 AppConfig =this.AppConfig 
-                //OS=new
-                //{
-                //    OSArchitecture = System.Runtime.InteropServices.RuntimeInformation.OSArchitecture.ToString(),
-                //    System.Runtime.InteropServices.RuntimeInformation.OSDescription,
-                //    System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription,
-                //}
             };
         }
     }

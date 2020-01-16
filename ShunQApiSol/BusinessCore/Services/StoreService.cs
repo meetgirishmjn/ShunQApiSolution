@@ -300,6 +300,9 @@ namespace BusinessCore.Services
 
             var cartId = context.ShoppingCarts.Where(o => o.CartDeviceId == arg.CartDeviceId).Select(o => o.Id).FirstOrDefault();
 
+            if (string.IsNullOrEmpty(cartId))
+                throw new BusinessException("Shopping cart doesn't exist for Cart-Device-Id: " + arg.CartDeviceId);
+
             var id = Guid.NewGuid().ToString();
             var objDb = new DataAccess.DbModels.CartDeviceLog
             {
