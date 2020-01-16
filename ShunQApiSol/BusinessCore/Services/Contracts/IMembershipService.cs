@@ -31,5 +31,7 @@ namespace BusinessCore.Services.Contracts
         string CreateEmailVerifyOtp(string email, int emailOtp);
         string[] CreateContactVerifyOtp(string email, int emailOtp, string mobileNumber, int mobileOtp);
         bool VerifyContactOtp(string email, string emailOtp, string mobileNumber, string mobileOtp);
+
+        List<ValidationResult> ValidateCreateUser(UserInfo model, string password);
     }
 }

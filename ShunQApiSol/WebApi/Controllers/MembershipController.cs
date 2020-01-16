@@ -296,5 +296,21 @@ namespace WebApi.Controllers
 
             return Ok(ids);
         }
+
+        [HttpPost("app/register/validate")]
+        [AllowAnonymous]
+        public List<ValidationResult> ValidateRegisterUser(RegisterUserModel model)
+        {
+            var membership = base.CreateMembershipService();
+            var valResults = membership.ValidateCreateUser(new UserInfo
+            {
+                FirstName=model.FirstName,
+                LastName=model.LastName,
+                MobileNumber=model.MobileNumber,
+                Email=model.Email
+            }, model.Password);
+
+            return valResults;
+        }
     }
 }

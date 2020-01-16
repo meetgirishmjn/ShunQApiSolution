@@ -231,6 +231,15 @@ namespace BusinessCore.Services
             return model;
         }
 
+        public List<ValidationResult> ValidateCreateUser(UserInfo model, string password)
+        {
+            var valResults1 = validatePassword(password);
+            var valResults2 = validate(model, false);
+
+            valResults1.AddRange(valResults2);
+
+            return valResults1;
+        }
 
         public UserInfo CreateUser(UserInfo model,string password)
         {
@@ -427,10 +436,28 @@ namespace BusinessCore.Services
             if (mobileNumber != null && !mobileNumber.IsNumber())
                 throw new BusinessException("Invalid mobile-number format: " + email);
 
+            email = email.Trim();
+            mobileNumber = mobileNumber.Trim();
+
             var dtNow = DateTime.Now;
             var dtExpire = dtNow.AddMinutes(5);
 
+            var context = ContextManager.GetContext();
             var objDbs = new List<DataAccess.DbModels.OTPCode>();
+
+            if (email != null || mobileNumber != null)
+            {
+                var existDb = context.UserMasters.Where(o => o.Email == email || o.MobileNumber == mobileNumber).Select(o => new { o.Email, o.MobileNumber }).FirstOrDefault();
+                if (existDb != null)
+                {
+                    if (existDb.Email.Equals(email, StringComparison.OrdinalIgnoreCase))
+                        throw new BusinessException("Email already registered.");
+
+                    if (existDb.MobileNumber == mobileNumber)
+                        throw new BusinessException("Mobile number already registered.");
+                }
+            }
+
             if (email != null && emailOtp > 0)
             {
                 var objDb = new DataAccess.DbModels.OTPCode()
@@ -463,7 +490,6 @@ namespace BusinessCore.Services
 
             if (objDbs.Any())
             {
-                var context = ContextManager.GetContext();
                 objDbs.ForEach(o => context.Add(o));
                 context.SaveChanges();
                 return objDbs.Select(o => o.Id).ToArray();
