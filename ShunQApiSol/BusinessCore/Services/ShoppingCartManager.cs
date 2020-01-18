@@ -41,11 +41,6 @@ namespace BusinessCore.Services
             var context = ContextManager.GetContext();
             var status = (int)ShoppingCartStatus.InProgress;
 
-            //temp
-            if (cartDeviceId == "temp")
-                cartDeviceId = context.CartDeviceMasters.Where(o => o.IsActive).Select(o => o.CartDeviceId).FirstOrDefault();
-            //--
-
             cartDeviceId = cartDeviceId.TrimAll();
             if(cartDeviceId.Length==0)
                 throw new BusinessException("Invalid cart-device-id.");

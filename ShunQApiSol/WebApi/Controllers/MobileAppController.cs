@@ -161,9 +161,6 @@ namespace WebApi.Controllers
             var cartDeviceId = code;
             var service = CreateStoreService();
 
-            //temp
-            cartDeviceId = "temp";
-
             var cart  = service.StartShopping(cartDeviceId);
             var storeVm = GetStoreByCode(cart.StoreCode);
 
