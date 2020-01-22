@@ -439,7 +439,7 @@ namespace WebApi.Controllers
                 CacheStatus= cacheStatus,
                 Status = "ok",
                 Version = "1.2.0",
-                VersionDesc= "cart add issue",
+                VersionDesc= "opt disabled",
                 AppConfig =this.AppConfig 
             };
         }

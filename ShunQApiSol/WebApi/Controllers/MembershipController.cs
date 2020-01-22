@@ -123,9 +123,9 @@ namespace WebApi.Controllers
             if (deviceId.TrimAll().Length == 0)
                 throw new BusinessException("Invalid Device Id.");
 
-            var otpSuccess = membership.VerifyContactOtp(model.Email, model.EmailOTP, model.MobileNumber, model.MobileOTP);
-            if(!otpSuccess)
-                throw new BusinessException("OPT verification failed. Please check Email or Mobile OTP.");
+            //var otpSuccess = membership.VerifyContactOtp(model.Email, model.EmailOTP, model.MobileNumber, model.MobileOTP);
+            //if(!otpSuccess)
+            //    throw new BusinessException("OPT verification failed. Please check Email or Mobile OTP.");
 
             var user = new UserInfo
             {
