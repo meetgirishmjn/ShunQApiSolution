@@ -42,7 +42,7 @@
                 <Label Text="&#xf689;"  FontSize="20" Margin="0,10,0,0"  FontFamily="{StaticResource FontAwesomeSolid}" />
                 <Entry Placeholder="Search for store Address"
                                Text="{Binding PickupText}"
-                               FontSize="16"
+                               FontSize="16" MaxLength="50"
                                x:Name="searchEntry"
                                ClassId="origin"
                                FontAttributes="Italic"

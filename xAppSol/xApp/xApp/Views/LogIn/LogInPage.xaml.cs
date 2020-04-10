@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Plugin.FacebookClient;
+using System;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
@@ -85,18 +86,53 @@ namespace xApp.Views.LogIn
             (App.Current as App).GoToForgotPwd();
         }
 
-        private void onFbLoginCommand(object sender, EventArgs e)
+
+        const string FB_BTN_TEXT = "Login with Facebook";
+        private async void onFbLoginCommand(object sender, EventArgs e)
         {
             try
             {
+                
                 if(toastr == null)
                     toastr = DependencyService.Get<IToastr>();
 
-                toastr.ShowInfo("Feature not implemented");
+               var res = await CrossFacebookClient.Current.RequestUserDataAsync(new string[] { "email", "first_name",  "last_name", "id" }, new string[] { "email" });
+
+                if (res.Status != FacebookActionStatus.Completed)
+                    throw new Exception("Something went wrong. Check your connection.");
+                
+                var result = Newtonsoft.Json.JsonConvert.DeserializeObject<FbResult>(res.Data);
+
+                if(result.email==null|| result.email.Contains("@")==false)
+                    throw new Exception("Something went wrong. Check your connection.");
+
+                btnFbLogin.IsEnabled = false;
+                lblFbLogin.Text = "Please wait...";
+
+                var model = new LoginOauthModel
+                {
+                    Email = result.email,
+                    FullName = result.first_name + " " + result.last_name,
+                    ProfileId = result.id,
+                    ProviderName = "FACEBOOK"
+                };
+
+                var token = await new ApiService().LogInSocial(model);
+                if (!string.IsNullOrEmpty(token))
+                {
+                    await SecureStorage.SetAsync("oAuthToken", token);
+                    App.Current.MainPage = new AppLaunch();
+                }
+
             }
             catch (Exception ex)
             {
                  toastr.ShowError(ex.Message);
+            }
+            finally
+            {
+                btnFbLogin.IsEnabled = true;
+                lblFbLogin.Text = FB_BTN_TEXT;
             }
         }
 
@@ -115,5 +151,13 @@ namespace xApp.Views.LogIn
             }
         }
 
+    }
+
+    public class FbResult
+    {
+        public string email { get; set; }
+        public string first_name { get; set; }
+        public string last_name { get; set; }
+        public string id { get; set; }
     }
 }

@@ -283,7 +283,7 @@
                                     </Grid.RowDefinitions>
                                     <BoxView Color="#D1DBE1"/>
                                     <StackLayout  Orientation="Horizontal" Margin="15,3,3,10" HorizontalOptions="FillAndExpand"  Grid.Row="1">
-                                        <Entry Text="{Binding VoucherCodeEntry}" Placeholder="Enter voucher code" WidthRequest="200" PlaceholderColor="Gray" FontSize="12" />
+                                        <Entry Text="{Binding VoucherCodeEntry}" Placeholder="Enter voucher code" MaxLength="50" WidthRequest="200" PlaceholderColor="Gray" FontSize="12" />
                                         <Button Text="Apply" Command="{Binding ApplyVoucherCommand}" WidthRequest="50" BorderRadius="10" BorderColor="Gray" BorderWidth="1" Padding="0" BackgroundColor="#FFFFFF" FontSize="Micro"/>
                                     </StackLayout>
                                     <BoxView Color="#CEB180" Grid.Row="2"/>
@@ -460,8 +460,8 @@
                     </StackLayout>
                 </Grid>
             </ScrollView>
-            
-            <StackLayout  Grid.Row="1"  BackgroundColor="{StaticResource Gray-100}" VerticalOptions="FillAndExpand" HorizontalOptions="Fill">
+
+            <StackLayout  IsVisible="{Binding IsNotLoading}" Grid.Row="1"  BackgroundColor="{StaticResource Gray-100}" VerticalOptions="FillAndExpand" HorizontalOptions="Fill">
                 <!--  Place order button  -->
                 <buttons:SfButton IsVisible="{Binding IsCartValid}"
             Margin="5"

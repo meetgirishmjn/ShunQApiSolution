@@ -37,7 +37,7 @@ namespace WebApi.Controllers
             if (appId.TrimAll().Length == 0)
                 throw new BusinessException("Invalid App Source.");
 
-            if (deviceId.TrimAll().Length==0)
+            if (deviceId.TrimAll().Length == 0)
                 throw new BusinessException("Invalid Device Id.");
             var membership = base.CreateMembershipService();
 
@@ -54,7 +54,7 @@ namespace WebApi.Controllers
             }
 
             result.AuthToken = new TokenManager(membership).CreateToken(user.Name, user.Roles);
-            
+
             membership.CreateSession(model.UserName, result.AuthToken, deviceId);
 
             result.IsValid = true;
@@ -123,6 +123,10 @@ namespace WebApi.Controllers
             if (deviceId.TrimAll().Length == 0)
                 throw new BusinessException("Invalid Device Id.");
 
+            //var otpSuccess = membership.VerifyContactOtp(model.Email, model.EmailOTP, model.MobileNumber, model.MobileOTP);
+            //if(!otpSuccess)
+            //    throw new BusinessException("OPT verification failed. Please check Email or Mobile OTP.");
+
             var user = new UserInfo
             {
                 FirstName = model.FirstName,
@@ -131,7 +135,7 @@ namespace WebApi.Controllers
                 Email = model.Email,
             };
 
-           user = membership.CreateUser(user, model.Password);
+            user = membership.CreateUser(user, model.Password);
 
             viewModel.FullName = user.FullName;
             viewModel.Email = user.Email;
@@ -169,6 +173,11 @@ namespace WebApi.Controllers
         }
 
         static Random rand = new Random();
+        private int newOTP()
+        {
+            return rand.Next(10001, 99999);
+        }
+
         [HttpPost("password/otp/{userName}")]
         [AllowAnonymous]
         public ActionResult CreateOTP(string userName)
@@ -182,16 +191,42 @@ namespace WebApi.Controllers
             if (!isValid)
                 throw new BusinessException("Invalid App Source (App-Id).");
 
-            var otp = rand.Next(10001, 99999);
+            var otp = newOTP();
 
             var user = membership.CreateOtp(userName, otp, "CHANGE_PASSWORD");
             if (user == null)
                 throw new BusinessException("Invalid User-Name: " + userName);
 
-            CreateEmailService().SendMail(user.Email, "ShunQ-App OTP for your password recovery", "Dear " + user.FullName + ", The One Time Passcode (OT) for your password recorvery is <br/>" + otp + "</br>");
+            CreateEmailService().SendMail(user.Email, "ShunQ-App OTP for your password recovery", "Dear " + user.FullName + ", The One Time Passcode (OTP) for your password recorvery is <br/>" + otp + "</br>");
 
             return Ok();
         }
+
+        //[HttpPost("verification/otp")]
+        //[AllowAnonymous]
+        //public ActionResult CreateOTP(EmailOtpModel model)
+        //{
+
+        //    var appId = base.ReadAppId();
+
+        //    var membership = base.CreateMembershipService();
+
+        //    var isValid = membership.ValidateApp(appId);
+        //    if (!isValid)
+        //        throw new BusinessException("Invalid App Source (App-Id).");
+
+        //    var otp = rand.Next(10001, 99999);
+
+        //    var user = membership.ce(userName, otp, "CHANGE_PASSWORD");
+        //    if (user == null)
+        //        throw new BusinessException("Invalid User-Name: " + userName);
+
+        //    CreateEmailService().SendMail(user.Email, "ShunQ-App OTP for your password recovery", "Dear " + user.FullName + ", The One Time Passcode (OT) for your password recorvery is <br/>" + otp + "</br>");
+
+        //    return Ok();
+        //}
+
+
 
         [HttpPost("change/password")]
         [AllowAnonymous]
@@ -205,13 +240,77 @@ namespace WebApi.Controllers
             if (!isValid)
                 throw new BusinessException("Invalid App Source (App-Id).");
 
-            var flag=membership.ChangePassword(model.UserName, model.Password, model.OTP);
-            if(!flag)
+            var flag = membership.ChangePassword(model.UserName, model.Password, model.OTP);
+            if (!flag)
                 throw new BusinessException("Failed to change Password.");
 
             return Ok();
         }
 
 
+        [HttpPost("app/register/send/otp/email/{email}")]
+        [AllowAnonymous]
+        public ActionResult SendEmailOTP(string email)
+        {
+            var membership = base.CreateMembershipService();
+            var otp = newOTP();
+            var id = membership.CreateEmailVerifyOtp(email, otp);
+            if (string.IsNullOrEmpty(id))
+                throw new BusinessException("Failed to send otp.");
+
+            Task.Run(() => CreateEmailService().SendMail(email, "ShunQ-App OTP for email verification ", "The One Time Passcode (OTP) for email verification is <br/><b>" + otp + "</b></br>"));
+
+            return Ok(id);
+        }
+
+        [HttpPost("app/register/send/otp/mobile/{mobileNumber}")]
+        [AllowAnonymous]
+        public ActionResult SendMobileOTP(string mobileNumber)
+        {
+
+            var membership = base.CreateMembershipService();
+            var otp = newOTP();
+            var id = membership.CreateMobileVerifyOtp(mobileNumber, otp);
+            if (string.IsNullOrEmpty(id))
+                throw new BusinessException("Failed to send otp.");
+
+            Task.Run(() => CreateSMSService().SendSms(mobileNumber, otp.ToString()));
+
+            return Ok(id);
+        }
+
+        [HttpPost("app/register/send/otp/email/{email}/mobile/{mobileNumber}")]
+        [AllowAnonymous]
+        public ActionResult SendEmailMobileOTP(string email, string mobileNumber)
+        {
+            var membership = base.CreateMembershipService();
+            var otp = newOTP();
+            var otp2 = newOTP();
+            var ids = membership.CreateContactVerifyOtp(email, otp, mobileNumber, otp2);
+
+            if (ids == null || !ids.Any())
+                throw new BusinessException("Failed to send otp.");
+
+            Task.Run(() => CreateEmailService().SendMail(email, "ShunQ-App OTP for email verification ", "The One Time Passcode (OTP) for email verification is <br/><b>" + otp + "</b></br>"));
+            Task.Run(() => CreateSMSService().SendSms(mobileNumber, otp2.ToString()));
+
+            return Ok(ids);
+        }
+
+        [HttpPost("app/register/validate")]
+        [AllowAnonymous]
+        public List<ValidationResult> ValidateRegisterUser(RegisterUserModel model)
+        {
+            var membership = base.CreateMembershipService();
+            var valResults = membership.ValidateCreateUser(new UserInfo
+            {
+                FirstName=model.FirstName,
+                LastName=model.LastName,
+                MobileNumber=model.MobileNumber,
+                Email=model.Email
+            }, model.Password);
+
+            return valResults;
+        }
     }
 }

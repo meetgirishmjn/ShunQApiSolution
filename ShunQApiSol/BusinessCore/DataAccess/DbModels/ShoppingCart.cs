@@ -22,5 +22,7 @@ namespace BusinessCore.DataAccess.DbModels
         public DateTime? UpdatedOn { get; set; }
         public ICollection<ShoppingCartItem> Items { get; set; }
         public ICollection<CartVoucher> Vouchers { get; set; }
+
+        public CartDeviceMaster CartDeviceMaster { get; set; }
     }
 }

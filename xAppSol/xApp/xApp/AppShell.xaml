@@ -51,7 +51,7 @@
         </DataTemplate>
     </Shell.FlyoutHeaderTemplate>
 
-    <MenuItem Text="My Orders" IconImageSource="order.png" />
+    <MenuItem Clicked="menuMyOrders_Clicked" Text="My Orders" IconImageSource="order.png" />
     <MenuItem Text="About Us" IconImageSource="aboutus.png"/>
 
 

@@ -70,6 +70,10 @@ namespace BusinessCore.AppHandlers
         {
             return CreateService<IEmailGateway>();
         }
+        protected ISmsGateway CreateSMSService()
+        {
+            return CreateService<ISmsGateway>();
+        }
 
         protected T CreateService<T>()
         {

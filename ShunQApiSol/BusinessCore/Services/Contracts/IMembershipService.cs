@@ -27,5 +27,11 @@ namespace BusinessCore.Services.Contracts
         bool ChangePassword(string userName, string newPassword, int otp);
         UserInfo CreateOtp(string emailOrMobile, int otpNumber, string optType);
         bool VerifyOTP(string emailOrMobile, int otpNumber, string optType);
+        string CreateMobileVerifyOtp(string mobileNumber, int mobileOtp);
+        string CreateEmailVerifyOtp(string email, int emailOtp);
+        string[] CreateContactVerifyOtp(string email, int emailOtp, string mobileNumber, int mobileOtp);
+        bool VerifyContactOtp(string email, string emailOtp, string mobileNumber, string mobileOtp);
+
+        List<ValidationResult> ValidateCreateUser(UserInfo model, string password);
     }
 }

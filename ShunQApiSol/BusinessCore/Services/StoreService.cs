@@ -266,7 +266,10 @@ namespace BusinessCore.Services
             validateCartDeviceEventArg(arg);
 
             var cartId = context.ShoppingCarts.Where(o => o.CartDeviceId == arg.CartDeviceId).Select(o => o.Id).FirstOrDefault();
-         
+
+            if (string.IsNullOrEmpty(cartId))
+                throw new BusinessException("Shopping cart doesn't exist for Cart-Device-Id: " + arg.CartDeviceId);
+
             var id = Guid.NewGuid().ToString();
             var objDb = new DataAccess.DbModels.CartDeviceLog
             {
@@ -299,6 +302,9 @@ namespace BusinessCore.Services
             validateCartDeviceEventArg(arg);
 
             var cartId = context.ShoppingCarts.Where(o => o.CartDeviceId == arg.CartDeviceId).Select(o => o.Id).FirstOrDefault();
+
+            if (string.IsNullOrEmpty(cartId))
+                throw new BusinessException("Shopping cart doesn't exist for Cart-Device-Id: " + arg.CartDeviceId);
 
             var id = Guid.NewGuid().ToString();
             var objDb = new DataAccess.DbModels.CartDeviceLog
@@ -405,16 +411,18 @@ namespace BusinessCore.Services
 
         public CartVoucher CreateCartVoucher(CartVoucher voucher)
         {
+            var dtNow = DateTime.Now;
             var context = ContextManager.GetContext();
             if (voucher.IsSuccess)
             {
                 var cartDb = context.ShoppingCarts.Where(o => o.Id == voucher.CartId).FirstOrDefault();
                 cartDb.Status = (int)ShoppingCartStatus.Completed;
+                cartDb.UpdatedOn = dtNow;
             }
 
             var vouchDb = new DataAccess.DbModels.PaymentVoucherMaster()
             {
-                CreatedOn = DateTime.Now,
+                CreatedOn = dtNow,
                 CartId = voucher.CartId,
                 PaymentGatewayName = voucher.PaymentGatewayName,
                 GatewayPaymentId = voucher.GatewayPaymentId,
@@ -422,6 +430,7 @@ namespace BusinessCore.Services
                 IsSuccess = voucher.IsSuccess,
                 GatewayResponse = voucher.GatewayResponse,
                 UserName = voucher.UserEmail,
+                Amount=voucher.Amount,
                 HashValidation=voucher.HashValidated
             };
 
@@ -451,6 +460,130 @@ namespace BusinessCore.Services
                 Status = vouchDb.Status,
                 UserEmail = vouchDb.UserName
             };
+            return result;
+        }
+
+
+        public PagedItemResult<OrderItem> ReadDiscardedOrders(PagedItemRead option)
+        {
+            var result = new PagedItemResult<OrderItem>();
+
+            var pageIndex = option.PageIndex <= 0 ? 1 : option.PageIndex;
+            var pageSize = option.PageSize < 10 ? 10 : option.PageSize;
+
+            var status = (int)ShoppingCartStatus.Discarded;
+
+            var context = ContextManager.GetContext();
+
+            result.TotalCount = context.ShoppingCarts.Where(o => o.UserId==CurrentUser.Id && o.Status == status).Count();
+
+            result.Items = (from sc in context.ShoppingCarts
+                         join s in context.StoreMasters on sc.StoreId equals s.Id
+                         where sc.UserId == CurrentUser.Id && sc.Status==status
+                            orderby sc.UpdatedOn descending
+                            select
+                         new OrderItem
+                         {
+                             OrderId = sc.Id,
+                             OrderDate = sc.UpdatedOn.HasValue ? sc.UpdatedOn.Value : sc.CreatedOn,
+                             Status = "Discarded",
+                             StoreId = sc.StoreId,
+                             StoreName = s.Name,
+                             StoreImage = s.Image
+                         }).ToList();
+
+            var pageCount = (int)Math.Ceiling((double)result.TotalCount / pageSize);
+
+            result.PageIndex = pageIndex;
+            result.PageSize = pageSize;
+            result.CurrentPageCount = result.Items.Count;
+            result.PageCount = pageCount;
+
+            return result;
+        }
+
+
+        public PagedItemResult<OrderItem> ReadFinishedOrders(PagedItemRead option)
+        {
+            var result = new PagedItemResult<OrderItem>();
+
+            var pageIndex = option.PageIndex <= 0 ? 1 : option.PageIndex;
+            var pageSize = option.PageSize < 10 ? 10 : option.PageSize;
+
+            var context = ContextManager.GetContext();
+
+            var status = (int)ShoppingCartStatus.InProgress;
+            var status2 = (int)ShoppingCartStatus.Discarded;
+
+            result.TotalCount = context.ShoppingCarts.Where(o => o.UserId== CurrentUser.Id && o.Status != status && o.Status != status2).Count();
+
+            var carts= (from sc in context.ShoppingCarts
+                       join s in context.StoreMasters on sc.StoreId equals s.Id
+                       where sc.UserId == CurrentUser.Id && sc.Status != status && sc.Status!=status2
+                        orderby sc.CreatedOn descending
+                       select new
+                       {
+                           cartId = sc.Id,
+                           sc.StoreId,
+                           StoreName=s.Name,
+                           StoreImage = s.Image
+                       }).Skip(pageSize * (pageIndex - 1)).Take(pageSize).ToList();
+
+            var cartIds = carts.Select(o => o.cartId).ToArray();
+
+            var vlookpup = context.PaymentVoucherMasters.Where(o => cartIds.Contains(o.CartId)).Select(o => new
+            {
+                o.Id,
+                o.CartId,
+                o.IsSuccess,
+                o.Status,
+                o.Amount,
+                o.CreatedOn
+            }).ToLookup(o => o.CartId);
+
+            var coder = new IdToCodeConverter();
+
+            result.Items = new List<OrderItem>();
+            foreach (var cart in carts)
+            {
+                if (vlookpup.Contains(cart.cartId))
+                {
+                    var voucher = vlookpup[cart.cartId].FirstOrDefault();
+                    result.Items.Add(new OrderItem
+                    {
+                        OrderId = cart.cartId,
+                        OrderQR = coder.ToCode(voucher.Id),
+                        Amount = voucher.Amount,
+                        IsSuccess = voucher.IsSuccess,
+                        Status = voucher.Status,
+                        OrderDate = voucher.CreatedOn,
+                        StoreId = cart.StoreId,
+                        StoreName = cart.StoreName,
+                        StoreImage=cart.StoreImage
+                    });
+                }
+                else
+                {
+                    //payment error
+                    result.Items.Add(new OrderItem
+                    {
+                        OrderId = cart.cartId,
+                        IsSuccess = false,
+                        Status = "Payment Error",
+                        StoreId = cart.StoreId,
+                        StoreName = cart.StoreName,
+                        StoreImage = cart.StoreImage
+                    });
+                }
+            }
+
+            var pageCount = (int)Math.Ceiling((double)result.TotalCount / pageSize);
+
+            result.PageIndex = pageIndex;
+            result.PageSize = pageSize;
+            result.CurrentPageCount = carts.Count;
+            result.PageCount = pageCount;
+
             return result;
         }
     }

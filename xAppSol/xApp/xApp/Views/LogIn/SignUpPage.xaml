@@ -73,14 +73,14 @@
                         <border:SfBorder BorderColor="{Binding Source={x:Reference NameEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=0}" Style="{StaticResource SfBorderStyle}">
                             <control:BorderlessEntry
                                 x:Name="NameEntry"
-                                Placeholder="Name"
+                                Placeholder="Name" MaxLength="250"
                                 Style="{StaticResource EntryStyle}"
                                 Text="{Binding FullName}" />
                         </border:SfBorder>
 
                         <border:SfBorder BorderColor="{Binding Source={x:Reference NameEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=0}" Style="{StaticResource SfBorderStyle}">
                             <control:BorderlessEntry
-                                Placeholder="Mobile"
+                                Placeholder="Mobile" MaxLength="20"
                                 Style="{StaticResource EntryStyle}"
                                 Keyboard="Numeric"
                                 Text="{Binding MobileNumber}" />
@@ -88,7 +88,7 @@
 
                         <border:SfBorder BorderColor="{Binding Source={x:Reference NameEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=0}" Style="{StaticResource SfBorderStyle}">
                             <control:BorderlessEntry
-                                Placeholder="Email"
+                                Placeholder="Email" MaxLength="250"
                                 Style="{StaticResource EntryStyle}"
                                 Keyboard="Email"
                                 Text="{Binding Email}" />
@@ -98,7 +98,7 @@
                         <border:SfBorder BorderColor="{Binding Source={x:Reference PasswordEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=0}" Style="{StaticResource SfBorderStyle}">
                             <control:BorderlessEntry
                                 x:Name="PasswordEntry"
-                                IsPassword="true"
+                                IsPassword="true" MaxLength="50"
                                 Placeholder="Password"
                                 Style="{StaticResource EntryStyle}"
                                 Text="{Binding Password}" />
@@ -108,7 +108,7 @@
                         <border:SfBorder BorderColor="{Binding Source={x:Reference ConfirmPasswordEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=0}" Style="{StaticResource SfBorderStyle}">
                             <control:BorderlessEntry
                                 x:Name="ConfirmPasswordEntry"
-                                IsPassword="true"
+                                IsPassword="true" MaxLength="50"
                                 Placeholder="Confirm Password"
                                 Style="{StaticResource EntryStyle}"
                                 Text="{Binding RePassword}" />

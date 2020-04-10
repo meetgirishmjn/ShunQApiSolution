@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="Plugin.FacebookClient" Version="2.1.16-beta" />
     <PackageReference Include="SkiaSharp.Extended" Version="1.60.0" />
     <PackageReference Include="SkiaSharp.Svg" Version="1.60.0" />
     <PackageReference Include="SkiaSharp.Views.Forms" Version="1.68.0" />
@@ -71,9 +72,6 @@
     <EmbeddedResource Update="Views\CheckoutPages\PaymentSuccessPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\CheckoutPages\PayUPage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
     <EmbeddedResource Update="Views\CheckoutPages\Styles.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
@@ -107,6 +105,12 @@
     <EmbeddedResource Update="Views\MyCart\Styles.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Views\Orders\MyOrdersPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Orders\MyOrdersView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\StoreShop\Styles.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
@@ -122,7 +126,7 @@
     <EmbeddedResource Update="Views\Store\Styles.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\WebViewPage.xaml">
+    <EmbeddedResource Update="Views\CheckoutPages\PayUPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
@@ -139,6 +143,9 @@
     </Compile>
     <Compile Update="Views\Store\AddressSearchPage.xaml.cs">
       <DependentUpon>AddressSearchPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\CheckoutPages\PayUPage.xaml.cs">
+      <DependentUpon>PayUPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 </Project>

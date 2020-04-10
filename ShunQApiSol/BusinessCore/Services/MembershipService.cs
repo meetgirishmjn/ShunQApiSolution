@@ -231,6 +231,15 @@ namespace BusinessCore.Services
             return model;
         }
 
+        public List<ValidationResult> ValidateCreateUser(UserInfo model, string password)
+        {
+            var valResults1 = validatePassword(password);
+            var valResults2 = validate(model, false);
+
+            valResults1.AddRange(valResults2);
+
+            return valResults1;
+        }
 
         public UserInfo CreateUser(UserInfo model,string password)
         {
@@ -381,7 +390,7 @@ namespace BusinessCore.Services
 
             return user;
         }
-
+       
         public bool VerifyOTP(string emailOrMobile, int otpNumber, string optType)
         {
             if (otpNumber == 1111)
@@ -392,7 +401,132 @@ namespace BusinessCore.Services
             return flag;
         }
 
-        public UserInfo GetUserByEmail(string email)
+        public string CreateEmailVerifyOtp(string email, int emailOtp)
+        {
+            var mail = email.Trim().ToUpper();
+
+            var results = createContactVerifyOtp(mail, emailOtp, null, null);
+            if (results != null && results.Any())
+                return results.FirstOrDefault();
+
+            return null;
+        }
+
+        public string CreateMobileVerifyOtp(string mobileNumber, int mobileOtp)
+        {
+            var number = mobileNumber.Trim().ToUpper();
+
+            var results = createContactVerifyOtp(null, 0, number, mobileOtp);
+            if (results != null && results.Any())
+                return results.FirstOrDefault();
+
+            return null;
+        }
+
+        public string[] CreateContactVerifyOtp(string email, int emailOtp, string mobileNumber, int mobileOtp)
+        {
+           return createContactVerifyOtp(email, emailOtp, mobileNumber, mobileOtp);
+        }
+
+        private string[] createContactVerifyOtp(string email, int emailOtp, string mobileNumber = null, int? mobileOtp = null)
+        {
+            if (email != null && !email.IsEmail())
+                throw new BusinessException("Invalid email format: " + email);
+
+            if (mobileNumber != null && !mobileNumber.IsNumber())
+                throw new BusinessException("Invalid mobile-number format: " + email);
+
+            email = email.Trim();
+            mobileNumber = mobileNumber.Trim();
+
+            var dtNow = DateTime.Now;
+            var dtExpire = dtNow.AddMinutes(5);
+
+            var context = ContextManager.GetContext();
+            var objDbs = new List<DataAccess.DbModels.OTPCode>();
+
+            if (email != null || mobileNumber != null)
+            {
+                var existDb = context.UserMasters.Where(o => o.Email == email || o.MobileNumber == mobileNumber).Select(o => new { o.Email, o.MobileNumber }).FirstOrDefault();
+                if (existDb != null)
+                {
+                    if (existDb.Email.Equals(email, StringComparison.OrdinalIgnoreCase))
+                        throw new BusinessException("Email already registered.");
+
+                    if (existDb.MobileNumber == mobileNumber)
+                        throw new BusinessException("Mobile number already registered.");
+                }
+            }
+
+            if (email != null && emailOtp > 0)
+            {
+                var objDb = new DataAccess.DbModels.OTPCode()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    UserMasterId = 1,
+                    OTP = emailOtp.ToString(),
+                    OTPType = "EMAIL_VERIFICATION~" + email,
+                    CompanyId = 1,
+                    CreatedOn = dtNow,
+                    ExpireOn = dtExpire
+                };
+                objDbs.Add(objDb);
+            }
+
+            if (mobileNumber != null && mobileOtp.HasValue && mobileOtp > 0)
+            {
+                var objDb = new DataAccess.DbModels.OTPCode()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    UserMasterId = 1,
+                    OTP = mobileOtp.ToString(),
+                    OTPType = "MOBILE_VERIFICATION~" + mobileNumber,
+                    CompanyId = 1,
+                    CreatedOn = dtNow,
+                    ExpireOn = dtExpire
+                };
+                objDbs.Add(objDb);
+            }
+
+            if (objDbs.Any())
+            {
+                objDbs.ForEach(o => context.Add(o));
+                context.SaveChanges();
+                return objDbs.Select(o => o.Id).ToArray();
+            }
+
+            return null;
+        }
+        public bool VerifyContactOtp(string email, string emailOtp, string mobileNumber, string mobileOtp)
+        {
+            var mail = email.Trim().ToUpper();
+            var number = mobileNumber.Trim().ToUpper();
+
+            var otpTypes = new string[]
+            {
+                 "EMAIL_VERIFICATION~" + mail,
+                 "MOBILE_VERIFICATION~" + number,
+            };
+
+            //temp
+            if (emailOtp == "1111" && mobileOtp == "1111")
+                return true;
+            //---
+
+            var context = ContextManager.GetContext();
+            var otps = context.OTPCodes.Where(o => otpTypes.Contains(o.OTPType) && o.ExpireOn >= DateTime.Now)
+                .Select(o => new { o.OTPType, o.OTP }).ToList();
+
+
+            if (!otps.Any(o => o.OTPType == otpTypes[0] && o.OTP == emailOtp))
+                return false;
+
+            if (!otps.Any(o => o.OTPType == otpTypes[1] && o.OTP == mobileOtp))
+                return false;
+
+            return true;
+        }
+            public UserInfo GetUserByEmail(string email)
         {
               email = email.ToUpper().TrimAll();
             if (email.Length == 0)
@@ -502,15 +636,15 @@ namespace BusinessCore.Services
         {
             var providerName = model.OAuthProvider.TrimAll().ToUpper();
             model.Email = model.Email.TrimAll().ToUpper();
-            model.MobileNumber = model.MobileNumber.TrimAll();
+            model.MobileNumber = string.Empty;
 
             if (!VALID_OAUTH_PROVIDERS.Contains(providerName))
                 throw new BusinessException("Invalid OAuth Provider " + model.OAuthProvider + ". Must be one of these: " + string.Join(",", VALID_OAUTH_PROVIDERS));
 
-            if(model.Id.Length==0)
+            if (model.Id.Length == 0)
                 throw new BusinessException("Id can not be empty");
 
-            if (model.Email.Length==0)
+            if (model.Email.Length == 0)
                 throw new BusinessException("Email can not be empty");
 
             if (!model.Email.IsEmail())
@@ -520,17 +654,17 @@ namespace BusinessCore.Services
 
             var context = ContextManager.GetContext();
 
-            var uniqueId = providerPre + "@" + model.Id;
-
             var modelDb = (from o in context.UserMasterOAuths
-                           where o.Id == uniqueId 
+                           where o.Id == providerPre + "_" + model.Id
                            select o).SingleOrDefault();
+
+            var pendingChanges = false;
             if (modelDb == null)
             {
                 modelDb = new DataAccess.DbModels.UserMasterOAuth()
                 {
-                    Id = uniqueId,
-                    Name = model.Id,
+                    Id = providerPre + "_" + model.Id,
+                    Name = model.Email,
                     Email = model.Email,
                     EmailVerified = true,
                     MobileNumber = model.MobileNumber,
@@ -542,17 +676,21 @@ namespace BusinessCore.Services
                     Gender = string.Empty,
                     ImageId = string.Empty,
                 };
-
                 context.UserMasterOAuths.Add(modelDb);
+                pendingChanges = true;
+            }
+            var emailExists = context.UserMasters.Where(o => o.Email.ToUpper() == model.Email).Any();
 
-                if (context.UserMasters.Where(o => o.Email.ToUpper() == model.Email).Any())
-                    throw new BusinessException("User is already registerd with Email: " + model.Email);
+            if (!emailExists)
+            {
 
-                if (model.MobileNumber.IsMobileNumber())
-                {
-                    if (context.UserMasters.Where(o => o.MobileNumber.ToUpper() == model.MobileNumber).Any())
-                        throw new BusinessException("User is already registerd with Mobile-Number: " + model.MobileNumber);
-                }
+                //throw new BusinessException("User is already registerd with Email: " + model.Email);
+
+                //if (model.MobileNumber.IsMobileNumber())
+                //{
+                //    if (context.UserMasters.Where(o => o.MobileNumber.ToUpper() == model.MobileNumber).Any())
+                //        throw new BusinessException("User is already registerd with Mobile-Number: " + model.MobileNumber);
+                //}
 
                 var objDb = new DataAccess.DbModels.UserMaster();
                 objDb.Name = model.Email;
@@ -566,13 +704,16 @@ namespace BusinessCore.Services
                 objDb.CreatedOn = DateTime.Now;
                 objDb.CreatedBy = 1;
                 objDb.IsDeleted = false;
-                objDb.UserType = "OAUTH";
+                objDb.UserType = providerPre + "_OAUTH";
                 objDb.Gender = objDb.ImageId = string.Empty;
 
                 context.UserMasters.Add(objDb);
-
-                context.SaveChanges();
+                pendingChanges = true;
             }
+
+            if (pendingChanges)
+                context.SaveChanges();
+
             model.Roles = new string[] { RoleNames.User.ToString() };
             return model;
         }

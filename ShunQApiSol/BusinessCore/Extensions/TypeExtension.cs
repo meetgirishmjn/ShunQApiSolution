@@ -22,6 +22,11 @@ namespace BusinessCore.Extensions
             return new DateTime(date.Value.Year, date.Value.Month, date.Value.Day);
         }
 
+        public static DateTime ToIST(this DateTime date)
+        {
+            return TimeZoneInfo.ConvertTimeFromUtc(date, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+        }
+
         public static DateTime? ToSqlDate(this DateTime? date)
         {
             if (!date.HasValue)
@@ -133,6 +138,9 @@ namespace BusinessCore.Extensions
         public static bool IsMobileNumber(this string str)
         {
             if (str == null)
+                return false;
+
+            if (str.Trim().Length==0)
                 return false;
 
             if (str.Length < 10)

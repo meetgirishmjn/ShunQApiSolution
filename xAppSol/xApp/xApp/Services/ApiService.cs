@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
-using xApp.Models;
+using System.Linq;
 using xApp.ViewModels;
 
 namespace xApp.Services
@@ -80,7 +80,7 @@ namespace xApp.Services
             return text.Replace("/", "").Replace("\\", "").Replace("&", "");
         }
 
-        private async void handleInternetError(Exception ex)
+        private  void handleInternetError(Exception ex)
         {
             Device.BeginInvokeOnMainThread(() => this.Toastr.ShowError("Internet not reachable. Check connection."));
         }
@@ -150,6 +150,32 @@ namespace xApp.Services
             return string.Empty;
         }
 
+        public async Task<string> LogInSocial(LoginOauthModel model)
+        {
+            try
+            {
+                string data = JsonConvert.SerializeObject(model);
+                HttpContent reqData = new StringContent(data, Encoding.UTF8, "application/json");
+
+                client.DefaultRequestHeaders.Add("app-id", AppId);
+                client.DefaultRequestHeaders.Add("device-id", DeviceId);
+
+                var response = await client.PostAsync(new Uri(membershipUrl + "app/oauth/login"), reqData);
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    var result = JsonConvert.DeserializeObject<LogInResult>(content);
+                    return result.IsValid ? result.AuthToken : string.Empty;
+                }
+                else
+                    handleError(response);
+            }
+            catch (Exception ex)
+            {
+                handleInternetError(ex);
+            }
+            return string.Empty;
+        }
         public async Task<bool> Logout()
         {
             try
@@ -546,7 +572,47 @@ namespace xApp.Services
             }
             return null;
         }
-         
+
+        public async Task<OrderHistoryResult> ReadMyOrders(PagedItemRead model)
+        {
+            try
+            {
+                var response = await getHttp().PostAsync(new Uri(mobileUrl + "order/history"), toPostBody(model));
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    var result = JsonConvert.DeserializeObject<OrderHistoryResult>(content);
+                    return result;
+                }
+                else
+                    handleError(response);
+            }
+            catch (Exception ex)
+            {
+                handleInternetError(ex);
+            }
+            return null;
+        }
+        public async Task<OrderHistoryResult> ReadDiscardedOrders(PagedItemRead model)
+        {
+            try
+            {
+                var response = await getHttp().PostAsync(new Uri(mobileUrl + "order/history/discarded"), toPostBody(model));
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    var result = JsonConvert.DeserializeObject<OrderHistoryResult>(content);
+                    return result;
+                }
+                else
+                    handleError(response);
+            }
+            catch (Exception ex)
+            {
+                handleInternetError(ex);
+            }
+            return null;
+        }
     }
 
 }

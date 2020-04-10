@@ -41,12 +41,12 @@ namespace WebApi
 
             HostingEnvironment = env;
         }
-    
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             var isProduction = HostingEnvironment.IsProduction();
-           
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             //inject IOptions<T>
@@ -84,9 +84,9 @@ namespace WebApi
                 services.AddSingleton(typeof(ILoggerManager), logger);
             }
             else
-                services.AddSingleton(typeof(ILoggerManager), new MyLocalLogService(AppContext.BaseDirectory+"shunq-logs.txt"));
+                services.AddSingleton(typeof(ILoggerManager), new MyLocalLogService(AppContext.BaseDirectory + "shunq-logs.txt"));
 
-            services.AddSingleton(typeof(ICacheManager), new RedisCacheClient(appConfig.RedisConnectionString,appConfig.CachingEnabled));
+            services.AddSingleton(typeof(ICacheManager), new RedisCacheClient(appConfig.RedisConnectionString, appConfig.CachingEnabled));
             services.AddSingleton(typeof(IAdminService), new AdminService(connection));
             services.AddTransient(typeof(IMembershipService), typeof(MembershipService));
             services.AddTransient(typeof(IStoreService), typeof(StoreService));

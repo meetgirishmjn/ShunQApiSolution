@@ -11,6 +11,7 @@ using BusinessCore;
 using Microsoft.AspNetCore.Authorization;
 using BusinessCore.Services.Models;
 using BusinessCore.AppHandlers;
+using BusinessCore.Extensions;
 
 namespace WebApi.Controllers
 {
@@ -160,9 +161,6 @@ namespace WebApi.Controllers
             var cartDeviceId = code;
             var service = CreateStoreService();
 
-            //temp
-            cartDeviceId = "temp";
-
             var cart  = service.StartShopping(cartDeviceId);
             var storeVm = GetStoreByCode(cart.StoreCode);
 
@@ -303,7 +301,7 @@ namespace WebApi.Controllers
                     Quantity = items.Count,
                     Title = items[0].ProductName,
                     SubTitle = items[0].DiscountText,
-                    MRP = items[0].MRP,
+                    MRP = items.Sum(o=>o.MRP),
                     HasDiscount = items[0].Discount > 0
                 });
             }
@@ -376,10 +374,42 @@ namespace WebApi.Controllers
             return viewModel;
         }
 
+       private void setImage(IEnumerable<OrderItem> items)
+        {
+            var imageUrl = this.AppConfig.ImageSrcEndpoint;
+            foreach (var o in items)
+            {
+                o.StoreImage = imageUrl + "stores/" + o.StoreImage;
+                o.OrderDate = o.OrderDate.ToIST();
+            }
+        }
+
+        [HttpPost("order/history")]
+        public PagedItemResult<OrderItem> GetOrderHistory(PagedItemRead option)
+        {
+            var cartService = CreateStoreService();
+
+            var result = cartService.ReadFinishedOrders(option);
+            setImage(result.Items);
+            return result;
+        }
+
+        [HttpPost("order/history/discarded")]
+        public PagedItemResult<OrderItem> GetDiscardedOrderHistory(PagedItemRead option)
+        {
+            var cartService = CreateStoreService();
+
+            var result = cartService.ReadDiscardedOrders(option);
+            setImage(result.Items);
+
+            return result;
+        }
+        
         [HttpGet("Ver")]
         [AllowAnonymous]
         public VersionViewModel Ver()
         {
+
             var membsership = base.CreateMembershipService();
 
             var dbStatus = "ok";
@@ -408,15 +438,9 @@ namespace WebApi.Controllers
                 DbStatus = dbStatus,
                 CacheStatus= cacheStatus,
                 Status = "ok",
-                Version = "1.0.1",
-                VersionDesc= "appV3",
+                Version = "1.2.0",
+                VersionDesc= "opt disabled",
                 AppConfig =this.AppConfig 
-                //OS=new
-                //{
-                //    OSArchitecture = System.Runtime.InteropServices.RuntimeInformation.OSArchitecture.ToString(),
-                //    System.Runtime.InteropServices.RuntimeInformation.OSDescription,
-                //    System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription,
-                //}
             };
         }
     }

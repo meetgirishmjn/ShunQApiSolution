@@ -93,11 +93,16 @@ namespace xApp
 
         public void GoToPayULaunch(string cartId)
         {
-             MainPage.Navigation.PushAsync( new WebViewPage(cartId));
+             MainPage.Navigation.PushAsync( new PayUPage(cartId));
         }
         public void GoToPaymentSuccessPage(string cartId)
         {
             Device.BeginInvokeOnMainThread(() => MainPage = new NavigationPage(new PaymentSuccessPage(cartId)));
+        }
+
+        public void GotMyOrders()
+        {
+            App.Current.MainPage = new NavigationPage(new Views.Orders.MyOrdersPage());
         }
         //public void GoToLogIn()
         //{

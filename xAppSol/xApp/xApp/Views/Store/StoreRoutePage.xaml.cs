@@ -95,7 +95,7 @@ namespace xApp.Views.Store
                                 }
                        </script>
                        <script 
-                       src='https://maps.googleapis.com/maps/api/js?key=AIzaSyANlnLEfxFvmCcy2-BreuMlH97Q2zaDONA&callback=initMap'>
+                       src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAMgr7aJl0JzMUFRh8AweIBU7ZcMT7DcjY&callback=initMap'>
                        </script>
                      </body>
                     </html>";
