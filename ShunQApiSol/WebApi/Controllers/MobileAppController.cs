@@ -439,7 +439,7 @@ namespace WebApi.Controllers
                 CacheStatus= cacheStatus,
                 Status = "ok",
                 Version = "1.2.0",
-                VersionDesc= "opt disabled",
+                VersionDesc= "send grid + sms opt disabled",
                 AppConfig =this.AppConfig 
             };
         }

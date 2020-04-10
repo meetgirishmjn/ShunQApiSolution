@@ -38,6 +38,7 @@ namespace BusinessCore.Services
             }
             catch (Exception ex)
             {
+                logger.LogError("SendMail Exception: " + ex.Message);
                 result.Status = ex.Message;
                 result.HasError = true;
             }

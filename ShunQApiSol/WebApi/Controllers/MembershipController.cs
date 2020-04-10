@@ -285,7 +285,7 @@ namespace WebApi.Controllers
         {
             var membership = base.CreateMembershipService();
             var otp = newOTP();
-            var otp2 = newOTP();
+            var otp2 = otp; // newOTP(); //temp disable sms opt
             var ids = membership.CreateContactVerifyOtp(email, otp, mobileNumber, otp2);
 
             if (ids == null || !ids.Any())
