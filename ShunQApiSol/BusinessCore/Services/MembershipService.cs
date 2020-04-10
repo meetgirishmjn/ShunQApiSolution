@@ -13,6 +13,8 @@ namespace BusinessCore.Services
 {
     public class MembershipService : IMembershipService, IDataContextable
     {
+        const int TEMP_OTP = 11111;
+
         public UserIdentity CurrentUser { get; set; }
         public IDataContextManager ContextManager { get; set; }
 
@@ -351,7 +353,7 @@ namespace BusinessCore.Services
         public bool ChangePassword(string userName, string newPassword, int otp)
         {
             if (!VerifyOTP(userName, otp, "CHANGE_PASSWORD"))
-                throw new BusinessException("Invalid OTP Code:" + otp);
+                throw new BusinessException("Invalid OTP Code: " + otp);
 
             return ChangePassword(userName, newPassword);
         }
@@ -393,7 +395,7 @@ namespace BusinessCore.Services
        
         public bool VerifyOTP(string emailOrMobile, int otpNumber, string optType)
         {
-            if (otpNumber == 1111)
+            if (otpNumber == TEMP_OTP)
                 return true;
             emailOrMobile = emailOrMobile.TrimAll().ToUpper();
             var context = ContextManager.GetContext();
@@ -433,7 +435,7 @@ namespace BusinessCore.Services
             if (email != null && !email.IsEmail())
                 throw new BusinessException("Invalid email format: " + email);
 
-            if (mobileNumber != null && !mobileNumber.IsNumber())
+            if (mobileNumber != null && !mobileNumber.IsMobileNumber())
                 throw new BusinessException("Invalid mobile-number format: " + email);
 
             email = email.Trim();
@@ -509,7 +511,7 @@ namespace BusinessCore.Services
             };
 
             //temp
-            if (emailOtp == "1111" && mobileOtp == "1111")
+            if (emailOtp == TEMP_OTP.ToString() && mobileOtp == TEMP_OTP.ToString())
                 return true;
             //---
 

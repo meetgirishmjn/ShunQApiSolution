@@ -123,9 +123,9 @@ namespace WebApi.Controllers
             if (deviceId.TrimAll().Length == 0)
                 throw new BusinessException("Invalid Device Id.");
 
-            //var otpSuccess = membership.VerifyContactOtp(model.Email, model.EmailOTP, model.MobileNumber, model.MobileOTP);
-            //if(!otpSuccess)
-            //    throw new BusinessException("OPT verification failed. Please check Email or Mobile OTP.");
+            var otpSuccess = membership.VerifyContactOtp(model.Email, model.EmailOTP, model.MobileNumber, model.MobileOTP);
+            if (!otpSuccess)
+                throw new BusinessException("OPT verification failed. Please check Email or Mobile OTP.");
 
             var user = new UserInfo
             {
@@ -197,7 +197,7 @@ namespace WebApi.Controllers
             if (user == null)
                 throw new BusinessException("Invalid User-Name: " + userName);
 
-            CreateEmailService().SendMail(user.Email, "ShunQ-App OTP for your password recovery", "Dear " + user.FullName + ", The One Time Passcode (OTP) for your password recorvery is <br/>" + otp + "</br>");
+            CreateEmailService().SendMail(user.Email, "ShunQ-App OTP for your password recovery", "Dear " + user.FullName + ", The One Time Passcode (OTP) for your password recorvery is <b/>" + otp + "</b>");
 
             return Ok();
         }

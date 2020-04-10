@@ -13,6 +13,7 @@ namespace WebApi.ViewModels
         public string Status { get; set; }
         public string DbStatus { get; set; }
         public string CacheStatus { get; set; }
+        public DateTime Date { get { return DateTime.Now; } }
         public AppConfig AppConfig { get; set; }
 
         public dynamic OS { get; set; }

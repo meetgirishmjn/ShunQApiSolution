@@ -30,7 +30,7 @@ namespace BusinessCore.Services
                 var client = new SendGridClient(API_KEY);
 
                 SendGridMessage mailMessage = new SendGridMessage();
-                mailMessage.SetFrom("Shunq.CareServices.v1@gmail.com");
+                mailMessage.SetFrom("Shunq.CareServices.v1@gmail.com", "ShunQ-App");
                 mailMessage.AddTo(to);
                 mailMessage.AddContent(MimeType.Html, body);
                 mailMessage.SetSubject(subject);
