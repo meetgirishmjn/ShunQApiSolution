@@ -436,7 +436,7 @@ namespace BusinessCore.Services
                 throw new BusinessException("Invalid email format: " + email);
 
             if (mobileNumber != null && !mobileNumber.IsMobileNumber())
-                throw new BusinessException("Invalid mobile-number format: " + email);
+                throw new BusinessException("Invalid mobile number format: " + mobileNumber);
 
             email = email.Trim();
             mobileNumber = mobileNumber.Trim();

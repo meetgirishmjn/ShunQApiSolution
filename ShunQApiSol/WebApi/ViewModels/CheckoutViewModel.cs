@@ -10,6 +10,7 @@ namespace WebApi.ViewModels
     {
         public string CartId { get; set; }
         public bool IsCartValid { get; set; }
+        public bool IsCartValidiationEnabled { get; set; }
         public string ValidationCaption { get; set; }
         public string ValidationTitle { get; set; }
         public List<string> ValidationMessages { get; set; }

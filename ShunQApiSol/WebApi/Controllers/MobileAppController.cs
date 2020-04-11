@@ -20,6 +20,8 @@ namespace WebApi.Controllers
     [Authorize]
     public class MobileAppController : BaseController
     {
+        const bool CART_VALIDATION_ENABLED = false;
+
         public MobileAppController(IServiceProvider serviceProvider, IOptions<AppConfig> appConfig) : base(serviceProvider, appConfig)
         {
         }
@@ -283,7 +285,7 @@ namespace WebApi.Controllers
                 throw new BusinessException("Cart is empty.");
 
             setCartImageUrl(cart);
-
+            viewModel.IsCartValidiationEnabled = CART_VALIDATION_ENABLED;
             viewModel.CartId = cart.Id;
             viewModel.IsCartValid = true;
             viewModel.ValidationCaption = "Total " + cart.Items.Count + " Items verified.";
@@ -324,14 +326,16 @@ namespace WebApi.Controllers
             viewModel.OrderTotal = cart.NetAmount;
             viewModel.AmountBeforeVoucherDiscount = cart.AmountBeforeVoucherDiscount;
 
-
             //cart validation
-            var validationResult = cartService.ValidateCart(cart.Id);
-            viewModel.IsCartValid = validationResult.IsValid;
-            if (!viewModel.IsCartValid)
+            if (CART_VALIDATION_ENABLED)
             {
-                viewModel.ValidationCaption = "Cart is not valid. Please verify Cart Items with App Items";
-                viewModel.ValidationMessages = validationResult.Messages;
+                var validationResult = cartService.ValidateCart(cart.Id);
+                viewModel.IsCartValid = validationResult.IsValid;
+                if (!viewModel.IsCartValid)
+                {
+                    viewModel.ValidationCaption = "Cart is not valid. Please verify Cart Items with App Items";
+                    viewModel.ValidationMessages = validationResult.Messages;
+                }
             }
 
             return viewModel;
@@ -439,7 +443,7 @@ namespace WebApi.Controllers
                 CacheStatus= cacheStatus,
                 Status = "ok",
                 Version = "1.2.0",
-                VersionDesc= "send grid + sms opt disabled",
+                VersionDesc= "CART_VALIDATION_ENABLED=false",
                 AppConfig =this.AppConfig 
             };
         }
